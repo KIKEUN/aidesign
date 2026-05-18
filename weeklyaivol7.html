@@ -130,9 +130,7 @@
     #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
     #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
     #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
-    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7,
-    #hcn-nav-8:checked ~ .carousel-row #hcn-card-8,
-    #hcn-nav-9:checked ~ .carousel-row #hcn-card-9 {
+    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7 {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -149,8 +147,6 @@
     #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
     #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
     #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
-    #hcn-nav-8:checked ~ .carousel-row .nav-prev-from-8 { display: inline-flex; }
-    #hcn-nav-9:checked ~ .carousel-row .nav-prev-from-9 { display: inline-flex; }
     #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
 
     #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
@@ -159,9 +155,7 @@
     #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
     #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
     #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
-    #hcn-nav-7:checked ~ .carousel-row .nav-next-from-7 { display: inline-flex; }
-    #hcn-nav-8:checked ~ .carousel-row .nav-next-from-8 { display: inline-flex; }
-    #hcn-nav-9:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
 
     .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
     .nav-btn {
@@ -217,9 +211,7 @@
     #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
     #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
     #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
-    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7),
-    #hcn-nav-8:checked ~ .progress-dots .dot:nth-child(8),
-    #hcn-nav-9:checked ~ .progress-dots .dot:nth-child(9) {
+    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7) {
       width: 22px;
       background: linear-gradient(90deg, #0a4a48 0%, #1a8888 100%);
     }
@@ -587,25 +579,248 @@
       object-fit: cover;
       object-position: top center;
     }
+    .slide-media-slot--empty {
+      background: rgba(255, 255, 255, 0.72);
+    }
+    /* 6~7p: 이미지 비율에 맞춰 박스 높이 자동, 로드 전 흰색 플레이스홀더 */
+    #hcn-card-6 .slide-media-slot,
+    #hcn-card-7 .slide-media-slot {
+      flex: 0 0 auto;
+      aspect-ratio: unset;
+      height: auto;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: none;
+      min-height: 280px;
+    }
+    #hcn-card-6 .slide-media-slot.is-media-loaded,
+    #hcn-card-7 .slide-media-slot.is-media-loaded {
+      min-height: 0;
+    }
+    #hcn-card-6 .slide-media-slot::before,
+    #hcn-card-6 .slide-media-slot::after,
+    #hcn-card-7 .slide-media-slot::before,
+    #hcn-card-7 .slide-media-slot::after {
+      display: none;
+    }
+    #hcn-card-6 .slide-media-slot > img,
+    #hcn-card-7 .slide-media-slot > img {
+      position: static;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    #hcn-card-6 .slide-body,
+    #hcn-card-7 .slide-body {
+      min-height: 0;
+    }
+    #deck > #hcn-card-6 .footer,
+    #deck > #hcn-card-7 .footer {
+      margin-top: 0;
+      padding-top: 12px;
+      background: linear-gradient(
+        180deg,
+        rgba(92, 207, 177, 0.06) 0%,
+        rgba(26, 136, 136, 0.12) 28%,
+        rgba(12, 55, 52, 0.24) 100%
+      );
+    }
+    #deck > #hcn-card-6 .footer::before,
+    #deck > #hcn-card-7 .footer::before {
+      display: none;
+    }
+    .typing-result {
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .typing-result.is-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
 
     .slide-bottom-copy {
       flex: 1;
       min-height: 0;
+      position: relative;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px 22px;
-      text-align: center;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 38px 18px 12px;
+      text-align: left;
       color: rgba(0, 0, 0, 0.82);
-      font-size: 18px;
+      font-size: 11px;
       font-weight: 600;
-      line-height: 1.58;
-      letter-spacing: -0.018em;
-      word-break: keep-all;
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      word-break: normal;
+      overflow-wrap: anywhere;
       overflow: hidden;
+    }
+    .slide-bottom-copy::before {
+      content: "프롬프트";
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      color: #0a3a36;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
     }
     .slide-bottom-copy span,
     .slide-bottom-copy { font-feature-settings: "ss01", "ss02", "case", "tnum"; }
+    .slide-bottom-copy.prompt-copy {
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px 18px 10px;
+    }
+    .slide-bottom-copy.prompt-copy::before {
+      content: none;
+    }
+    .prompt-heading {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      color: #0a3a36;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 5px;
+    }
+    .copy-btn {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #0a3a36;
+      font-family: var(--font-sans);
+      font-size: 0;
+      cursor: pointer;
+      opacity: 0.72;
+      transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+    }
+    .copy-btn::before,
+    .copy-btn::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      border: 1.5px solid currentColor;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .copy-btn::before {
+      top: 5px;
+      left: 4px;
+      opacity: 0.55;
+    }
+    .copy-btn::after {
+      top: 3px;
+      left: 7px;
+    }
+    .copy-btn:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+    .copy-btn.is-copied {
+      color: #1a8888;
+      border-color: rgba(26, 136, 136, 0.35);
+      background: rgba(236, 253, 245, 0.95);
+    }
+    .prompt-summary {
+      color: #0a1211;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+    }
+    .copy-source {
+      display: block;
+      color: rgba(0, 0, 0, 0.78);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      padding: 10px 12px;
+      border: 1px solid rgba(10, 58, 54, 0.1);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    }
+    .copy-source .prompt-heading {
+      display: inline-flex;
+    }
+    .copy-source__text {
+      display: block;
+      padding-top: 7px;
+      border-top: 1px solid rgba(10, 58, 54, 0.12);
+    }
+    #deck > #hcn-card-6 .slide-bottom-copy,
+    #deck > #hcn-card-7 .slide-bottom-copy {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: 12px 18px;
+      background: transparent;
+    }
+    #deck > #hcn-card-6 .slide-bottom-copy .typing-box,
+    #deck > #hcn-card-7 .slide-bottom-copy .typing-box {
+      width: 100%;
+      max-width: 100%;
+    }
+    #hcn-card-6 .slide-bottom-copy::before,
+    #hcn-card-7 .slide-bottom-copy::before {
+      content: none;
+    }
+    #hcn-card-6 .slide-top-copy,
+    #hcn-card-7 .slide-top-copy {
+      flex: 0 0 auto;
+      min-height: 0;
+      padding-bottom: 12px;
+    }
+    .typing-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 56px;
+      padding: 0 18px 0 20px;
+      border: 1px solid rgba(10, 58, 54, 0.18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow:
+        0 14px 32px -22px rgba(8, 40, 38, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+    .typing-box::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      border: 2px solid rgba(10, 58, 54, 0.42);
+      border-radius: 50%;
+      box-shadow: 8px 8px 0 -6px rgba(10, 58, 54, 0.42);
+    }
+    .typing-prompt {
+      display: inline-block;
+      max-width: 100%;
+      min-height: 1.45em;
+      white-space: nowrap;
+      border-right: 2px solid #0a3a36;
+      color: #0a1211;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.45;
+      animation: typingCursor 0.85s step-end infinite;
+    }
+    @keyframes typingCursor {
+      50% { border-color: transparent; }
+    }
 
     .footer {
       position: relative;
@@ -643,8 +858,6 @@
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
-    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-8" autocomplete="off">
-    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-9" autocomplete="off">
 
     <div class="carousel-row">
       <div class="nav-stack nav-stack--prev">
@@ -655,8 +868,6 @@
         <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
-        <label class="nav-btn nav-btn--prev nav-prev-from-8" for="hcn-nav-7" aria-label="이전 슬라이드">←</label>
-        <label class="nav-btn nav-btn--prev nav-prev-from-9" for="hcn-nav-8" aria-label="이전 슬라이드">←</label>
       </div>
 
       <div class="carousel__viewport">
@@ -676,7 +887,7 @@
                       <span class="cover-badge">VOL.7</span>
                       <h1 class="cover-headline">
                         <strong class="cover-headline__mark">GPT Image 2</strong><br />
-                        <strong>활용 방법 8가지</strong>
+                        <strong>활용 가이드</strong>
                       </h1>
                     </div>
                   </div>
@@ -697,13 +908,14 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">피부 보정</p>
+                    <p class="subkicker">저화질 복구</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai48.png" alt="" loading="eager" decoding="async" />
+                    <img src="https://kikeun.github.io/aidesign/ai41.png" alt="" loading="eager" decoding="async" />
                   </div>
-                  <div class="slide-bottom-copy">
-                    <span>인물의 정체성과 얼굴 구조를 유지하며 전문적이고 자연스러운 피부 보정을 합니다. 모공과 피부 디테일은 그대로 두고 여드름·뾰루지·붉은기·블랙헤드·고르지 않은 결만 정리합니다. 피부 톤·얼굴 그림자·눈썹·속눈썹·머리카락은 그대로 유지하고, 인위적인 매끄러움·뷰티 필터·과한 광택은 없앱니다. 편집 티 없이 건강한 피부로 보이는 DSLR 인물 사진처럼 보이게 합니다.</span>
+                  <div class="slide-bottom-copy prompt-copy">
+                    <span class="prompt-summary">저화질 이미지를 원본 느낌 그대로 선명하게 복구합니다.</span>
+                    <span class="copy-source"><span class="prompt-heading"><span>프롬프트</span><button class="copy-btn" type="button" aria-label="프롬프트 복사"></button></span><span class="copy-source__text">Ultra high-resolution restoration of the uploaded image while preserving the exact identity, pose, framing, composition, and lighting. Recover realistic facial details, hair strands, skin texture, clothing texture, and background detail naturally without hallucinating new features. Remove compression artifacts, blur, digital noise, and low-resolution softness while keeping the image photorealistic and true to the original. Maintain original colors and lighting direction exactly. No AI-generated look, no beauty filter, no over-sharpening, no fake details. Professional realistic 4K enhancement with natural texture preservation.</span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -722,13 +934,14 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">저화질 복구</p>
+                    <p class="subkicker">배경 사람 제거</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai41.png" alt="" loading="eager" decoding="async" />
+                    <img src="https://kikeun.github.io/aidesign/ai42.png" alt="" loading="eager" decoding="async" />
                   </div>
-                  <div class="slide-bottom-copy">
-                    <span>업로드한 이미지의 정체성·포즈·구도·조명을 그대로 유지하며 초고해상도로 복원합니다. 얼굴·머리카락·피부·옷·배경 디테일을 자연스럽게 살리고, 압축 노이즈·흐림·저화질 뭉개짐을 제거합니다. 원본 색감과 빛 방향은 그대로, AI 느낌·뷰티 필터·과한 샤픈 없이 사실적인 4K 보정을 제공합니다.</span>
+                  <div class="slide-bottom-copy prompt-copy">
+                    <span class="prompt-summary">주인공은 유지하고 배경 사람만 자연스럽게 제거합니다.</span>
+                    <span class="copy-source"><span class="prompt-heading"><span>프롬프트</span><button class="copy-btn" type="button" aria-label="프롬프트 복사"></button></span><span class="copy-source__text">Remove all unwanted people from the background while perfectly preserving the main subject, clothing, facial features, pose, and lighting. Reconstruct the background naturally where the removed people were located. Match realistic perspective, lighting direction, shadows, textures, architecture, and depth. Do not crop or stylize the image. The result should look like the original photo was taken without people in the background.</span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -747,13 +960,14 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">배경 사람 제거</p>
+                    <p class="subkicker">어두운 사진 살리기</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai42.png" alt="" loading="eager" decoding="async" />
+                    <img src="https://kikeun.github.io/aidesign/ai46.png" alt="" loading="eager" decoding="async" />
                   </div>
-                  <div class="slide-bottom-copy">
-                    <span>주인공의 옷·얼굴·포즈·조명은 그대로 두고 배경의 불필요한 사람만 제거합니다. 비워진 영역은 원근·빛·그림자·질감·건축물에 맞게 자연스럽게 재구성해, 처음부터 사람이 없던 사진처럼 보이게 합니다.</span>
+                  <div class="slide-bottom-copy prompt-copy">
+                    <span class="prompt-summary">어두운 사진을 자연스럽게 밝히고 분위기는 유지합니다.</span>
+                    <span class="copy-source"><span class="prompt-heading"><span>프롬프트</span><button class="copy-btn" type="button" aria-label="프롬프트 복사"></button></span><span class="copy-source__text">Correct the poor low-light exposure while preserving the person's real identity, skin texture, expression, pose, and image atmosphere. Brighten underexposed areas naturally while maintaining realistic shadows and contrast. Correct harsh flash shadows and remove unnatural color casts. Preserve realistic skin texture, hair detail, and background lighting. Do not create an AI-generated beauty look or artificial smoothing. The final image should look like a naturally well-exposed night photo captured with professional lighting.</span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -772,13 +986,14 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">망한 각도 수정</p>
+                    <p class="subkicker">오래된 사진 복원</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai43.png" alt="" loading="eager" decoding="async" />
+                    <img src="https://kikeun.github.io/aidesign/ai47.png" alt="" loading="eager" decoding="async" />
                   </div>
-                  <div class="slide-bottom-copy">
-                    <span>낮은 카메라 각도로 생긴 이중 턱·턱 눌림만 보정하고, 얼굴 구조·헤어·포즈·표정은 그대로 유지합니다. 실제 얼굴 형태는 바꾸지 않고 눈높이에 가까운 자연스러운 각도로 바꿔, 같은 순간의 더 잘 나온 사진처럼 보정합니다.</span>
+                  <div class="slide-bottom-copy prompt-copy">
+                    <span class="prompt-summary">오래된 손상 사진을 빈티지 감성은 살려 복원합니다.</span>
+                    <span class="copy-source"><span class="prompt-heading"><span>프롬프트</span><button class="copy-btn" type="button" aria-label="프롬프트 복사"></button></span><span class="copy-source__text">Restore and repair the old damaged photograph while preserving the person's real facial identity and historical authenticity. Repair scratches, folds, tears, fading, blur, stains, and damaged areas naturally. Enhance facial details, clothing texture, and image clarity while maintaining realistic vintage photographic texture. If appropriate, restore natural realistic color while respecting the original era and lighting. Preserve the nostalgic atmosphere and authentic photographic character. Photorealistic restoration with subtle high-resolution enhancement.</span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -797,13 +1012,13 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">감성 햇살 추가</p>
+                    <p class="subkicker">간단한 프롬프트로 IMAGE 생성하기</p>
                   </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai44.png" alt="" loading="eager" decoding="async" />
+                  <div class="slide-yt-wrap slide-media-slot slide-media-slot--empty" aria-hidden="true">
+                    <img class="typing-result" src="https://kikeun.github.io/aidesign/ai44.png" alt="" loading="eager" decoding="async" />
                   </div>
                   <div class="slide-bottom-copy">
-                    <span>인물·포즈·얼굴·머리카락·배경 구조는 그대로 두고 따뜻한 골든아워 햇살을 추가합니다. 측면에서 들어오는 부드러운 하이라이트·그림자·피부 톤·역광 머리카락으로 영화 같은 일몰 포트레이트 분위기를 연출합니다.</span>
+                    <span class="typing-box"><span class="typing-prompt" data-text="여자 아이돌을 모델로 한 디에이치 광고 이미지 만들어줘"></span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -822,13 +1037,13 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">눈 감은 사진 복구</p>
+                    <p class="subkicker">간단한 프롬프트로 IMAGE 생성하기</p>
                   </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai45.png" alt="" loading="eager" decoding="async" />
+                  <div class="slide-yt-wrap slide-media-slot slide-media-slot--empty" aria-hidden="true">
+                    <img class="typing-result" src="https://kikeun.github.io/aidesign/ai45.png" alt="" loading="eager" decoding="async" />
                   </div>
                   <div class="slide-bottom-copy">
-                    <span>감은 눈을 자연스럽게 뜨게 하며 얼굴 정체성·표정·머리 위치·조명·구도는 그대로 유지합니다. 눈 모양·시선·눈꺼풀·피부 질감·빛을 자연스럽게 맞추고, 원본과 동일한 순간에 눈을 뜬 것처럼 사실적으로 복구합니다.</span>
+                    <span class="typing-box"><span class="typing-prompt" data-text="남자 아이돌을 모델로 한 힐스테이트 광고 이미지 만들어줘"></span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -847,38 +1062,13 @@
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">어두운 사진 살리기</p>
+                    <p class="subkicker">간단한 프롬프트로 IMAGE 생성하기</p>
                   </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai46.png" alt="" loading="eager" decoding="async" />
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>저조도 노출을 보정해 어두운 영역을 자연스럽게 밝히고, 인물의 정체성·피부 질감·표정·분위기는 유지합니다. 거친 플래시 그림자·부자연스러운 색조를 줄이고, 인위적인 뷰티 필터 없이 전문 조명으로 찍은 야간 사진처럼 보이게 합니다.</span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-9" aria-label="슬라이드 9">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">GPT Image 2</p>
-                    <p class="subkicker">오래된 사진 복원</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/ai47.png" alt="" loading="eager" decoding="async" />
+                  <div class="slide-yt-wrap slide-media-slot slide-media-slot--empty" aria-hidden="true">
+                    <img class="typing-result" src="https://kikeun.github.io/aidesign/ai51.png" alt="" loading="eager" decoding="async" />
                   </div>
                   <div class="slide-bottom-copy">
-                    <span>흠집·접힘·찢김·바램·얼룩·손상 부위를 자연스럽게 복원하고, 인물의 정체성과 시대적 진정성은 살립니다. 얼굴·옷감 디테일과 선명도를 높이되 빈티지 사진 질감과 향수는 유지하며, 시대에 맞는 자연스러운 컬러 복원도 가능합니다.</span>
+                    <span class="typing-box"><span class="typing-prompt" data-text="2000년 대 가족사진 이미지 만들어줘"></span></span>
                   </div>
                 </div>
                 <div class="footer">
@@ -901,15 +1091,11 @@
         <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
-        <label class="nav-btn nav-btn--next nav-next-from-7" for="hcn-nav-8" aria-label="다음 슬라이드">→</label>
-        <label class="nav-btn nav-btn--next nav-next-from-8" for="hcn-nav-9" aria-label="다음 슬라이드">→</label>
         <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
       </div>
     </div>
 
     <div class="progress-dots" aria-hidden="true">
-      <span class="dot"></span>
-      <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
@@ -945,8 +1131,92 @@
           if (p && typeof p.catch === 'function') p.catch(function () {});
         } catch (err) {}
       }
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text);
+        }
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(textarea);
+        return Promise.resolve();
+      }
+      document.querySelectorAll('.copy-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var copyArea = button.closest('.prompt-copy');
+          var source = copyArea ? copyArea.querySelector('.copy-source__text') : null;
+          if (!source) return;
+          copyText(source.textContent.trim()).then(function () {
+            button.classList.add('is-copied');
+            button.setAttribute('aria-label', '복사됨');
+            window.setTimeout(function () {
+              button.classList.remove('is-copied');
+              button.setAttribute('aria-label', '프롬프트 복사');
+            }, 1200);
+          });
+        });
+      });
+      var typingTimer = null;
+      var activeTypingTarget = null;
+      var activeTypingResult = null;
+      function resetPromptTyping() {
+        if (typingTimer) {
+          window.clearInterval(typingTimer);
+          typingTimer = null;
+        }
+        document.querySelectorAll('.typing-prompt').forEach(function (target) {
+          target.textContent = '';
+        });
+        document.querySelectorAll('.typing-result').forEach(function (result) {
+          result.classList.remove('is-visible');
+        });
+        activeTypingTarget = null;
+        activeTypingResult = null;
+      }
+      document.querySelectorAll('#hcn-card-6 .typing-result, #hcn-card-7 .typing-result').forEach(function (img) {
+        img.addEventListener('load', function () { markMediaSlotLoaded(img); });
+        markMediaSlotLoaded(img);
+      });
+      function markMediaSlotLoaded(img) {
+        if (!img) return;
+        var slot = img.closest('.slide-media-slot');
+        if (slot && img.complete && img.naturalWidth > 0) slot.classList.add('is-media-loaded');
+      }
+      function startPromptTyping(card) {
+        if (!card) return;
+        resetPromptTyping();
+        activeTypingTarget = card.querySelector('.typing-prompt');
+        activeTypingResult = card.querySelector('.typing-result');
+        markMediaSlotLoaded(activeTypingResult);
+        if (!activeTypingTarget) return;
+        var text = activeTypingTarget.getAttribute('data-text') || '';
+        var index = 0;
+        typingTimer = window.setInterval(function () {
+          activeTypingTarget.textContent = text.slice(0, index + 1);
+          index += 1;
+          if (index >= text.length) {
+            window.clearInterval(typingTimer);
+            typingTimer = null;
+            if (activeTypingResult) {
+              markMediaSlotLoaded(activeTypingResult);
+              activeTypingResult.classList.add('is-visible');
+            }
+          }
+        }, 95);
+      }
       function onNavChange() {
         var nav = document.querySelector('input[name="hcn-nav"]:checked');
+        var activeCard = nav ? document.getElementById(nav.id.replace('nav', 'card')) : null;
+        if (activeCard && activeCard.querySelector('.typing-prompt')) {
+          startPromptTyping(activeCard);
+        } else {
+          resetPromptTyping();
+        }
         if (!nav || nav.id !== 'hcn-nav-1') {
           pauseCoverVideo();
           return;
