@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Weekly AI (VOL.7)</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --font-sans: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-cover-headline-min: 1.85rem;
+      --font-cover-headline-vw: 4.8vw;
+      --font-cover-headline-max: 2.45rem;
+      --font-cover-headline-mark-em: 1.42;
+    }
+    html { overflow-x: hidden; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #ffffff;
+      font-family: var(--font-sans);
+    }
+
+    .carousel-shell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 48px 16px 64px;
+      gap: 14px;
+    }
+
+    .carousel-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .carousel__viewport {
+      flex: 0 1 540px;
+      min-width: 0;
+      width: 540px;
+      max-width: 540px;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      touch-action: pan-y;
+      background: transparent;
+      transform-origin: top center;
+      -webkit-transform-origin: top center;
+    }
+
+    .carousel__inner {
+      width: 540px;
+      height: 720px;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    @media (max-width: 600px) {
+      .carousel__viewport { height: 612px; transform: scale(0.85); -webkit-transform: scale(0.85); }
+      @supports (zoom: 0.85) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.85; }
+      }
+    }
+    @media (max-width: 520px) {
+      .carousel__viewport { height: 540px; transform: scale(0.75); -webkit-transform: scale(0.75); }
+      @supports (zoom: 0.75) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.75; }
+      }
+    }
+    @media (max-width: 460px) {
+      .carousel__viewport { height: 468px; transform: scale(0.65); -webkit-transform: scale(0.65); }
+      @supports (zoom: 0.65) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.65; }
+      }
+    }
+    @media (max-width: 400px) {
+      .carousel__viewport { height: 396px; transform: scale(0.55); -webkit-transform: scale(0.55); }
+      @supports (zoom: 0.55) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.55; }
+      }
+    }
+
+    #deck {
+      position: relative !important;
+      width: 540px !important;
+      height: 720px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+    }
+    #deck > .card {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      margin: 0 !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.32s ease, visibility 0s linear 0.32s;
+      pointer-events: none;
+    }
+
+    .wai-nav {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    #hcn-nav-1:checked ~ .carousel-row #hcn-card-1,
+    #hcn-nav-2:checked ~ .carousel-row #hcn-card-2,
+    #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
+    #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
+    #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
+    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
+    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7,
+    #hcn-nav-8:checked ~ .carousel-row #hcn-card-8,
+    #hcn-nav-9:checked ~ .carousel-row #hcn-card-9 {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 2;
+      transition: opacity 0.32s ease, visibility 0s linear 0s;
+    }
+
+    .nav-stack { position: relative; width: 44px; height: 44px; flex-shrink: 0; align-self: center; }
+    .nav-stack > .nav-btn { position: absolute; top: 0; left: 0; display: none; }
+
+    #hcn-nav-2:checked ~ .carousel-row .nav-prev-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-prev-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
+    #hcn-nav-8:checked ~ .carousel-row .nav-prev-from-8 { display: inline-flex; }
+    #hcn-nav-9:checked ~ .carousel-row .nav-prev-from-9 { display: inline-flex; }
+    #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
+
+    #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
+    #hcn-nav-2:checked ~ .carousel-row .nav-next-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-next-from-7 { display: inline-flex; }
+    #hcn-nav-8:checked ~ .carousel-row .nav-next-from-8 { display: inline-flex; }
+    #hcn-nav-9:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+
+    .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
+    .nav-btn {
+      flex-shrink: 0;
+      align-self: center;
+      position: relative;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(10, 90, 80, 0.16);
+      background: linear-gradient(180deg, #ffffff 0%, #f4f4f1 100%);
+      color: #0a3a36;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow:
+        0 6px 16px -8px rgba(8, 40, 38, 0.28),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+    .nav-btn:hover:not(.is-disabled) {
+      background: linear-gradient(180deg, #ffffff 0%, #ecf3ec 100%);
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 22px -10px rgba(8, 40, 38, 0.36),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    }
+    .nav-btn:active:not(.is-disabled) { transform: translateY(0); }
+
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .progress-dots .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(10, 58, 54, 0.18);
+      transition: width 0.32s ease, background 0.32s ease, opacity 0.32s ease;
+    }
+    #hcn-nav-1:checked ~ .progress-dots .dot:nth-child(1),
+    #hcn-nav-2:checked ~ .progress-dots .dot:nth-child(2),
+    #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
+    #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
+    #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
+    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
+    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7),
+    #hcn-nav-8:checked ~ .progress-dots .dot:nth-child(8),
+    #hcn-nav-9:checked ~ .progress-dots .dot:nth-child(9) {
+      width: 22px;
+      background: linear-gradient(90deg, #0a4a48 0%, #1a8888 100%);
+    }
+
+    .card {
+      width: 540px;
+      height: 720px;
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      box-shadow:
+        0 30px 60px -20px rgba(8, 40, 38, 0.55),
+        0 12px 24px -8px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      isolation: isolate;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      border-radius: inherit;
+      background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 30, 30, 0.18);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, #d4e8a0 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 15%, #a8e6c1 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, #5ccfb1 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 70%, #3cc4a7 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 80%, #1a8f8f 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 95%, #0d6b6e 0%, transparent 50%),
+        linear-gradient(180deg, #c8e6a0 0%, #4dc9a0 40%, #1a8888 80%, #0a5a5e 100%);
+      z-index: 0;
+    }
+
+    .card-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255,255,255,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0,30,40,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 0% 100%, rgba(0,40,35,0.12) 0%, transparent 45%);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 32px 28px;
+    }
+
+    .card-content--inner { padding: 0; }
+    .card--cover .card-content--cover { padding: 0; display: flex; flex-direction: column; min-height: 0; height: 100%; }
+
+    /* 2p~9p: vol6-style green card atmosphere */
+    #deck > .card:not(.card--cover) {
+      background: transparent;
+    }
+    #deck > .card:not(.card--cover) .card-bg {
+      display: block;
+    }
+    #deck > .card:not(.card--cover) .card-content--inner {
+      background: transparent;
+    }
+    #deck > .card:not(.card--cover) .slide-top-copy {
+      background: linear-gradient(
+        180deg,
+        rgba(212, 232, 160, 0.55) 0%,
+        rgba(168, 230, 193, 0.28) 45%,
+        transparent 100%
+      );
+    }
+    #deck > .card:not(.card--cover) .slide-bottom-copy {
+      background: linear-gradient(
+        0deg,
+        rgba(13, 107, 110, 0.14) 0%,
+        rgba(92, 207, 177, 0.1) 55%,
+        transparent 100%
+      );
+    }
+    #deck > .card:not(.card--cover) .footer-logo path {
+      fill: #0a1211;
+    }
+    #deck > .card:not(.card--cover) .footer-text {
+      color: #0a1211;
+    }
+    /* 1p cover: green bg like p2 + ai40 fade + title at bottom */
+    #hcn-card-1 { background: transparent; }
+    #hcn-card-1 .card-bg { display: block; }
+    #hcn-card-1 .cover-visual {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #hcn-card-1 .cover-visual__base {
+      display: block;
+      width: 59%;
+      height: 59%;
+      max-width: 59%;
+      max-height: 59%;
+      object-fit: contain;
+      object-position: center center;
+      -webkit-mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.12) 6%,
+        rgba(0, 0, 0, 0.45) 14%,
+        #000 26%,
+        #000 74%,
+        rgba(0, 0, 0, 0.45) 86%,
+        rgba(0, 0, 0, 0.12) 94%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.12) 6%,
+        rgba(0, 0, 0, 0.45) 14%,
+        #000 26%,
+        #000 74%,
+        rgba(0, 0, 0, 0.45) 86%,
+        rgba(0, 0, 0, 0.12) 94%,
+        transparent 100%
+      );
+    }
+    #hcn-card-1 .cover-visual__overlay {
+      position: absolute;
+      top: 16%;
+      left: 50%;
+      z-index: 2;
+      display: block;
+      width: 86%;
+      height: 86%;
+      max-width: 86%;
+      max-height: 86%;
+      object-fit: contain;
+      object-position: center center;
+      transform: translate(-50%, -50%);
+    }
+    #hcn-card-1 .cover-bottom-deco {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 28%;
+      bottom: 54px;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(200, 232, 160, 0) 0%,
+        rgba(168, 230, 193, 0.18) 28%,
+        rgba(77, 201, 160, 0.42) 52%,
+        rgba(26, 136, 136, 0.65) 76%,
+        rgba(10, 90, 94, 0.82) 100%
+      );
+    }
+    #hcn-card-1 .card-content--cover { position: relative; z-index: 3; }
+    #hcn-card-1 .cover-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 0;
+      gap: 14px;
+      padding: 0 24px 8px;
+    }
+    #hcn-card-1 .footer {
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+      width: 100%;
+      margin-top: auto;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, rgba(12, 55, 52, 0.18) 0%, rgba(12, 55, 52, 0.32) 100%);
+      border-top: none;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    #hcn-card-1 .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 100%);
+    }
+    #hcn-card-1 .footer-logo path { fill: #0a1211; }
+    #hcn-card-1 .footer-text { color: #0a1211; }
+    #hcn-card-1 .cover-hero-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 6px;
+    }
+    .cover-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px 9px 14px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0a3a36;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(212, 232, 160, 0.78) 100%);
+      border: 1px solid rgba(58, 138, 108, 0.32);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .cover-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #a7f3d0;
+      box-shadow: 0 0 8px rgba(167, 243, 208, 0.95);
+      animation: pulseDot 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
+    }
+    .cover-headline {
+      margin: 0;
+      font-size: clamp(var(--font-cover-headline-min), var(--font-cover-headline-vw), var(--font-cover-headline-max));
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.045em;
+      color: #0a1211;
+      text-shadow: none;
+    }
+    .cover-headline__mark {
+      font-size: calc(1em * var(--font-cover-headline-mark-em));
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      -webkit-text-fill-color: #ffffff;
+      color: #ffffff;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.28);
+    }
+
+    .slide-body { flex: 1; display: flex; flex-direction: column; gap: 0; min-height: 0; overflow: hidden; }
+    .slide-top-copy {
+      position: relative;
+      padding: 44px 18px 18px;
+      text-align: center;
+      color: #0a1211;
+      min-height: 144px;
+    }
+    .slide-top-copy::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 3px;
+      border-radius: 999px;
+      background: #3a8a6c;
+    }
+    .slide-top-copy .kicker {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+      word-break: keep-all;
+      color: rgba(10, 18, 17, 0.78);
+    }
+    .slide-top-copy .subkicker {
+      display: inline-block;
+      position: relative;
+      margin: 6px 0 0;
+      padding: 0 4px;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.22;
+      letter-spacing: -0.035em;
+      word-break: keep-all;
+      color: #0a1211;
+    }
+    .slide-top-copy .subkicker::after {
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      bottom: 2px;
+      height: 8px;
+      background: linear-gradient(90deg, rgba(167, 243, 208, 0) 0%, rgba(167, 243, 208, 0.65) 50%, rgba(167, 243, 208, 0) 100%);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .slide-yt-wrap.slide-media-slot {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      aspect-ratio: 16 / 9;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        0 6px 14px -8px rgba(0, 0, 0, 0.18);
+    }
+    .slide-yt-wrap.slide-media-slot::before,
+    .slide-yt-wrap.slide-media-slot::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 14px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .slide-yt-wrap.slide-media-slot::before {
+      top: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+    .slide-yt-wrap.slide-media-slot::after {
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+    .slide-media-slot > img,
+    .slide-media-slot > video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .slide-bottom-copy {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 22px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.82);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.58;
+      letter-spacing: -0.018em;
+      word-break: keep-all;
+      overflow: hidden;
+    }
+    .slide-bottom-copy span,
+    .slide-bottom-copy { font-feature-settings: "ss01", "ss02", "case", "tnum"; }
+
+    .footer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: auto;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, rgba(12, 55, 52, 0.18) 0%, rgba(12, 55, 52, 0.32) 100%);
+      border-top: none;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 100%);
+    }
+    .footer-logo { width: 26px; height: 26px; flex-shrink: 0; filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25)); }
+    .footer-logo path { fill: #0a1211; }
+    .footer-text { font-size: 13px; font-weight: 800; color: #0a1211; letter-spacing: 0.18em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="carousel-shell" id="html-cardnews-vol7">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-1" autocomplete="off" checked>
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-2" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-3" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-8" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-9" autocomplete="off">
+
+    <div class="carousel-row">
+      <div class="nav-stack nav-stack--prev">
+        <span class="nav-btn nav-btn--prev nav-prev-disabled is-disabled" aria-hidden="true">←</span>
+        <label class="nav-btn nav-btn--prev nav-prev-from-2" for="hcn-nav-1" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-3" for="hcn-nav-2" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-8" for="hcn-nav-7" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-9" for="hcn-nav-8" aria-label="이전 슬라이드">←</label>
+      </div>
+
+      <div class="carousel__viewport">
+        <div class="carousel__inner">
+          <div id="deck">
+            <section class="card card--cover" id="hcn-card-1" aria-label="슬라이드 1 표지">
+              <div class="card-bg"></div>
+              <div class="cover-visual" aria-hidden="true">
+                <img class="cover-visual__base" src="https://kikeun.github.io/aidesign/ai40.webp" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                <img class="cover-visual__overlay" src="https://kikeun.github.io/KIKEUN/ai54.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+              </div>
+              <div class="cover-bottom-deco" aria-hidden="true"></div>
+              <div class="card-content card-content--cover">
+                <div class="cover-inner">
+                  <div class="cover-hero-wrap">
+                    <div class="cover-hero">
+                      <span class="cover-badge">VOL.7</span>
+                      <h1 class="cover-headline">
+                        <strong class="cover-headline__mark">GPT Image 2</strong><br />
+                        <strong>활용 방법 8가지</strong>
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-2" aria-label="슬라이드 2">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">피부 보정</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai48.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>인물의 정체성과 얼굴 구조를 유지하며 전문적이고 자연스러운 피부 보정을 합니다. 모공과 피부 디테일은 그대로 두고 여드름·뾰루지·붉은기·블랙헤드·고르지 않은 결만 정리합니다. 피부 톤·얼굴 그림자·눈썹·속눈썹·머리카락은 그대로 유지하고, 인위적인 매끄러움·뷰티 필터·과한 광택은 없앱니다. 편집 티 없이 건강한 피부로 보이는 DSLR 인물 사진처럼 보이게 합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-3" aria-label="슬라이드 3">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">저화질 복구</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai41.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>업로드한 이미지의 정체성·포즈·구도·조명을 그대로 유지하며 초고해상도로 복원합니다. 얼굴·머리카락·피부·옷·배경 디테일을 자연스럽게 살리고, 압축 노이즈·흐림·저화질 뭉개짐을 제거합니다. 원본 색감과 빛 방향은 그대로, AI 느낌·뷰티 필터·과한 샤픈 없이 사실적인 4K 보정을 제공합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-4" aria-label="슬라이드 4">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">배경 사람 제거</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai42.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>주인공의 옷·얼굴·포즈·조명은 그대로 두고 배경의 불필요한 사람만 제거합니다. 비워진 영역은 원근·빛·그림자·질감·건축물에 맞게 자연스럽게 재구성해, 처음부터 사람이 없던 사진처럼 보이게 합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-5" aria-label="슬라이드 5">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">망한 각도 수정</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai43.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>낮은 카메라 각도로 생긴 이중 턱·턱 눌림만 보정하고, 얼굴 구조·헤어·포즈·표정은 그대로 유지합니다. 실제 얼굴 형태는 바꾸지 않고 눈높이에 가까운 자연스러운 각도로 바꿔, 같은 순간의 더 잘 나온 사진처럼 보정합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-6" aria-label="슬라이드 6">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">감성 햇살 추가</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai44.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>인물·포즈·얼굴·머리카락·배경 구조는 그대로 두고 따뜻한 골든아워 햇살을 추가합니다. 측면에서 들어오는 부드러운 하이라이트·그림자·피부 톤·역광 머리카락으로 영화 같은 일몰 포트레이트 분위기를 연출합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-7" aria-label="슬라이드 7">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">눈 감은 사진 복구</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai45.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>감은 눈을 자연스럽게 뜨게 하며 얼굴 정체성·표정·머리 위치·조명·구도는 그대로 유지합니다. 눈 모양·시선·눈꺼풀·피부 질감·빛을 자연스럽게 맞추고, 원본과 동일한 순간에 눈을 뜬 것처럼 사실적으로 복구합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-8" aria-label="슬라이드 8">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">어두운 사진 살리기</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai46.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>저조도 노출을 보정해 어두운 영역을 자연스럽게 밝히고, 인물의 정체성·피부 질감·표정·분위기는 유지합니다. 거친 플래시 그림자·부자연스러운 색조를 줄이고, 인위적인 뷰티 필터 없이 전문 조명으로 찍은 야간 사진처럼 보이게 합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-9" aria-label="슬라이드 9">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">GPT Image 2</p>
+                    <p class="subkicker">오래된 사진 복원</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/ai47.png" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>흠집·접힘·찢김·바램·얼룩·손상 부위를 자연스럽게 복원하고, 인물의 정체성과 시대적 진정성은 살립니다. 얼굴·옷감 디테일과 선명도를 높이되 빈티지 사진 질감과 향수는 유지하며, 시대에 맞는 자연스러운 컬러 복원도 가능합니다.</span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-stack nav-stack--next">
+        <label class="nav-btn nav-btn--next nav-next-from-1" for="hcn-nav-2" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-2" for="hcn-nav-3" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-7" for="hcn-nav-8" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-8" for="hcn-nav-9" aria-label="다음 슬라이드">→</label>
+        <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
+      </div>
+    </div>
+
+    <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function ensureInitialChecked() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!checked) {
+          var first = document.getElementById('hcn-nav-1');
+          if (first) first.checked = true;
+        }
+      }
+      ensureInitialChecked();
+      window.addEventListener('pageshow', ensureInitialChecked);
+      var coverVideo = document.querySelector('#hcn-card-1 .cover-video');
+      function pauseCoverVideo() {
+        if (!coverVideo) return;
+        try { coverVideo.pause(); } catch (err) {}
+      }
+      function playCoverVideoFromStart() {
+        if (!coverVideo || !coverVideo.querySelector('source')) return;
+        try { coverVideo.muted = true; coverVideo.currentTime = 0; } catch (err) {}
+        try { coverVideo.load(); } catch (err) {}
+        try {
+          var p = coverVideo.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } catch (err) {}
+      }
+      function onNavChange() {
+        var nav = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!nav || nav.id !== 'hcn-nav-1') {
+          pauseCoverVideo();
+          return;
+        }
+        window.setTimeout(playCoverVideoFromStart, 80);
+      }
+      document.querySelectorAll('input[name="hcn-nav"]').forEach(function (r) {
+        r.addEventListener('change', onNavChange);
+      });
+      onNavChange();
+    })();
+  </script>
+</body>
+</html>
