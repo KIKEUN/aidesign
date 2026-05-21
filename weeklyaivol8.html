@@ -329,24 +329,44 @@
     }
     #hcn-card-1 .footer-logo path { fill: #ffffff; }
     #hcn-card-1 .footer-text { color: #ffffff; }
-    /* 1p: 하단 그라데이션 위에 히어로 배치 (vol6 동일) */
+    #hcn-card-1 .footer {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    #hcn-card-1 .footer::before { display: none; }
+    /* 1p: ai54 상단, 제목 하단 */
     #hcn-card-1 .cover-inner {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: space-between;
       min-height: 0;
-      gap: 14px;
+      gap: 12px;
+    }
+    #hcn-card-1 .cover-top {
+      flex-shrink: 0;
+      padding-top: 64px;
+    }
+    #hcn-card-1 .cover-figure {
+      margin: 0;
+      line-height: 0;
+    }
+    #hcn-card-1 .cover-figure img {
+      display: block;
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      object-position: left top;
     }
     #hcn-card-1 .cover-hero-wrap {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      flex-shrink: 0;
       padding-bottom: 6px;
     }
     #hcn-card-1 .cover-inner__bottom { margin-top: 4px; }
-    .cover-figure { margin: 10px 0 14px; line-height: 0; }
-    .cover-figure img { display: block; width: 100%; max-height: 200px; object-fit: contain; object-position: left center; }
     .cover-badge {
       position: relative;
       display: inline-flex;
@@ -613,11 +633,13 @@
               <div class="card-content card-content--cover">
                 <span class="cover-badge cover-badge--top">VOL.8 ｜최신 트렌드</span>
                 <div class="cover-inner">
+                  <div class="cover-top">
+                    <figure class="cover-figure" aria-hidden="true">
+                      <img src="https://kikeun.github.io/KIKEUN/ai54.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                    </figure>
+                  </div>
                   <div class="cover-hero-wrap">
                     <div class="cover-hero">
-                      <figure class="cover-figure" aria-hidden="true">
-                        <img src="https://kikeun.github.io/KIKEUN/ai54.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
-                      </figure>
                       <h1 class="cover-headline">
                         <strong>구글의 역습</strong><br />
                         <strong class="cover-headline__mark">GEMINI 3.5 출시</strong>
