@@ -128,7 +128,8 @@
     #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
     #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
     #hcn-nav-7:checked ~ .carousel-row #hcn-card-7,
-    #hcn-nav-8:checked ~ .carousel-row #hcn-card-8 {
+    #hcn-nav-8:checked ~ .carousel-row #hcn-card-8,
+    #hcn-nav-9:checked ~ .carousel-row #hcn-card-9 {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -146,6 +147,7 @@
     #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
     #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
     #hcn-nav-8:checked ~ .carousel-row .nav-prev-from-8 { display: inline-flex; }
+    #hcn-nav-9:checked ~ .carousel-row .nav-prev-from-9 { display: inline-flex; }
     #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
 
     #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
@@ -155,7 +157,8 @@
     #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
     #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
     #hcn-nav-7:checked ~ .carousel-row .nav-next-from-7 { display: inline-flex; }
-    #hcn-nav-8:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+    #hcn-nav-8:checked ~ .carousel-row .nav-next-from-8 { display: inline-flex; }
+    #hcn-nav-9:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
 
     .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
     .nav-btn {
@@ -212,7 +215,8 @@
     #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
     #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
     #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7),
-    #hcn-nav-8:checked ~ .progress-dots .dot:nth-child(8) {
+    #hcn-nav-8:checked ~ .progress-dots .dot:nth-child(8),
+    #hcn-nav-9:checked ~ .progress-dots .dot:nth-child(9) {
       width: 22px;
       background: linear-gradient(90deg, #0a4a48 0%, #1a8888 100%);
     }
@@ -677,12 +681,16 @@
       transform: translateY(-50%) scale(0.9);
       object-position: right center;
     }
-    #hcn-card-3 .slide-media-slot > video,
+    #hcn-card-3 .slide-media-slot > img {
+      transform: scale(1.06);
+      transform-origin: center;
+    }
     #hcn-card-4 .slide-media-slot > video,
     #hcn-card-5 .slide-media-slot > video,
     #hcn-card-6 .slide-media-slot > video,
     #hcn-card-7 .slide-media-slot > video,
-    #hcn-card-8 .slide-media-slot > video {
+    #hcn-card-8 .slide-media-slot > video,
+    #hcn-card-9 .slide-media-slot > video {
       object-fit: cover;
     }
 
@@ -710,7 +718,8 @@
     #hcn-card-5 .slide-bottom-copy,
     #hcn-card-6 .slide-bottom-copy,
     #hcn-card-7 .slide-bottom-copy,
-    #hcn-card-8 .slide-bottom-copy {
+    #hcn-card-8 .slide-bottom-copy,
+    #hcn-card-9 .slide-bottom-copy {
       font-size: 17px;
       line-height: 1.55;
     }
@@ -763,6 +772,7 @@
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-8" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-9" autocomplete="off">
 
     <div class="carousel-row">
       <div class="nav-stack nav-stack--prev">
@@ -774,6 +784,7 @@
         <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-8" for="hcn-nav-7" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-9" for="hcn-nav-8" aria-label="이전 슬라이드">←</label>
       </div>
 
       <div class="carousel__viewport">
@@ -881,6 +892,37 @@
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
+                    <p class="kicker">3.5 플래시(3.5 Flash): 대규모 에이전트 작업 지원</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/2%ED%8E%98%EC%9D%B4%EC%A7%80.webp" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      3.5 플래시는 속도와 성능의 균형이 좋아,<br />
+                      장기 에이전트 작업에 딱 맞습니다.<br />
+                      며칠·몇 주 걸리던 일을 훨씬 빠르게 끝내고,<br />
+                      비용은 최첨단 모델의 절반 이하입니다.<br />
+                      앱 개발, 코드 관리, 재무 문서까지 계획 세우고<br />
+                      반복 작업도 알아서 처리합니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-4" aria-label="4페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
                     <p class="kicker">흩어진 파일도 한 번에 정리</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
@@ -906,7 +948,7 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-4" aria-label="4페이지">
+            <section class="card" id="hcn-card-5" aria-label="5페이지">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
@@ -936,7 +978,7 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-5" aria-label="5페이지">
+            <section class="card" id="hcn-card-6" aria-label="6페이지">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
@@ -966,7 +1008,7 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-6" aria-label="6페이지">
+            <section class="card" id="hcn-card-7" aria-label="7페이지">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
@@ -996,7 +1038,7 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-7" aria-label="7페이지">
+            <section class="card" id="hcn-card-8" aria-label="8페이지">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
@@ -1026,7 +1068,7 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-8" aria-label="8페이지">
+            <section class="card" id="hcn-card-9" aria-label="9페이지">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
@@ -1069,11 +1111,13 @@
         <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-7" for="hcn-nav-8" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-8" for="hcn-nav-9" aria-label="다음 슬라이드">→</label>
         <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
       </div>
     </div>
 
     <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
@@ -1098,12 +1142,12 @@
       window.addEventListener('pageshow', ensureInitialChecked);
 
       var VIDEO_SLIDES = [
-        { navId: "hcn-nav-3", sel: "#hcn-card-3 .slide-media-slot video" },
         { navId: "hcn-nav-4", sel: "#hcn-card-4 .slide-media-slot video" },
         { navId: "hcn-nav-5", sel: "#hcn-card-5 .slide-media-slot video" },
         { navId: "hcn-nav-6", sel: "#hcn-card-6 .slide-media-slot video" },
         { navId: "hcn-nav-7", sel: "#hcn-card-7 .slide-media-slot video" },
-        { navId: "hcn-nav-8", sel: "#hcn-card-8 .slide-media-slot video" }
+        { navId: "hcn-nav-8", sel: "#hcn-card-8 .slide-media-slot video" },
+        { navId: "hcn-nav-9", sel: "#hcn-card-9 .slide-media-slot video" }
       ];
 
       var videoSlides = VIDEO_SLIDES.map(function (def) {
