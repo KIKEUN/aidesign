@@ -512,9 +512,170 @@
       object-fit: contain;
       object-position: center;
     }
-    #hcn-card-2 .slide-media-slot > img {
-      transform: scale(1.06);
-      transform-origin: center;
+    /* 2p — Weekly AI 3 컨셉 */
+    #hcn-card-2 .slide-body--concepts {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 16px 18px 8px;
+      background: transparent;
+    }
+    #hcn-card-2 .wai-brand-zone {
+      flex-shrink: 0;
+      height: 128px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    #hcn-card-2 .wai-brand {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    #hcn-card-2 .wai-brand__title {
+      margin: 0;
+      font-size: clamp(34px, 8.5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 1.1;
+      color: #0f172a;
+    }
+    #hcn-card-2 .wai-brand__title .ai {
+      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 48%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #hcn-card-2 .wai-brand__sub {
+      margin: 12px 0 0;
+      font-size: clamp(16px, 4vw, 19px);
+      font-weight: 700;
+      line-height: 1.45;
+      color: #64748b;
+      letter-spacing: -0.025em;
+    }
+    #hcn-card-2 .wai-brand__sub em {
+      font-style: normal;
+      color: #2563eb;
+      font-weight: 800;
+    }
+    #hcn-card-2 .concept-cards {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+    #hcn-card-2 .concept-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      overflow: hidden;
+      min-height: 128px;
+      max-height: 148px;
+      padding: 0 14px 0 16px;
+      background: #ffffff;
+      border: 2px dashed rgba(59, 130, 246, 0.45);
+      border-radius: 6px;
+      box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.1);
+    }
+    #hcn-card-2 .concept-card__main {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      max-width: 54%;
+      padding: 4px 0 14px;
+      transform: translateY(-6px);
+    }
+    #hcn-card-2 .concept-card__badge {
+      display: inline-flex;
+      align-self: flex-start;
+      align-items: center;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 6px;
+    }
+    #hcn-card-2 .concept-card__copy {
+      padding: 0;
+      text-align: left;
+    }
+    #hcn-card-2 .concept-card__title {
+      margin: 0;
+      font-size: clamp(26px, 6.2vw, 32px);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.045em;
+      color: #0f172a;
+      word-break: keep-all;
+    }
+    #hcn-card-2 .concept-card__title em {
+      font-style: normal;
+      color: #2563eb;
+    }
+    #hcn-card-2 .concept-card--literacy .concept-card__title em { color: #7c3aed; }
+    #hcn-card-2 .concept-card--copilot .concept-card__title em { color: #0891b2; }
+    #hcn-card-2 .concept-card__desc {
+      margin: 6px 0 0;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #64748b;
+    }
+    #hcn-card-2 .concept-card__art {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 62%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #hcn-card-2 .concept-card__art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.95) 18%,
+        rgba(255, 255, 255, 0.55) 38%,
+        rgba(255, 255, 255, 0) 62%
+      );
+    }
+    #hcn-card-2 .concept-card__art img {
+      position: absolute;
+      top: 50%;
+      right: -6%;
+      transform: translateY(-50%);
+      width: 108%;
+      height: 115%;
+      max-width: none;
+      object-fit: cover;
+      object-position: center;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
+    }
+    #hcn-card-2 .concept-card--copilot .concept-card__art img {
+      width: 100%;
+      height: 102%;
+      right: -14%;
+      transform: translateY(-50%) scale(0.9);
+      object-position: right center;
     }
     #hcn-card-3 .slide-media-slot > video,
     #hcn-card-4 .slide-media-slot > video,
@@ -544,7 +705,6 @@
     .slide-bottom-copy span {
       font-feature-settings: "ss01", "ss02", "case", "tnum";
     }
-    #hcn-card-2 .slide-bottom-copy,
     #hcn-card-3 .slide-bottom-copy,
     #hcn-card-4 .slide-bottom-copy,
     #hcn-card-5 .slide-bottom-copy,
@@ -657,26 +817,54 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-2" aria-label="2페이지">
+            <section class="card" id="hcn-card-2" aria-label="2페이지 Weekly AI 3 컨셉">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">3.5 플래시(3.5 Flash): 대규모 에이전트 작업 지원</p>
+                <div class="slide-body slide-body--concepts">
+                  <div class="wai-brand-zone">
+                    <header class="wai-brand">
+                      <h2 class="wai-brand__title">Weekly <span class="ai">AI</span></h2>
+                      <p class="wai-brand__sub">이제 <em>3가지 컨셉</em>으로 매주 전합니다</p>
+                    </header>
                   </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/2%ED%8E%98%EC%9D%B4%EC%A7%80.webp" alt="" loading="eager" decoding="async" />
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      3.5 플래시는 속도와 성능의 균형이 좋아,<br />
-                      장기 에이전트 작업에 딱 맞습니다.<br />
-                      며칠·몇 주 걸리던 일을 훨씬 빠르게 끝내고,<br />
-                      비용은 최첨단 모델의 절반 이하입니다.<br />
-                      앱 개발, 코드 관리, 재무 문서까지 계획 세우고<br />
-                      반복 작업도 알아서 처리합니다.
-                    </span>
-                  </div>
+                  <ul class="concept-cards">
+                    <li class="concept-card concept-card--trend">
+                      <div class="concept-card__main">
+                        <span class="concept-card__badge">Concept 1</span>
+                        <div class="concept-card__copy">
+                          <p class="concept-card__title">최신 <em>트렌드</em></p>
+                          <p class="concept-card__desc">AI 업계 소식·신제품을 빠르게</p>
+                        </div>
+                      </div>
+                      <div class="concept-card__art" aria-hidden="true">
+                        <img src="https://kikeun.github.io/aidesign/ai37.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                      </div>
+                    </li>
+                    <li class="concept-card concept-card--literacy">
+                      <div class="concept-card__main">
+                        <span class="concept-card__badge">Concept 2</span>
+                        <div class="concept-card__copy">
+                          <p class="concept-card__title">AI <em>리터러시</em></p>
+                          <p class="concept-card__desc">어려운 개념을 쉽게 풀어 설명</p>
+                        </div>
+                      </div>
+                      <div class="concept-card__art" aria-hidden="true">
+                        <img src="https://kikeun.github.io/aidesign/ai38.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                      </div>
+                    </li>
+                    <li class="concept-card concept-card--copilot">
+                      <div class="concept-card__main">
+                        <span class="concept-card__badge">Concept 3</span>
+                        <div class="concept-card__copy">
+                          <p class="concept-card__title"><em>Copilot</em> 소식</p>
+                          <p class="concept-card__desc">업무에 바로 쓰는 활용 가이드</p>
+                        </div>
+                      </div>
+                      <div class="concept-card__art" aria-hidden="true">
+                        <img src="https://kikeun.github.io/aidesign/ai2.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                      </div>
+                    </li>
+                  </ul>
                 </div>
                 <div class="footer">
                   <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
