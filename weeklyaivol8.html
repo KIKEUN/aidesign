@@ -420,6 +420,15 @@
       -webkit-text-fill-color: transparent;
       color: #a7f3d0;
     }
+    #hcn-card-1 .cover-dek {
+      margin: 14px 0 0;
+      font-size: clamp(14px, 3.6vw, 16.5px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: -0.02em;
+      color: rgba(255, 255, 255, 0.88);
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.28);
+    }
 
     /* 2~8p 내부 슬라이드 */
     .slide-body {
@@ -516,8 +525,8 @@
       object-fit: contain;
       object-position: center;
     }
-    /* 2p — Weekly AI 3 컨셉 */
-    #hcn-card-2 .slide-body--concepts {
+    /* 9p — Weekly AI 3 컨셉 */
+    #hcn-card-9 .slide-body--concepts {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -525,7 +534,7 @@
       padding: 20px 18px 8px;
       background: transparent;
     }
-    #hcn-card-2 .wai-brand-zone {
+    #hcn-card-9 .wai-brand-zone {
       flex-shrink: 0;
       height: 148px;
       display: flex;
@@ -533,12 +542,12 @@
       justify-content: center;
       margin-bottom: 8px;
     }
-    #hcn-card-2 .wai-brand {
+    #hcn-card-9 .wai-brand {
       margin: 0;
       padding: 0;
       text-align: center;
     }
-    #hcn-card-2 .wai-brand__title {
+    #hcn-card-9 .wai-brand__title {
       margin: 0;
       font-size: clamp(34px, 8.5vw, 42px);
       font-weight: 900;
@@ -546,32 +555,32 @@
       line-height: 1.1;
       color: #0f172a;
     }
-    #hcn-card-2 .wai-brand__title .ai {
+    #hcn-card-9 .wai-brand__title .ai {
       background: linear-gradient(135deg, #2563eb 0%, #7c3aed 48%, #06b6d4 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    #hcn-card-2 .wai-brand__sub,
-    #hcn-card-2 .wai-brand__hint {
+    #hcn-card-9 .wai-brand__sub,
+    #hcn-card-9 .wai-brand__hint {
       font-size: clamp(16px, 4vw, 19px);
       font-weight: 700;
       line-height: 1.45;
       color: #64748b;
       letter-spacing: -0.025em;
     }
-    #hcn-card-2 .wai-brand__sub em {
+    #hcn-card-9 .wai-brand__sub em {
       font-style: normal;
       color: #2563eb;
       font-weight: 800;
     }
-    #hcn-card-2 .wai-brand__sub {
+    #hcn-card-9 .wai-brand__sub {
       margin: 12px 0 0;
     }
-    #hcn-card-2 .wai-brand__hint {
+    #hcn-card-9 .wai-brand__hint {
       margin: 8px 0 0;
     }
-    #hcn-card-2 .concept-cards {
+    #hcn-card-9 .concept-cards {
       list-style: none;
       margin: 6px 0 0;
       padding: 0;
@@ -581,7 +590,7 @@
       flex: 1;
       min-height: 0;
     }
-    #hcn-card-2 .concept-card {
+    #hcn-card-9 .concept-card {
       position: relative;
       display: flex;
       align-items: center;
@@ -595,7 +604,7 @@
       border-radius: 6px;
       box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.1);
     }
-    #hcn-card-2 .concept-card__main {
+    #hcn-card-9 .concept-card__main {
       position: relative;
       z-index: 2;
       display: flex;
@@ -606,7 +615,7 @@
       padding: 6px 0 10px;
       transform: translateY(2px);
     }
-    #hcn-card-2 .concept-card__badge {
+    #hcn-card-9 .concept-card__badge {
       display: inline-flex;
       align-self: flex-start;
       align-items: center;
@@ -619,11 +628,11 @@
       border: 1px solid rgba(59, 130, 246, 0.25);
       border-radius: 6px;
     }
-    #hcn-card-2 .concept-card__copy {
+    #hcn-card-9 .concept-card__copy {
       padding: 0;
       text-align: left;
     }
-    #hcn-card-2 .concept-card__title {
+    #hcn-card-9 .concept-card__title {
       margin: 0;
       font-size: clamp(26px, 6.2vw, 32px);
       font-weight: 900;
@@ -632,20 +641,20 @@
       color: #0f172a;
       word-break: keep-all;
     }
-    #hcn-card-2 .concept-card__title em {
+    #hcn-card-9 .concept-card__title em {
       font-style: normal;
       color: #2563eb;
     }
-    #hcn-card-2 .concept-card--literacy .concept-card__title em { color: #7c3aed; }
-    #hcn-card-2 .concept-card--copilot .concept-card__title em { color: #0891b2; }
-    #hcn-card-2 .concept-card__desc {
+    #hcn-card-9 .concept-card--literacy .concept-card__title em { color: #7c3aed; }
+    #hcn-card-9 .concept-card--copilot .concept-card__title em { color: #0891b2; }
+    #hcn-card-9 .concept-card__desc {
       margin: 7px 0 0;
       font-size: 13.5px;
       font-weight: 600;
       line-height: 1.4;
       color: #64748b;
     }
-    #hcn-card-2 .concept-card__art {
+    #hcn-card-9 .concept-card__art {
       position: absolute;
       top: 0;
       right: 0;
@@ -654,7 +663,7 @@
       z-index: 0;
       pointer-events: none;
     }
-    #hcn-card-2 .concept-card__art::after {
+    #hcn-card-9 .concept-card__art::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -667,7 +676,7 @@
         rgba(255, 255, 255, 0) 62%
       );
     }
-    #hcn-card-2 .concept-card__art img {
+    #hcn-card-9 .concept-card__art img {
       position: absolute;
       top: 50%;
       right: -6%;
@@ -680,23 +689,23 @@
       -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
       mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
     }
-    #hcn-card-2 .concept-card--copilot .concept-card__art img {
+    #hcn-card-9 .concept-card--copilot .concept-card__art img {
       width: 100%;
       height: 102%;
       right: -14%;
       transform: translateY(-50%) scale(0.9);
       object-position: right center;
     }
-    #hcn-card-3 .slide-media-slot > img {
+    #hcn-card-2 .slide-media-slot > img {
       transform: scale(1.06);
       transform-origin: center;
     }
+    #hcn-card-3 .slide-media-slot > video,
     #hcn-card-4 .slide-media-slot > video,
     #hcn-card-5 .slide-media-slot > video,
     #hcn-card-6 .slide-media-slot > video,
     #hcn-card-7 .slide-media-slot > video,
-    #hcn-card-8 .slide-media-slot > video,
-    #hcn-card-9 .slide-media-slot > video {
+    #hcn-card-8 .slide-media-slot > video {
       object-fit: cover;
     }
 
@@ -719,43 +728,18 @@
     .slide-bottom-copy span {
       font-feature-settings: "ss01", "ss02", "case", "tnum";
     }
-    #hcn-card-3 .slide-bottom-copy {
-      font-size: 16px;
-      line-height: 1.52;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    #hcn-card-5 .slide-bottom-copy {
-      font-size: 16px;
-      line-height: 1.52;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    #hcn-card-6 .slide-bottom-copy {
-      font-size: 16px;
-      line-height: 1.52;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    #hcn-card-7 .slide-bottom-copy {
-      font-size: 16px;
-      line-height: 1.52;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
+    #hcn-card-2 .slide-bottom-copy,
+    #hcn-card-4 .slide-bottom-copy,
+    #hcn-card-5 .slide-bottom-copy,
+    #hcn-card-6 .slide-bottom-copy,
+    #hcn-card-7 .slide-bottom-copy,
     #hcn-card-8 .slide-bottom-copy {
       font-size: 16px;
       line-height: 1.52;
       padding-left: 20px;
       padding-right: 20px;
     }
-    #hcn-card-9 .slide-bottom-copy {
-      font-size: 16px;
-      line-height: 1.52;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    #hcn-card-4 .slide-bottom-copy {
+    #hcn-card-3 .slide-bottom-copy {
       font-size: 17px;
       line-height: 1.55;
     }
@@ -851,6 +835,7 @@
                         <strong>구글의 역습</strong><br />
                         <strong class="cover-headline__mark">GEMINI 3.5 출시</strong>
                       </h1>
+                      <p class="cover-dek">구글에서 제미나이 대규모 업데이트를 발표했습니다.<br />핵심 소식만 모아 한눈에 같이 살펴 볼게요.</p>
                     </div>
                   </div>
                 </div>
@@ -864,7 +849,220 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-2" aria-label="2페이지 Weekly AI 3 컨셉">
+            <section class="card" id="hcn-card-2" aria-label="2페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">3.5 플래시(3.5 Flash): 대규모 에이전트 작업 지원</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <img src="https://kikeun.github.io/aidesign/2%ED%8E%98%EC%9D%B4%EC%A7%80.webp" alt="" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      3.5 플래시는 속도·성능의 균형이 좋아 장기 에이전트 작업에 최적화된 모델입니다.<br />
+                      오래 걸리던 일을 훨씬 빠르게 처리하며 비용은 기존의 절반 이하입니다.<br />
+                      앱 개발, 코드 관리, 재무 문서 등 계획 수립부터 반복 작업까지 알아서 해결합니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-3" aria-label="3페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">흩어진 파일도 한 번에 정리</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/3%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 3.5는 문서, 사진, 영상 등 폴더에 섞여 있는 대규모 파일들을<br />
+                      종류·색상·크기 등 기준에 따라 알아서 자동 분류합니다.<br />
+                      분류와 동시에 수많은 파일의 이름까지 원하는 양식으로<br />
+                      한 번에 일괄 변경합니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-4" aria-label="4페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">AI가 AI를 직접 만들어요</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/4%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 3.5는 구글의 역사적인 바둑 AI ‘알파고’를 처음부터 끝까지<br />
+                      스스로 재구축하는 시연을 성공적으로 마쳤습니다.<br />
+                      개발자의 개입을 최소화한 채, 스스로 코드를<br />
+                      짜며 복잡한 에이전트 실행력을 증명했습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-5" aria-label="5페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">오래된 코드도 알아서 새로 교체</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/5%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 3.5는 수년 전 작성된 노후 코드를<br />
+                      최신 개발 스택으로 통째로 마이그레이션(이전)해 줍니다.<br />
+                      덕분에 1인 개발자도 대규모 코드베이스 구조 개선 작업을<br />
+                      한 번에 효율적으로 처리할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-6" aria-label="6페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">화면 6개를 1분 안에</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/6%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 3.5는 쇼핑몰 결제 화면과 같은 UI/UX 디자인 작업도<br />
+                      텍스트 명령 한 줄만으로 1분 안에 6가지의 다양한<br />
+                      시안을 자동으로 생성해 줍니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-7" aria-label="7페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">브랜드 디자인 4가지 한 번에</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/7%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 3.5는 브랜드의 고유한 분위기를 반영한<br />
+                      4가지 디자인 시안을 동시에 생성합니다.<br />
+                      이를 통해 여러 시안을 일일이 비교하고 검토하던<br />
+                      작업 시간을 획기적으로 단축할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-8" aria-label="8페이지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="kicker">검색에서 바로 만날 수 있습니다</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
+                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+                      <source src="https://kikeun.github.io/aidesign/8%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      구글 검색에서 어려운 개념을 질문하면 제미나이 3.5가<br />
+                      움직이는 다이어그램(시각 자료)으로 알기 쉽게 풀어줍니다.<br />
+                      현재 제미나이 앱과 구글 검색에서 무료로 이용할 수 있으며,<br />
+                      다음 달에는 '3.5 프로' 모델까지 확장되어 출시될 예정입니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-9" aria-label="9페이지 Weekly AI 3 컨셉">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body slide-body--concepts">
@@ -924,219 +1122,6 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-3" aria-label="3페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">3.5 플래시(3.5 Flash): 대규모 에이전트 작업 지원</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <img src="https://kikeun.github.io/aidesign/2%ED%8E%98%EC%9D%B4%EC%A7%80.webp" alt="" loading="eager" decoding="async" />
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      3.5 플래시는 속도·성능의 균형이 좋아 장기 에이전트 작업에 최적화된 모델입니다.<br />
-                      오래 걸리던 일을 훨씬 빠르게 처리하며 비용은 기존의 절반 이하입니다.<br />
-                      앱 개발, 코드 관리, 재무 문서 등 계획 수립부터 반복 작업까지 알아서 해결합니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-4" aria-label="4페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">흩어진 파일도 한 번에 정리</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/3%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      제미나이 3.5는 문서, 사진, 영상 등 폴더에 섞여 있는 대규모 파일들을<br />
-                      종류·색상·크기 등 기준에 따라 알아서 자동 분류합니다.<br />
-                      분류와 동시에 수많은 파일의 이름까지 원하는 양식으로<br />
-                      한 번에 일괄 변경합니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-5" aria-label="5페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">AI가 AI를 직접 만들어요</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/4%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      제미나이 3.5는 구글의 역사적인 바둑 AI ‘알파고’를 처음부터 끝까지<br />
-                      스스로 재구축하는 시연을 성공적으로 마쳤습니다.<br />
-                      개발자의 개입을 최소화한 채, 스스로 코드를<br />
-                      짜며 복잡한 에이전트 실행력을 증명했습니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-6" aria-label="6페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">오래된 코드도 알아서 새로 교체</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/5%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      제미나이 3.5는 수년 전 작성된 노후 코드를<br />
-                      최신 개발 스택으로 통째로 마이그레이션(이전)해 줍니다.<br />
-                      덕분에 1인 개발자도 대규모 코드베이스 구조 개선 작업을<br />
-                      한 번에 효율적으로 처리할 수 있습니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-7" aria-label="7페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">화면 6개를 1분 안에</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/6%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      제미나이 3.5는 쇼핑몰 결제 화면과 같은 UI/UX 디자인 작업도<br />
-                      텍스트 명령 한 줄만으로 1분 안에 6가지의 다양한<br />
-                      시안을 자동으로 생성해 줍니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-8" aria-label="8페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">브랜드 디자인 4가지 한 번에</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/7%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      제미나이 3.5는 브랜드의 고유한 분위기를 반영한<br />
-                      4가지 디자인 시안을 동시에 생성합니다.<br />
-                      이를 통해 여러 시안을 일일이 비교하고 검토하던<br />
-                      작업 시간을 획기적으로 단축할 수 있습니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
-            <section class="card" id="hcn-card-9" aria-label="9페이지">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body">
-                  <div class="slide-top-copy">
-                    <p class="kicker">검색에서 바로 만날 수 있습니다</p>
-                  </div>
-                  <div class="slide-yt-wrap slide-media-slot" aria-hidden="true">
-                    <video autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-                      <source src="https://kikeun.github.io/aidesign/8%ED%8E%98%EC%9D%B4%EC%A7%80.mp4" type="video/mp4" />
-                    </video>
-                  </div>
-                  <div class="slide-bottom-copy">
-                    <span>
-                      구글 검색에서 어려운 개념을 질문하면 제미나이 3.5가<br />
-                      움직이는 다이어그램(시각 자료)으로 알기 쉽게 풀어줍니다.<br />
-                      현재 제미나이 앱과 구글 검색에서 무료로 이용할 수 있으며,<br />
-                      다음 달에는 '3.5 프로' 모델까지 확장되어 출시될 예정입니다.
-                    </span>
-                  </div>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
           </div>
         </div>
       </div>
@@ -1180,12 +1165,12 @@
       window.addEventListener('pageshow', ensureInitialChecked);
 
       var VIDEO_SLIDES = [
+        { navId: "hcn-nav-3", sel: "#hcn-card-3 .slide-media-slot video" },
         { navId: "hcn-nav-4", sel: "#hcn-card-4 .slide-media-slot video" },
         { navId: "hcn-nav-5", sel: "#hcn-card-5 .slide-media-slot video" },
         { navId: "hcn-nav-6", sel: "#hcn-card-6 .slide-media-slot video" },
         { navId: "hcn-nav-7", sel: "#hcn-card-7 .slide-media-slot video" },
-        { navId: "hcn-nav-8", sel: "#hcn-card-8 .slide-media-slot video" },
-        { navId: "hcn-nav-9", sel: "#hcn-card-9 .slide-media-slot video" }
+        { navId: "hcn-nav-8", sel: "#hcn-card-8 .slide-media-slot video" }
       ];
 
       var videoSlides = VIDEO_SLIDES.map(function (def) {
