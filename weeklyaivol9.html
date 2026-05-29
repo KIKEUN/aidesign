@@ -126,8 +126,7 @@
     #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
     #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
     #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
-    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
-    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7 {
+    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6 {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -143,7 +142,6 @@
     #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
     #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
     #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
-    #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
     #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
 
     #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
@@ -151,8 +149,7 @@
     #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
     #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
     #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
-    #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
-    #hcn-nav-7:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
 
     .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
     .nav-btn {
@@ -166,24 +163,24 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      border: 1px solid rgba(10, 90, 80, 0.16);
-      background: linear-gradient(180deg, #ffffff 0%, #f4f4f1 100%);
-      color: #0a3a36;
+      border: 1px solid rgba(20, 95, 150, 0.18);
+      background: linear-gradient(180deg, #ffffff 0%, #f1f6fb 100%);
+      color: #0a3d63;
       font-size: 18px;
       font-weight: 800;
       line-height: 1;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       box-shadow:
-        0 6px 16px -8px rgba(8, 40, 38, 0.28),
+        0 6px 16px -8px rgba(8, 38, 70, 0.28),
         0 1px 0 rgba(255, 255, 255, 0.9) inset;
       transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
     .nav-btn:hover:not(.is-disabled) {
-      background: linear-gradient(180deg, #ffffff 0%, #ecf3ec 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #eaf3fc 100%);
       transform: translateY(-1px);
       box-shadow:
-        0 10px 22px -10px rgba(8, 40, 38, 0.36),
+        0 10px 22px -10px rgba(8, 38, 70, 0.36),
         0 1px 0 rgba(255, 255, 255, 0.9) inset;
     }
     .nav-btn:active:not(.is-disabled) { transform: translateY(0); }
@@ -199,7 +196,7 @@
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: rgba(10, 58, 54, 0.18);
+      background: rgba(18, 70, 120, 0.2);
       transition: width 0.32s ease, background 0.32s ease, opacity 0.32s ease;
     }
     #hcn-nav-1:checked ~ .progress-dots .dot:nth-child(1),
@@ -207,10 +204,9 @@
     #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
     #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
     #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
-    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
-    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7) {
+    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6) {
       width: 22px;
-      background: linear-gradient(90deg, #0a4a48 0%, #1a8888 100%);
+      background: linear-gradient(90deg, #1769c0 0%, #46b1ef 100%);
     }
 
     .card {
@@ -221,7 +217,7 @@
       overflow: hidden;
       border-radius: 22px;
       box-shadow:
-        0 30px 60px -20px rgba(8, 40, 38, 0.55),
+        0 30px 60px -20px rgba(10, 40, 75, 0.5),
         0 12px 24px -8px rgba(0, 0, 0, 0.32),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
       flex-shrink: 0;
@@ -247,20 +243,20 @@
       pointer-events: none;
       z-index: 4;
       border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 30, 30, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 28, 55, 0.18);
     }
 
     .card-bg {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse at 20% 20%, #d4e8a0 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 15%, #a8e6c1 0%, transparent 45%),
-        radial-gradient(ellipse at 50% 50%, #5ccfb1 0%, transparent 55%),
-        radial-gradient(ellipse at 30% 70%, #3cc4a7 0%, transparent 50%),
-        radial-gradient(ellipse at 75% 80%, #1a8f8f 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 95%, #0d6b6e 0%, transparent 50%),
-        linear-gradient(180deg, #c8e6a0 0%, #4dc9a0 40%, #1a8888 80%, #0a5a5e 100%);
+        radial-gradient(ellipse at 22% 18%, #ffffff 0%, transparent 52%),
+        radial-gradient(ellipse at 80% 12%, #f0f9ff 0%, transparent 46%),
+        radial-gradient(ellipse at 50% 55%, #e3f4fe 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 78%, #d0ebfc 0%, transparent 52%),
+        radial-gradient(ellipse at 78% 85%, #c0e4fb 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, #aedaf8 0%, transparent 55%),
+        linear-gradient(180deg, #f7fcff 0%, #e9f6fe 40%, #d2ebfc 74%, #b3def9 100%);
       z-index: 0;
     }
     .card-bg::after {
@@ -269,9 +265,9 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255,255,255,0.35) 0%, transparent 55%),
-        radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0,30,40,0.18) 0%, transparent 50%),
-        radial-gradient(ellipse 70% 50% at 0% 100%, rgba(0,40,35,0.12) 0%, transparent 45%);
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255,255,255,0.4) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0,30,60,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 0% 100%, rgba(0,35,65,0.1) 0%, transparent 45%);
     }
 
     .card-content {
@@ -290,8 +286,27 @@
       min-height: 0;
     }
 
-    /* 1p 표지 — 그라데이션 + 유튜브 모티프 */
+    /* 1p 표지 — 밝은 하늘색 + ai54 로고 + 유튜브 로고 */
     #hcn-card-1 .card-content--cover { position: relative; z-index: 2; }
+    #hcn-card-1 .cover-yt-motif {
+      width: 84px;
+      height: 60px;
+      border-radius: 18px;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #ff3b30 0%, #e60000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 34px -12px rgba(230, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    }
+    #hcn-card-1 .cover-yt-play {
+      width: 0;
+      height: 0;
+      border-left: 22px solid #ffffff;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      margin-left: 5px;
+    }
     #hcn-card-1 .cover-badge--top {
       position: absolute;
       top: 14px;
@@ -305,29 +320,32 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       min-height: 0;
-      gap: 26px;
-      padding-top: 40px;
+      gap: 12px;
+      padding-top: 8px;
     }
-    #hcn-card-1 .cover-top { display: flex; justify-content: flex-start; }
-    #hcn-card-1 .cover-yt-motif {
-      width: 98px;
-      height: 70px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, #ff3b30 0%, #e60000 100%);
+    #hcn-card-1 .cover-top {
+      flex-shrink: 0;
+      padding-top: 56px;
+    }
+    #hcn-card-1 .cover-figure {
+      margin: 0;
+      line-height: 0;
+    }
+    #hcn-card-1 .cover-figure img {
+      display: block;
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      object-position: left top;
+    }
+    #hcn-card-1 .cover-hero-wrap {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 20px 44px -14px rgba(230, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.3);
-    }
-    #hcn-card-1 .cover-yt-play {
-      width: 0;
-      height: 0;
-      border-left: 26px solid #ffffff;
-      border-top: 16px solid transparent;
-      border-bottom: 16px solid transparent;
-      margin-left: 6px;
+      flex-direction: column;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      padding-bottom: 6px;
     }
     #hcn-card-1 .cover-dek {
       margin: 16px 0 0;
@@ -335,11 +353,11 @@
       font-weight: 600;
       line-height: 1.6;
       letter-spacing: -0.02em;
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.28);
+      color: rgba(12, 42, 74, 0.82);
+      text-shadow: none;
     }
-    #hcn-card-1 .footer-logo path { fill: #ffffff; }
-    #hcn-card-1 .footer-text { color: #ffffff; }
+    #hcn-card-1 .footer-logo path { fill: #0a1a26; }
+    #hcn-card-1 .footer-text { color: #0a1a26; }
     #hcn-card-1 .footer {
       background: transparent;
       backdrop-filter: none;
@@ -358,8 +376,8 @@
       font-weight: 800;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #f4fff6;
-      background: linear-gradient(135deg, rgba(10, 90, 80, 0.55) 0%, rgba(20, 140, 120, 0.45) 100%);
+      color: #f0f9ff;
+      background: linear-gradient(135deg, rgba(20, 95, 160, 0.55) 0%, rgba(40, 150, 210, 0.45) 100%);
       border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 999px;
       backdrop-filter: blur(8px);
@@ -371,8 +389,8 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #a7f3d0;
-      box-shadow: 0 0 8px rgba(167, 243, 208, 0.95);
+      background: #bae6fd;
+      box-shadow: 0 0 8px rgba(186, 230, 253, 0.95);
       animation: pulseDot 2.2s ease-in-out infinite;
     }
     @keyframes pulseDot {
@@ -385,16 +403,16 @@
       font-weight: 900;
       line-height: 1.18;
       letter-spacing: -0.045em;
-      color: #ffffff;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+      color: #0c2f56;
+      text-shadow: none;
     }
     .cover-headline__mark {
       font-size: calc(1em * var(--font-cover-headline-mark-em));
-      background: linear-gradient(120deg, #d8fbe6 0%, #a7f3d0 45%, #6ee7b7 100%);
+      background: linear-gradient(120deg, #0369a1 0%, #0284c7 45%, #0ea5e9 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      color: #a7f3d0;
+      color: #0284c7;
     }
 
     /* 2~6p 채널 슬라이드 */
@@ -414,7 +432,7 @@
       justify-content: center;
       padding: 40px 18px 24px;
       text-align: center;
-      color: #0a1211;
+      color: #0a1a26;
       min-height: 128px;
     }
     .slide-top-copy::before {
@@ -426,7 +444,7 @@
       width: 26px;
       height: 3px;
       border-radius: 999px;
-      background: #3a8a6c;
+      background: #2b86d4;
     }
     .slide-top-copy .ch-no {
       display: inline-flex;
@@ -437,9 +455,9 @@
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.04em;
-      color: #0a5a4e;
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid rgba(10, 90, 80, 0.2);
+      color: #0a4f86;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(20, 95, 160, 0.22);
       border-radius: 999px;
     }
     .slide-top-copy .kicker {
@@ -452,7 +470,7 @@
       line-height: 1.3;
       letter-spacing: -0.035em;
       word-break: keep-all;
-      color: #0a1211;
+      color: #0a1a26;
     }
     .slide-top-copy .kicker::after {
       content: "";
@@ -461,7 +479,7 @@
       right: 6%;
       bottom: 2px;
       height: 8px;
-      background: linear-gradient(90deg, rgba(167, 243, 208, 0) 0%, rgba(167, 243, 208, 0.65) 50%, rgba(167, 243, 208, 0) 100%);
+      background: linear-gradient(90deg, rgba(125, 211, 252, 0) 0%, rgba(125, 211, 252, 0.7) 50%, rgba(125, 211, 252, 0) 100%);
       border-radius: 4px;
       z-index: -1;
     }
@@ -479,7 +497,7 @@
         0 6px 14px -8px rgba(0, 0, 0, 0.18);
     }
 
-    /* 실제 유튜브 썸네일(클릭 시 새 탭으로 열림) */
+    /* 유튜브 썸네일 → 클릭 시 카드 안에서 재생 */
     .slide-media-slot > .yt-thumb {
       position: absolute;
       inset: 0;
@@ -591,7 +609,7 @@
       font-size: 11.5px;
       font-weight: 700;
       letter-spacing: -0.01em;
-      color: rgba(8, 33, 30, 0.6);
+      color: rgba(8, 30, 55, 0.62);
     }
     .yt-note::before {
       content: "";
@@ -656,188 +674,6 @@
     }
     .yt-cta:active { transform: translateY(0); }
 
-    /* 7p — Weekly AI 3 컨셉 */
-    #hcn-card-7 .slide-body--concepts {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      padding: 20px 18px 8px;
-      background: transparent;
-    }
-    #hcn-card-7 .wai-brand-zone {
-      flex-shrink: 0;
-      height: 148px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
-    #hcn-card-7 .wai-brand {
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-    #hcn-card-7 .wai-brand__title {
-      margin: 0;
-      font-size: clamp(34px, 8.5vw, 42px);
-      font-weight: 900;
-      letter-spacing: -0.045em;
-      line-height: 1.1;
-      color: #0f172a;
-    }
-    #hcn-card-7 .wai-brand__title .ai {
-      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 48%, #06b6d4 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    #hcn-card-7 .wai-brand__sub,
-    #hcn-card-7 .wai-brand__hint {
-      font-size: clamp(16px, 4vw, 19px);
-      font-weight: 700;
-      line-height: 1.45;
-      color: #64748b;
-      letter-spacing: -0.025em;
-    }
-    #hcn-card-7 .wai-brand__sub em {
-      font-style: normal;
-      color: #2563eb;
-      font-weight: 800;
-    }
-    #hcn-card-7 .wai-brand__sub {
-      margin: 12px 0 0;
-    }
-    #hcn-card-7 .wai-brand__hint {
-      margin: 8px 0 0;
-    }
-    #hcn-card-7 .concept-cards {
-      list-style: none;
-      margin: 6px 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-      min-height: 0;
-    }
-    #hcn-card-7 .concept-card {
-      position: relative;
-      display: flex;
-      align-items: center;
-      flex: 1;
-      overflow: hidden;
-      min-height: 128px;
-      max-height: 148px;
-      padding: 0 14px 0 16px;
-      background: #ffffff;
-      border: 2px dashed rgba(59, 130, 246, 0.45);
-      border-radius: 6px;
-      box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.1);
-    }
-    #hcn-card-7 .concept-card--copilot {
-      border-style: solid;
-      border-color: rgba(8, 145, 178, 0.55);
-      box-shadow: 0 8px 22px -8px rgba(8, 145, 178, 0.32);
-    }
-    #hcn-card-7 .concept-card__main {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
-      max-width: 54%;
-      padding: 6px 0 10px;
-      transform: translateY(2px);
-    }
-    #hcn-card-7 .concept-card__badge {
-      display: inline-flex;
-      align-self: flex-start;
-      align-items: center;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: #1d4ed8;
-      background: #eff6ff;
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      border-radius: 6px;
-    }
-    #hcn-card-7 .concept-card--copilot .concept-card__badge {
-      color: #0e7490;
-      background: #ecfeff;
-      border-color: rgba(8, 145, 178, 0.3);
-    }
-    #hcn-card-7 .concept-card__copy {
-      padding: 0;
-      text-align: left;
-    }
-    #hcn-card-7 .concept-card__title {
-      margin: 0;
-      font-size: clamp(26px, 6.2vw, 32px);
-      font-weight: 900;
-      line-height: 1.12;
-      letter-spacing: -0.045em;
-      color: #0f172a;
-      word-break: keep-all;
-    }
-    #hcn-card-7 .concept-card__title em {
-      font-style: normal;
-      color: #2563eb;
-    }
-    #hcn-card-7 .concept-card--literacy .concept-card__title em { color: #7c3aed; }
-    #hcn-card-7 .concept-card--copilot .concept-card__title em { color: #0891b2; }
-    #hcn-card-7 .concept-card__desc {
-      margin: 7px 0 0;
-      font-size: 13.5px;
-      font-weight: 600;
-      line-height: 1.4;
-      color: #64748b;
-    }
-    #hcn-card-7 .concept-card__art {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 62%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    #hcn-card-7 .concept-card__art::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background: linear-gradient(
-        90deg,
-        #ffffff 0%,
-        rgba(255, 255, 255, 0.95) 18%,
-        rgba(255, 255, 255, 0.55) 38%,
-        rgba(255, 255, 255, 0) 62%
-      );
-    }
-    #hcn-card-7 .concept-card__art img {
-      position: absolute;
-      top: 50%;
-      right: -6%;
-      transform: translateY(-50%);
-      width: 108%;
-      height: 115%;
-      max-width: none;
-      object-fit: cover;
-      object-position: center;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
-      mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 32%, #000 58%);
-    }
-    #hcn-card-7 .concept-card--copilot .concept-card__art img {
-      width: 100%;
-      height: 102%;
-      right: -14%;
-      transform: translateY(-50%) scale(0.9);
-      object-position: right center;
-    }
-
     .footer {
       position: relative;
       display: flex;
@@ -846,7 +682,7 @@
       gap: 10px;
       margin-top: auto;
       padding: 14px 18px;
-      background: linear-gradient(180deg, rgba(12, 55, 52, 0.18) 0%, rgba(12, 55, 52, 0.32) 100%);
+      background: linear-gradient(180deg, rgba(10, 45, 80, 0.16) 0%, rgba(10, 45, 80, 0.3) 100%);
       border-top: none;
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
@@ -866,11 +702,11 @@
       flex-shrink: 0;
       filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
     }
-    .footer-logo path { fill: #0a1211; }
+    .footer-logo path { fill: #0a1a26; }
     .footer-text {
       font-size: 13px;
       font-weight: 800;
-      color: #0a1211;
+      color: #0a1a26;
       letter-spacing: 0.18em;
       text-transform: uppercase;
     }
@@ -884,7 +720,6 @@
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
-    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
 
     <div class="carousel-row">
       <div class="nav-stack nav-stack--prev">
@@ -894,7 +729,6 @@
         <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
-        <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
       </div>
 
       <div class="carousel__viewport">
@@ -907,11 +741,12 @@
                 <span class="cover-badge cover-badge--top">VOL.9 ｜Copilot 소식</span>
                 <div class="cover-inner">
                   <div class="cover-top">
-                    <div class="cover-yt-motif" aria-hidden="true">
-                      <span class="cover-yt-play"></span>
-                    </div>
+                    <figure class="cover-figure" aria-hidden="true">
+                      <img src="https://kikeun.github.io/KIKEUN/ai54.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                    </figure>
                   </div>
                   <div class="cover-hero-wrap">
+                    <div class="cover-yt-motif" aria-hidden="true"><span class="cover-yt-play"></span></div>
                     <div class="cover-hero">
                       <h1 class="cover-headline">
                         <strong>업무가 빨라지는</strong><br />
@@ -1106,66 +941,6 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-7" aria-label="7페이지 Weekly AI 3 컨셉">
-              <div class="card-bg"></div>
-              <div class="card-content card-content--inner">
-                <div class="slide-body slide-body--concepts">
-                  <div class="wai-brand-zone">
-                    <header class="wai-brand">
-                      <h2 class="wai-brand__title">Weekly <span class="ai">AI</span></h2>
-                      <p class="wai-brand__sub">이제 <em>3가지 컨셉</em>으로 매주 전합니다</p>
-                      <p class="wai-brand__hint">표지의 좌측 상단을 확인하세요</p>
-                    </header>
-                  </div>
-                  <ul class="concept-cards">
-                    <li class="concept-card concept-card--trend">
-                      <div class="concept-card__main">
-                        <span class="concept-card__badge">Concept 1</span>
-                        <div class="concept-card__copy">
-                          <p class="concept-card__title">최신 <em>트렌드</em></p>
-                          <p class="concept-card__desc">AI 업계 소식·신제품을 빠르게</p>
-                        </div>
-                      </div>
-                      <div class="concept-card__art" aria-hidden="true">
-                        <img src="https://kikeun.github.io/aidesign/ai37.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
-                      </div>
-                    </li>
-                    <li class="concept-card concept-card--literacy">
-                      <div class="concept-card__main">
-                        <span class="concept-card__badge">Concept 2</span>
-                        <div class="concept-card__copy">
-                          <p class="concept-card__title">AI <em>리터러시</em></p>
-                          <p class="concept-card__desc">어려운 개념을 쉽게 풀어 설명</p>
-                        </div>
-                      </div>
-                      <div class="concept-card__art" aria-hidden="true">
-                        <img src="https://kikeun.github.io/aidesign/ai38.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
-                      </div>
-                    </li>
-                    <li class="concept-card concept-card--copilot">
-                      <div class="concept-card__main">
-                        <span class="concept-card__badge">Concept 3</span>
-                        <div class="concept-card__copy">
-                          <p class="concept-card__title"><em>Copilot</em> 소식</p>
-                          <p class="concept-card__desc">업무에 바로 쓰는 활용 가이드</p>
-                        </div>
-                      </div>
-                      <div class="concept-card__art" aria-hidden="true">
-                        <img src="https://kikeun.github.io/aidesign/ai2.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div class="footer">
-                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 45L28 35V80L12 90V45Z"/>
-                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
-                  </svg>
-                  <span class="footer-text">AI디자인랩</span>
-                </div>
-              </div>
-            </section>
-
           </div>
         </div>
       </div>
@@ -1176,13 +951,11 @@
         <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
-        <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
         <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
       </div>
     </div>
 
     <div class="progress-dots" aria-hidden="true">
-      <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
