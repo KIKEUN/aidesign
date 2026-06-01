@@ -126,7 +126,8 @@
     #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
     #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
     #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
-    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6 {
+    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
+    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7 {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -142,6 +143,7 @@
     #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
     #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
     #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
     #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
 
     #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
@@ -149,7 +151,8 @@
     #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
     #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
     #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
-    #hcn-nav-6:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
 
     .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
     .nav-btn {
@@ -204,7 +207,8 @@
     #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
     #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
     #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
-    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6) {
+    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
+    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7) {
       width: 22px;
       background: linear-gradient(90deg, #1769c0 0%, #46b1ef 100%);
     }
@@ -289,23 +293,24 @@
     /* 1p 표지 — 밝은 하늘색 + ai54 로고 + 유튜브 로고 */
     #hcn-card-1 .card-content--cover { position: relative; z-index: 2; }
     #hcn-card-1 .cover-yt-motif {
-      width: 84px;
-      height: 60px;
-      border-radius: 18px;
-      margin-bottom: 18px;
+      width: 140px;
+      height: 99px;
+      border-radius: 28px;
+      align-self: center;
+      margin: 0 auto clamp(40px, 9vh, 88px);
       background: linear-gradient(180deg, #ff3b30 0%, #e60000 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 16px 34px -12px rgba(230, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+      box-shadow: 0 18px 40px -12px rgba(230, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
     }
     #hcn-card-1 .cover-yt-play {
       width: 0;
       height: 0;
-      border-left: 22px solid #ffffff;
-      border-top: 14px solid transparent;
-      border-bottom: 14px solid transparent;
-      margin-left: 5px;
+      border-left: 36px solid #ffffff;
+      border-top: 23px solid transparent;
+      border-bottom: 23px solid transparent;
+      margin-left: 7px;
     }
     #hcn-card-1 .cover-badge--top {
       position: absolute;
@@ -605,7 +610,7 @@
       flex-shrink: 0;
       margin: 0;
       padding: 10px 16px 0;
-      text-align: center;
+      text-align: right;
       font-size: 11.5px;
       font-weight: 700;
       letter-spacing: -0.01em;
@@ -634,9 +639,9 @@
       padding: 18px 22px;
       text-align: center;
       color: rgba(0, 0, 0, 0.82);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
-      line-height: 1.55;
+      line-height: 1.5;
       letter-spacing: -0.018em;
       word-break: keep-all;
       overflow: hidden;
@@ -720,6 +725,7 @@
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
     <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
 
     <div class="carousel-row">
       <div class="nav-stack nav-stack--prev">
@@ -729,6 +735,7 @@
         <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
         <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
       </div>
 
       <div class="carousel__viewport">
@@ -749,10 +756,10 @@
                     <div class="cover-yt-motif" aria-hidden="true"><span class="cover-yt-play"></span></div>
                     <div class="cover-hero">
                       <h1 class="cover-headline">
-                        <strong>업무가 빨라지는</strong><br />
-                        <strong class="cover-headline__mark">Copilot 유튜브 5선</strong>
+                        <strong>어렵지 않게 시작하는</strong><br />
+                        <strong class="cover-headline__mark">Copilot 유튜브 6선</strong>
                       </h1>
-                      <p class="cover-dek">코파일럿을 제대로 배우고 싶다면 여기부터.<br />업무에 바로 쓰는 활용법을 알려 주는<br />엄선된 유튜브 채널 5곳을 소개합니다.</p>
+                      <p class="cover-dek">코파일럿, 어디서부터 시작할지 고민될 때.<br />코파일럿에 대한 유용한 정보와 활용법을 알려 주는<br />추천 유튜브 채널 6곳을 모아봤습니다.</p>
                     </div>
                   </div>
                 </div>
@@ -784,9 +791,10 @@
                   <p class="yt-note">채널의 최근 영상입니다</p>
                   <div class="slide-bottom-copy">
                     <span class="bottom-desc">
-                      마이크로소프트 공식 한국 채널입니다.<br />
-                      코파일럿 실무 가이드와 신규 기능 소식을<br />
-                      한국어로 가장 정확하게 전해 줍니다.
+                      마이크로소프트의 공식 한국 채널입니다.<br />
+                      M365 코파일럿부터 코파일럿 스튜디오까지<br />
+                      신규 기능과 업데이트 소식을 가장 빠르고<br />
+                      정확하게 한국어로 전해 주는 곳입니다.
                     </span>
                     <a class="yt-cta" href="https://www.youtube.com/channel/UCqqoiebjYnMqfhx-4f1awKg" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
                   </div>
@@ -820,8 +828,9 @@
                   <div class="slide-bottom-copy">
                     <span class="bottom-desc">
                       팀즈(Teams) 공식 채널입니다.<br />
-                      팀즈 안에서 코파일럿으로 회의록을 요약하고<br />
-                      협업을 자동화하는 방법을 알려 줍니다.
+                      화상회의·채팅·파일 공유 등 협업 기능 전반과<br />
+                      코파일럿을 활용한 회의 요약, 일정·작업 관리까지<br />
+                      업무를 더 똑똑하게 만드는 활용법을 소개합니다.
                     </span>
                     <a class="yt-cta" href="https://www.youtube.com/channel/UCTmtQNkwjkCXvLOSBWaFSbA" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
                   </div>
@@ -836,12 +845,48 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-4" aria-label="4페이지 씨앤토트">
+            <section class="card" id="hcn-card-4" aria-label="4페이지 Microsoft Copilot">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <span class="ch-no">CHANNEL 03</span>
+                    <p class="kicker">Microsoft Copilot</p>
+                  </div>
+                  <div class="slide-yt-wrap slide-media-slot">
+                    <button class="yt-thumb" type="button" data-ytid="S7xTBa93TX8" aria-label="Microsoft Copilot 영상 재생">
+                      <img src="https://i.ytimg.com/vi/S7xTBa93TX8/hqdefault.jpg" alt="Microsoft Copilot 공식 채널 영상" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                      <span class="yt-thumb__chip"><span class="yt-mini"></span>YouTube</span>
+                      <span class="yt-thumb__play" aria-hidden="true"></span>
+                    </button>
+                  </div>
+                  <p class="yt-note">채널의 최근 영상입니다</p>
+                  <div class="slide-bottom-copy">
+                    <span class="bottom-desc">
+                      마이크로소프트 코파일럿 공식 채널입니다.<br />
+                      새로 추가되는 기능과 업데이트 소식을 가장 먼저,<br />
+                      공식 데모와 함께 정확하게 전해 주어<br />
+                      최신 코파일럿 트렌드를 한눈에 따라갈 수 있습니다.
+                    </span>
+                    <a class="yt-cta" href="https://www.youtube.com/@Microsoft.Copilot" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="hcn-card-5" aria-label="5페이지 씨앤토트">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="ch-no">CHANNEL 04</span>
                     <p class="kicker">씨앤토트</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot">
@@ -854,9 +899,10 @@
                   <p class="yt-note">채널의 최근 영상입니다</p>
                   <div class="slide-bottom-copy">
                     <span class="bottom-desc">
-                      한국어 코파일럿 실무 가이드 채널입니다.<br />
-                      실제 업무 사례 중심으로 따라 하기 쉬워<br />
-                      코파일럿 입문자에게 특히 추천합니다.
+                      한국어로 배우는 코파일럿 실무 가이드 채널입니다.<br />
+                      엑셀·워드·파워포인트 등 실제 업무 사례를<br />
+                      차근차근 따라 하기 쉽게 설명해 주어<br />
+                      코파일럿이 처음인 입문자에게 특히 추천합니다.
                     </span>
                     <a class="yt-cta" href="https://www.youtube.com/channel/UCVxxp06rLKGYgsyWBQI46mQ" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
                   </div>
@@ -871,29 +917,30 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-5" aria-label="5페이지 Copilot Studio for Beginners">
+            <section class="card" id="hcn-card-6" aria-label="6페이지 Anders Jensen">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
-                    <span class="ch-no">CHANNEL 04</span>
-                    <p class="kicker">Copilot Studio 입문 가이드</p>
+                    <span class="ch-no">CHANNEL 05</span>
+                    <p class="kicker">Anders Jensen</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot">
-                    <button class="yt-thumb" type="button" data-ytid="oVHvR0Nkgs0" aria-label="Copilot Studio for Beginners 2026 영상 재생">
-                      <img src="https://i.ytimg.com/vi/oVHvR0Nkgs0/hqdefault.jpg" alt="Microsoft Copilot Studio for Beginners 2026 – Complete Guide" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                    <button class="yt-thumb" type="button" data-ytid="oVHvR0Nkgs0" aria-label="Anders Jensen 영상 재생">
+                      <img src="https://i.ytimg.com/vi/oVHvR0Nkgs0/hqdefault.jpg" alt="Anders Jensen 코파일럿 스튜디오 영상" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                       <span class="yt-thumb__chip"><span class="yt-mini"></span>YouTube</span>
                       <span class="yt-thumb__play" aria-hidden="true"></span>
                     </button>
                   </div>
-                  <p class="yt-note">코파일럿 입문 가이드 영상입니다</p>
+                  <p class="yt-note">채널의 최근 영상입니다</p>
                   <div class="slide-bottom-copy">
                     <span class="bottom-desc">
-                      코파일럿 스튜디오 입문 완벽 가이드 영상입니다.<br />
-                      최신 소식과 함께 나만의 AI 에이전트를<br />
-                      만드는 방법을 단계별로 알려 줍니다.
+                      업무 자동화와 AI를 다루는 글로벌 채널입니다.<br />
+                      코파일럿 스튜디오·파워 오토메이트를 활용해<br />
+                      나만의 AI 에이전트와 자동화를 만드는 법을<br />
+                      초보자도 따라 하기 쉽게 차근차근 알려 줍니다.
                     </span>
-                    <a class="yt-cta" href="https://www.youtube.com/watch?v=oVHvR0Nkgs0" target="_blank" rel="noopener noreferrer">영상 보러가기</a>
+                    <a class="yt-cta" href="https://www.youtube.com/@andersjensenorg" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
                   </div>
                 </div>
                 <div class="footer">
@@ -906,12 +953,12 @@
               </div>
             </section>
 
-            <section class="card" id="hcn-card-6" aria-label="6페이지 Scott Brant">
+            <section class="card" id="hcn-card-7" aria-label="7페이지 Scott Brant">
               <div class="card-bg"></div>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
-                    <span class="ch-no">CHANNEL 05</span>
+                    <span class="ch-no">CHANNEL 06</span>
                     <p class="kicker">Scott Brant</p>
                   </div>
                   <div class="slide-yt-wrap slide-media-slot">
@@ -924,9 +971,10 @@
                   <p class="yt-note">채널의 최근 영상입니다</p>
                   <div class="slide-bottom-copy">
                     <span class="bottom-desc">
-                      코파일럿 최신 소식 전문 채널입니다.<br />
-                      새 기능과 글로벌 업데이트를 빠르게 소개해<br />
-                      최신 트렌드를 놓치고 싶지 않을 때 좋습니다.
+                      코파일럿 최신 소식 전문 글로벌 채널입니다.<br />
+                      새로 추가된 기능과 글로벌 업데이트를 누구보다<br />
+                      빠르게 정리해 주고, 실제 사용 후기와 꿀팁까지<br />
+                      더해 최신 트렌드를 놓치고 싶지 않을 때 좋습니다.
                     </span>
                     <a class="yt-cta" href="https://www.youtube.com/channel/UC-Iu-wRWwWX8NjVRxDnW8JA" target="_blank" rel="noopener noreferrer">채널 바로가기</a>
                   </div>
@@ -951,11 +999,13 @@
         <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
         <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
         <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
       </div>
     </div>
 
     <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
