@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Weekly AI (VOL.10)</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --font-sans: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-cover-headline-min: 1.85rem;
+      --font-cover-headline-vw: 4.8vw;
+      --font-cover-headline-max: 2.45rem;
+      --font-cover-headline-mark-em: 1.2;
+    }
+    html { overflow-x: hidden; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #ffffff;
+      font-family: var(--font-sans);
+    }
+
+    .carousel-shell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 48px 16px 64px;
+      gap: 14px;
+    }
+    .carousel-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+    .carousel__viewport {
+      flex: 0 1 540px;
+      min-width: 0;
+      width: 540px;
+      max-width: 540px;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      touch-action: pan-y;
+      background: transparent;
+      transform-origin: top center;
+      -webkit-transform-origin: top center;
+    }
+    .carousel__inner {
+      width: 540px;
+      height: 720px;
+      overflow: hidden;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    @media (max-width: 600px) {
+      .carousel__viewport { height: 612px; transform: scale(0.85); -webkit-transform: scale(0.85); }
+      @supports (zoom: 0.85) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.85; }
+      }
+    }
+    @media (max-width: 520px) {
+      .carousel__viewport { height: 540px; transform: scale(0.75); -webkit-transform: scale(0.75); }
+      @supports (zoom: 0.75) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.75; }
+      }
+    }
+    @media (max-width: 460px) {
+      .carousel__viewport { height: 468px; transform: scale(0.65); -webkit-transform: scale(0.65); }
+      @supports (zoom: 0.65) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.65; }
+      }
+    }
+    @media (max-width: 400px) {
+      .carousel__viewport { height: 396px; transform: scale(0.55); -webkit-transform: scale(0.55); }
+      @supports (zoom: 0.55) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.55; }
+      }
+    }
+
+    #deck {
+      position: relative !important;
+      width: 540px !important;
+      height: 720px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+    }
+    #deck > .card {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      margin: 0 !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.32s ease, visibility 0s linear 0.32s;
+      pointer-events: none;
+    }
+
+    .wai-nav {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    #hcn-nav-1:checked ~ .carousel-row #hcn-card-1,
+    #hcn-nav-2:checked ~ .carousel-row #hcn-card-2,
+    #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
+    #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
+    #hcn-nav-5:checked ~ .carousel-row #hcn-card-5 {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 2;
+      transition: opacity 0.32s ease, visibility 0s linear 0s;
+    }
+
+    .nav-stack { position: relative; width: 44px; height: 44px; flex-shrink: 0; align-self: center; }
+    .nav-stack > .nav-btn { position: absolute; top: 0; left: 0; display: none; }
+
+    #hcn-nav-2:checked ~ .carousel-row .nav-prev-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-prev-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
+    #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
+
+    #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
+    #hcn-nav-2:checked ~ .carousel-row .nav-next-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+
+    .nav-btn.is-disabled { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
+    .nav-btn {
+      flex-shrink: 0;
+      align-self: center;
+      position: relative;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(20, 95, 150, 0.18);
+      background: linear-gradient(180deg, #ffffff 0%, #f1f6fb 100%);
+      color: #0a3d63;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow:
+        0 6px 16px -8px rgba(8, 38, 70, 0.28),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+    .nav-btn:hover:not(.is-disabled) {
+      background: linear-gradient(180deg, #ffffff 0%, #eaf3fc 100%);
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 22px -10px rgba(8, 38, 70, 0.36),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    }
+    .nav-btn:active:not(.is-disabled) { transform: translateY(0); }
+
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .progress-dots .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(18, 70, 120, 0.2);
+      transition: width 0.32s ease, background 0.32s ease, opacity 0.32s ease;
+    }
+    #hcn-nav-1:checked ~ .progress-dots .dot:nth-child(1),
+    #hcn-nav-2:checked ~ .progress-dots .dot:nth-child(2),
+    #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
+    #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
+    #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5) {
+      width: 22px;
+      background: linear-gradient(90deg, #1769c0 0%, #46b1ef 100%);
+    }
+
+    .card {
+      width: 540px;
+      height: 720px;
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      box-shadow:
+        0 30px 60px -20px rgba(10, 40, 75, 0.5),
+        0 12px 24px -8px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      isolation: isolate;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      border-radius: inherit;
+      background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 0 60px rgba(0, 28, 55, 0.18);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 22% 18%, #ffffff 0%, transparent 52%),
+        radial-gradient(ellipse at 80% 12%, #f0f9ff 0%, transparent 46%),
+        radial-gradient(ellipse at 50% 55%, #e3f4fe 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 78%, #d0ebfc 0%, transparent 52%),
+        radial-gradient(ellipse at 78% 85%, #c0e4fb 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, #aedaf8 0%, transparent 55%),
+        linear-gradient(180deg, #f7fcff 0%, #e9f6fe 40%, #d2ebfc 74%, #b3def9 100%);
+      z-index: 0;
+    }
+    .card-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255,255,255,0.4) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0,30,60,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 0% 100%, rgba(0,35,65,0.1) 0%, transparent 45%);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 32px 28px;
+    }
+    .card-content--inner { padding: 0; }
+    .card--cover .card-content--cover {
+      padding: 24px 24px 22px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    /* 1p 표지 — 밝은 하늘색 + ai54 로고 + 유튜브 로고 */
+    #hcn-card-1 .card-content--cover { position: relative; z-index: 2; }
+    #hcn-card-1 .cover-yt-motif {
+      width: 168px;
+      height: 168px;
+      border-radius: 38px;
+      align-self: center;
+      margin: 0 auto;
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 18px 40px -12px rgba(10, 60, 110, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    }
+    #hcn-card-1 .cover-yt-motif img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    #hcn-card-1 .cover-badge--top {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 3;
+      margin: 0;
+      letter-spacing: 0.1em;
+      text-transform: none;
+    }
+    #hcn-card-1 .cover-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
+      gap: 12px;
+      padding-top: 8px;
+    }
+    #hcn-card-1 .cover-top {
+      flex-shrink: 0;
+      padding-top: 56px;
+    }
+    #hcn-card-1 .cover-figure {
+      margin: 0;
+      line-height: 0;
+    }
+    #hcn-card-1 .cover-figure img {
+      display: block;
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      object-position: left top;
+    }
+    #hcn-card-1 .cover-hero-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      padding-bottom: 6px;
+    }
+    #hcn-card-1 .cover-dek {
+      margin: 16px 0 0;
+      font-size: clamp(14px, 3.6vw, 16.5px);
+      font-weight: 600;
+      line-height: 1.6;
+      letter-spacing: -0.02em;
+      color: rgba(12, 42, 74, 0.82);
+      text-shadow: none;
+    }
+    #hcn-card-1 .footer-logo path { fill: #0a1a26; }
+    #hcn-card-1 .footer-text { color: #0a1a26; }
+    #hcn-card-1 .footer {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    #hcn-card-1 .footer::before { display: none; }
+
+    .cover-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px 9px 14px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #f0f9ff;
+      background: linear-gradient(135deg, rgba(20, 95, 160, 0.55) 0%, rgba(40, 150, 210, 0.45) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .cover-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #bae6fd;
+      box-shadow: 0 0 8px rgba(186, 230, 253, 0.95);
+      animation: pulseDot 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
+    }
+    .cover-headline {
+      margin: 0;
+      font-size: clamp(var(--font-cover-headline-min), var(--font-cover-headline-vw), var(--font-cover-headline-max));
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.045em;
+      color: #0c2f56;
+      text-shadow: none;
+    }
+    .cover-headline__mark {
+      font-size: calc(1em * var(--font-cover-headline-mark-em));
+      white-space: nowrap;
+      background: linear-gradient(120deg, #0369a1 0%, #0284c7 45%, #0ea5e9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #0284c7;
+    }
+
+    /* 2~5p 기능 슬라이드 */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .feat-head {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 14px 12px;
+      text-align: center;
+      color: #0a1a26;
+    }
+    .feat-head::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 3px;
+      border-radius: 999px;
+      background: #2b86d4;
+    }
+    .feat-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      margin-right: 8px;
+      vertical-align: 4px;
+      font-size: 12.5px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 16px -10px rgba(3, 105, 161, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .feat-title {
+      margin: 0;
+      position: relative;
+      display: inline-block;
+      padding: 0 4px;
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1.3;
+      letter-spacing: -0.04em;
+      word-break: keep-all;
+      color: #0a1a26;
+    }
+    .feat-title::after {
+      content: "";
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      bottom: 1px;
+      height: 9px;
+      background: linear-gradient(90deg, rgba(125, 211, 252, 0) 0%, rgba(125, 211, 252, 0.72) 50%, rgba(125, 211, 252, 0) 100%);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    /* 영상/이미지 교체 영역 */
+    .slide-media-slot {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      aspect-ratio: 16 / 9;
+      background: #0f0f0f;
+      overflow: hidden;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        0 6px 14px -8px rgba(0, 0, 0, 0.18);
+    }
+    .media-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background:
+        radial-gradient(ellipse at 50% 35%, rgba(70, 177, 239, 0.18) 0%, transparent 60%),
+        linear-gradient(180deg, #16222e 0%, #0c161f 100%);
+      color: rgba(255, 255, 255, 0.92);
+    }
+    .media-placeholder__icon {
+      width: 64px;
+      height: 46px;
+      border-radius: 13px;
+      background: linear-gradient(180deg, #ff3b30 0%, #e60000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.6);
+    }
+    .media-placeholder__icon::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 19px solid #ffffff;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      margin-left: 4px;
+    }
+    .media-placeholder__text {
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.78);
+    }
+    /* 이미지/영상으로 채울 때: <img|video class="media-fill"> 사용 */
+    .slide-media-slot > .media-fill {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      background: #0f0f0f;
+      z-index: 1;
+    }
+    video.media-fill { object-fit: contain; }
+    /* 영상으로 채울 때: <button class="yt-thumb" data-ytid="ID"> 사용 */
+    .slide-media-slot > .yt-thumb {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #0f0f0f;
+      font: inherit;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .yt-thumb > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      background: #0f0f0f;
+    }
+    .yt-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background 0.18s ease;
+    }
+    .yt-thumb:hover::after { background: rgba(0, 0, 0, 0.16); }
+    .yt-thumb__chip {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 7px;
+      background: rgba(0, 0, 0, 0.55);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
+    .yt-mini {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 19px;
+      height: 13px;
+      border-radius: 3px;
+      background: #ff0000;
+    }
+    .yt-mini::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 6px solid #ffffff;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      margin-left: 1px;
+    }
+    .yt-thumb__play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      width: 76px;
+      height: 54px;
+      border-radius: 15px;
+      background: linear-gradient(180deg, #ff3b30 0%, #e60000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.6);
+      transition: transform 0.18s ease;
+    }
+    .yt-thumb__play::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 22px solid #ffffff;
+      border-top: 13px solid transparent;
+      border-bottom: 13px solid transparent;
+      margin-left: 5px;
+    }
+    .yt-thumb:hover .yt-thumb__play { transform: translate(-50%, -50%) scale(1.07); }
+    .slide-media-slot > .yt-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 2;
+    }
+
+    /* 기능 설명 리스트 */
+    .feat-list {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 24px 16px;
+    }
+    .feat-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(240, 249, 255, 0.7) 100%);
+      border: 1px solid rgba(20, 95, 160, 0.16);
+      box-shadow: 0 10px 20px -16px rgba(8, 38, 70, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+    .feat-item__check {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 12px -8px rgba(3, 105, 161, 0.8);
+    }
+    .feat-item__check::after {
+      content: "";
+      width: 6px;
+      height: 10px;
+      margin-top: -2px;
+      border: solid #ffffff;
+      border-width: 0 2.4px 2.4px 0;
+      transform: rotate(45deg);
+    }
+    .feat-item__body { min-width: 0; }
+    .feat-item__label {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.025em;
+      color: #0a2540;
+      word-break: keep-all;
+    }
+    .feat-item__desc {
+      margin: 3px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+      color: rgba(8, 30, 55, 0.7);
+      word-break: keep-all;
+    }
+    .feat-item__desc .en { font-weight: 800; color: #0369a1; }
+
+    /* 간결형 본문 (질문/한 문장 메시지) */
+    .feat-lead {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 30px 24px;
+      text-align: center;
+    }
+    .feat-lead__q {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.4;
+      letter-spacing: -0.035em;
+      color: #0a2540;
+      word-break: keep-all;
+    }
+    .feat-lead__text {
+      margin: 0;
+      font-size: 17.5px;
+      font-weight: 600;
+      line-height: 1.7;
+      letter-spacing: -0.02em;
+      color: rgba(8, 30, 55, 0.82);
+      word-break: keep-all;
+    }
+    .feat-lead__text .hl {
+      font-weight: 800;
+      color: #0369a1;
+    }
+    .feat-lead__chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .feat-lead__chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #0a4f86;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(234, 246, 255, 0.85) 100%);
+      border: 1px solid rgba(20, 95, 160, 0.2);
+      border-radius: 999px;
+      box-shadow: 0 6px 14px -10px rgba(8, 38, 70, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .footer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: auto;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, rgba(10, 45, 80, 0.16) 0%, rgba(10, 45, 80, 0.3) 100%);
+      border-top: none;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 100%);
+    }
+    .footer-logo {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
+    }
+    .footer-logo path { fill: #0a1a26; }
+    .footer-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0a1a26;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel-shell" id="html-cardnews-vol10">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-1" autocomplete="off" checked>
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-2" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-3" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
+
+    <div class="carousel-row">
+      <div class="nav-stack nav-stack--prev">
+        <span class="nav-btn nav-btn--prev nav-prev-disabled is-disabled" aria-hidden="true">←</span>
+        <label class="nav-btn nav-btn--prev nav-prev-from-2" for="hcn-nav-1" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-3" for="hcn-nav-2" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
+      </div>
+
+      <div class="carousel__viewport">
+        <div class="carousel__inner">
+          <div id="deck">
+
+            <section class="card card--cover" id="hcn-card-1" aria-label="1페이지 표지">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--cover">
+                <span class="cover-badge cover-badge--top">VOL.10 ｜Copilot 소식</span>
+                <div class="cover-inner">
+                  <div class="cover-top">
+                    <figure class="cover-figure" aria-hidden="true">
+                      <img src="https://kikeun.github.io/KIKEUN/ai54.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" />
+                    </figure>
+                  </div>
+                  <div class="cover-yt-motif" aria-hidden="true"><img src="https://kikeun.github.io/aidesign/ai2.png" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer-when-downgrade" /></div>
+                  <div class="cover-hero-wrap">
+                    <div class="cover-hero">
+                      <h1 class="cover-headline">
+                        <strong class="cover-headline__mark">Copilot,</strong><br />
+                        <strong>어떤 기능까지</strong><br />
+                        <strong>써보셨나요?</strong>
+                      </h1>
+                      <p class="cover-dek">Copilot의 다양한 기능들을 알아두면<br />일이 한결 가벼워집니다.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ================= 기능 01 : M365 안에 모든 앱이 들어왔다 ================= -->
+            <section class="card" id="hcn-card-2" aria-label="2페이지 M365 앱 통합">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="feat-head">
+                    <h2 class="feat-title"><span class="feat-no">01</span>M365 안에 모든 앱이 들어왔다</h2>
+                  </div>
+                  <div class="slide-media-slot">
+                    <video class="media-fill" controls playsinline preload="metadata">
+                      <source src="https://kikeun.github.io/aidesign/코파일럿1.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="feat-lead">
+                    <p class="feat-lead__text"><span class="hl">OneDrive·PowerPoint</span>부터 <span class="hl">Teams</span>까지,<br />흩어져 있던 앱이 이제 <span class="hl">M365 한 곳에</span> 모였습니다.<br />다양한 앱을 한자리에서 실행해 보세요.</p>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ================= 기능 02 : 이제 GPT-5.5를 사용할 수 있습니다 ================= -->
+            <section class="card" id="hcn-card-3" aria-label="3페이지 GPT-5.5 탑재">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="feat-head">
+                    <h2 class="feat-title"><span class="feat-no">02</span>이제 GPT-5.5를 사용할 수 있습니다</h2>
+                  </div>
+                  <div class="slide-media-slot">
+                    <video class="media-fill" controls playsinline preload="metadata">
+                      <source src="https://kikeun.github.io/aidesign/코파일럿2.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="feat-lead">
+                    <p class="feat-lead__text">이제 Copilot 채팅에서 최신 <span class="hl">ChatGPT-5.5</span>를<br />바로 사용할 수 있습니다.<br />더 빠르고 똑똑해진 답변을 지금 경험해 보세요.</p>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ================= 기능 03 : Copilot 만들기, 써보셨나요? ================= -->
+            <section class="card" id="hcn-card-4" aria-label="4페이지 Copilot 만들기">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="feat-head">
+                    <h2 class="feat-title"><span class="feat-no">03</span>Copilot 만들기, 써보셨나요?</h2>
+                  </div>
+                  <div class="slide-media-slot">
+                    <video class="media-fill" controls playsinline preload="metadata">
+                      <source src="https://kikeun.github.io/aidesign/코파일럿3.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="feat-lead">
+                    <p class="feat-lead__text"><span class="hl">만들기</span> 기능을 활용해 작업을 지시해 보세요.<br />이미지부터 엑셀·워드 문서까지<br /><span class="hl">다양한 템플릿</span>도 제공하고 있어요.</p>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ================= 기능 04 : + 기능, 어디까지 써보셨나요? ================= -->
+            <section class="card" id="hcn-card-5" aria-label="5페이지 플러스 기능 활용">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="feat-head">
+                    <h2 class="feat-title"><span class="feat-no">04</span>+ 버튼 안에도 다양한 기능이 있습니다</h2>
+                  </div>
+                  <div class="slide-media-slot">
+                    <video class="media-fill" controls playsinline preload="metadata">
+                      <source src="https://kikeun.github.io/aidesign/코파일럿4.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <div class="feat-lead">
+                    <p class="feat-lead__text"><span class="hl">+ 버튼</span>으로 OneDrive에 서로 공유한<br /><span class="hl">보안 문서</span>를 바로 첨부하고 Copilot에게 지시해 보세요.<br /><span class="hl">디자이너(Designer)</span> 기능도 함께 활용해 보세요.<br />또한 <span class="hl">드래그 앤 드롭</span>으로도 손쉽게 파일을 첨부할 수 있어요.</p>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-stack nav-stack--next">
+        <label class="nav-btn nav-btn--next nav-next-from-1" for="hcn-nav-2" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-2" for="hcn-nav-3" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
+        <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
+      </div>
+    </div>
+
+    <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function ensureInitialChecked() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!checked) {
+          var first = document.getElementById('hcn-nav-1');
+          if (first) first.checked = true;
+        }
+      }
+      ensureInitialChecked();
+      window.addEventListener('pageshow', ensureInitialChecked);
+
+      // 현재 보이는 슬라이드의 영상은 자동 재생, 나머지는 정지 (controls는 그대로 노출)
+      function activeCardVideo() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!checked) return null;
+        var idx = checked.id.replace('hcn-nav-', '');
+        var card = document.getElementById('hcn-card-' + idx);
+        return card ? card.querySelector('video') : null;
+      }
+      function syncVideos() {
+        var active = activeCardVideo();
+        document.querySelectorAll('#deck video').forEach(function (v) {
+          if (v !== active) { try { v.pause(); v.currentTime = 0; } catch (e) {} }
+        });
+        if (!active) return;
+        var p = active.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            // 사운드 자동재생이 차단되면 음소거 후 재생 시도
+            active.muted = true;
+            active.play().catch(function () {});
+          });
+        }
+      }
+      document.querySelectorAll('input[name="hcn-nav"]').forEach(function (n) {
+        n.addEventListener('change', syncVideos);
+      });
+      syncVideos();
+
+      // 썸네일 클릭 → 카드 안에서 바로 재생 (영상 슬롯을 yt-thumb로 채운 경우)
+      document.querySelectorAll('.yt-thumb').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-ytid');
+          if (!id) return;
+          var iframe = document.createElement('iframe');
+          iframe.className = 'yt-frame';
+          iframe.setAttribute('src', 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1');
+          iframe.setAttribute('title', btn.getAttribute('aria-label') || 'YouTube');
+          iframe.setAttribute('frameborder', '0');
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+          iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+          iframe.allowFullscreen = true;
+          btn.replaceWith(iframe);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
