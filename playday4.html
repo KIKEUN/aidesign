@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAYDAY VOL4 · 현대건설 시각화 챔피언십</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --font-grotesk: 'Space Grotesk', var(--font-body);
+        }
+
+        html { background: #eaf0f8; }
+        html, body { font-family: var(--font-body) !important; }
+        body {
+            color: #0f1e3d;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background: #eaf0f8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .num { font-family: var(--font-mono) !important; font-feature-settings: "tnum"; letter-spacing: -0.02em; }
+        .eng { font-family: var(--font-grotesk) !important; letter-spacing: -0.01em; }
+
+        /* 히어로 한 줄 카피 — 화면폭에 맞춰 자동 축소, 절대 줄바꿈 안 함 */
+        .hero-oneline {
+            white-space: nowrap;
+            font-size: clamp(0.5rem, 2.35vw, 1.06rem);
+            line-height: 1.5;
+        }
+
+        /* ===== 바깥 쿨톤 서피스 ===== */
+        .ai97-surface {
+            position: relative;
+            background-color: #eef4fb;
+            background-image:
+                radial-gradient(ellipse 95% 50% at 82% 92%, rgba(56, 132, 255, 0.16) 0%, transparent 60%),
+                radial-gradient(ellipse 78% 46% at 10% 14%, rgba(14, 165, 233, 0.14) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 40% at 95% 28%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+                linear-gradient(180deg, #f6faff 0%, #eef4fb 55%, #e4edf9 100%);
+            box-shadow:
+                0 24px 60px -18px rgba(23, 54, 122, 0.28),
+                0 1px 0 rgba(255, 255, 255, 0.7) inset;
+        }
+        .glass-panel {
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #f2f7ff 100%);
+            border: 1px solid rgba(59, 130, 246, 0.22);
+            box-shadow: 0 12px 28px -16px rgba(23, 54, 122, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        /* ===== 라벨 / 칩 ===== */
+        .kicker {
+            display:inline-flex; align-items:center; gap:0.45rem;
+            font-size:0.72rem; font-weight:800; letter-spacing:0.08em;
+            color:#1e40af; background:#dbeafe; border:1px solid rgba(59,130,246,0.4);
+            padding:0.36rem 0.85rem; border-radius:9999px;
+        }
+        .pill {
+            display:inline-flex; align-items:center; gap:0.35rem;
+            padding:0.42rem 0.9rem; border-radius:9999px;
+            font-size:0.82rem; font-weight:700; color:#1e3a8a;
+            background:#ffffff; border:1.5px solid #cbdcf3;
+        }
+        .accent { color:#2563eb; }
+        .glow { color:#0891b2; }
+
+        .blink-badge {
+            display:inline-flex; align-items:center; gap:0.35rem;
+            font-size:0.72rem; font-weight:900; color:#2563eb;
+            animation: storyBlink 1.4s ease-in-out infinite;
+        }
+        @keyframes storyBlink { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.55;transform:scale(1.05);} }
+
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+        .fade-in { animation: fadeInUp 0.7s ease both; }
+        .fade-in-d1{animation-delay:.12s;} .fade-in-d2{animation-delay:.24s;}
+        .fade-in-d3{animation-delay:.36s;} .fade-in-d4{animation-delay:.48s;}
+        @media (prefers-reduced-motion: reduce){ .blink-badge,.fade-in{animation:none;} }
+
+        /* ===== 대회 현황 스탯 스트립 ===== */
+        .stat-strip {
+            display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+            border:1px solid rgba(59,130,246,0.35); border-radius:1.1rem; overflow:hidden;
+            background:linear-gradient(180deg,#ffffff,#f2f7ff);
+            box-shadow:0 10px 26px -16px rgba(23,54,122,0.4);
+        }
+        .stat { padding:0.85rem 0.6rem; border-right:1px solid #dbe7f7; text-align:center; }
+        .stat:last-child{ border-right:0; }
+        .stat .v { font-size:1.6rem; font-weight:800; line-height:1; color:#2563eb; }
+        .stat .v small { font-size:0.8rem; font-weight:800; color:#1e3a8a; }
+        .stat .l { font-size:0.62rem; font-weight:700; color:#64748b; margin-top:0.35rem; letter-spacing:0.02em; }
+
+        /* ===== 챔피언십 버튼 ===== */
+        .btn-3d, .btn-ghost {
+            position:relative; isolation:isolate; display:inline-flex; align-items:center; justify-content:center;
+            gap:0.7rem; width:100%; min-width:0; font-size:clamp(0.9rem,1.6vw,1.04rem); font-weight:800;
+            letter-spacing:-0.015em; padding:0.95rem 1.2rem; border-radius:9999px; cursor:pointer; text-decoration:none;
+            transition: transform .2s ease, box-shadow .2s ease, filter .2s ease, border-color .2s ease;
+        }
+        .btn-3d {
+            color:#f0f7ff;
+            background: linear-gradient(145deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+            border:1px solid rgba(191,219,254,0.7);
+            box-shadow: 0 5px 0 #1e3a8a, 0 14px 28px -6px rgba(23,54,122,0.4), 0 4px 16px rgba(37,99,235,0.28);
+        }
+        .btn-3d::before { content:""; position:absolute; inset:1px; border-radius:inherit; pointer-events:none;
+            background:linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0.03) 42%, rgba(255,255,255,0) 100%); }
+        .btn-3d:hover { transform:translateY(-2px); filter:brightness(1.06); box-shadow:0 7px 0 #1e3a8a, 0 18px 34px -6px rgba(23,54,122,0.36), 0 6px 18px rgba(37,99,235,0.32); }
+        .btn-3d:active { transform:translateY(3px); box-shadow:0 2px 0 #1e3a8a, 0 6px 14px rgba(15,30,61,0.4); }
+        .btn-ghost {
+            color:#1e40af; background:linear-gradient(145deg,#ffffff 0%,#eff6ff 100%);
+            border:1px solid rgba(59,130,246,0.4);
+            box-shadow:0 5px 0 #9bbdf0, 0 12px 24px -8px rgba(23,54,122,0.25), 0 4px 14px rgba(59,130,246,0.18);
+        }
+        .btn-ghost:hover { transform:translateY(-2px); box-shadow:0 7px 0 #9bbdf0, 0 16px 30px -8px rgba(23,54,122,0.3); }
+        .btn-ghost:active { transform:translateY(3px); box-shadow:0 2px 0 #9bbdf0, 0 5px 12px rgba(59,130,246,0.3); }
+        .cta-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0.7rem; width:100%; max-width:33rem; margin:0 auto; }
+        @media (max-width:520px){ .cta-row{ grid-template-columns:1fr; } }
+        .arrow-chip {
+            display:inline-flex; align-items:center; justify-content:center; width:1.85rem; height:1.85rem;
+            border-radius:9999px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.22); font-size:0.78rem;
+            transition:transform .2s ease;
+        }
+        .btn-ghost .arrow-chip { background:rgba(37,99,235,0.08); border-color:rgba(37,99,235,0.22); color:#1d4ed8; }
+        .group:hover .arrow-chip { transform:translateX(3px); }
+
+        /* ===== 대시보드 부채꼴 스택 ===== */
+        .fan {
+            position:relative; display:flex; justify-content:center; align-items:flex-end;
+            min-height:13.5rem; margin-top:1.75rem; padding:0 0.4rem 2rem; flex-wrap:nowrap;
+        }
+        .fan-item {
+            position:relative; flex:0 0 auto; width:clamp(11rem,46vw,15rem);
+            margin:0 clamp(-3.7rem,-7.6vw,-2.9rem);
+            border-radius:1.05rem; overflow:hidden; background:#fff;
+            border:1px solid rgba(59,130,246,0.26);
+            box-shadow:0 1px 2px rgba(23,54,122,0.08), 0 24px 50px -20px rgba(23,54,122,0.45);
+            transition:transform .42s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+        }
+        .fan-item--ll { transform:rotate(-15deg) translateY(2.3rem) scale(0.8); z-index:1; }
+        .fan-item--l  { transform:rotate(-7.5deg) translateY(0.8rem) scale(0.9); z-index:2; }
+        .fan-item--c  { transform:rotate(0deg) translateY(-0.7rem) scale(1.02); z-index:5; }
+        .fan-item--r  { transform:rotate(7.5deg) translateY(0.8rem) scale(0.9); z-index:3; }
+        .fan-item--rr { transform:rotate(15deg) translateY(2.3rem) scale(0.8); z-index:2; }
+        .fan-item:hover { z-index:9; box-shadow:0 1px 2px rgba(23,54,122,0.08), 0 32px 60px -16px rgba(23,54,122,0.5); }
+        .fan-item--ll:hover { transform:rotate(-15deg) translateY(1.6rem) scale(0.84); }
+        .fan-item--l:hover  { transform:rotate(-7.5deg) translateY(0.3rem) scale(0.94); }
+        .fan-item--c:hover  { transform:rotate(0deg) translateY(-1.3rem) scale(1.06); }
+        .fan-item--r:hover  { transform:rotate(7.5deg) translateY(0.3rem) scale(0.94); }
+        .fan-item--rr:hover { transform:rotate(15deg) translateY(1.6rem) scale(0.84); }
+        @media (max-width:520px){
+            .fan{ min-height:10.5rem; padding:0 0 1.5rem; }
+            .fan-item{ width:9rem; margin:0 -2.75rem; }
+        }
+        @media (prefers-reduced-motion: reduce){ .fan-item{ transition:none; } }
+
+        /* 미니 대시보드 내부 */
+        .mbar { display:flex; align-items:center; gap:0.34rem; padding:0.55rem 0.7rem; background:#eef4fc; border-bottom:1px solid #d6e3f5; }
+        .mbar .d { width:0.5rem; height:0.5rem; border-radius:9999px; }
+        .mbar .u { margin-left:0.4rem; font-size:0.56rem; font-weight:700; color:#5b7aa8; font-family:var(--font-mono); }
+        .mbody { padding:0.75rem 0.8rem; background:linear-gradient(180deg,#f7fbff,#fff); }
+        .mtitle { font-size:0.74rem; font-weight:900; color:#0f1e3d; letter-spacing:-0.01em; }
+        .msub { font-size:0.5rem; font-weight:600; color:#5b7aa8; margin-top:0.1rem; margin-bottom:0.55rem; }
+        .mkpis { display:grid; grid-template-columns:repeat(3,1fr); gap:0.4rem; margin-bottom:0.6rem; }
+        .mkpi { border:1px solid #dbe7f7; border-radius:0.6rem; padding:0.4rem 0.45rem; background:#fff; }
+        .mkpi .kl { font-size:0.46rem; font-weight:700; color:#5b7aa8; }
+        .mkpi .kv { font-size:0.92rem; font-weight:800; color:#0f1e3d; line-height:1.1; font-family:var(--font-mono); letter-spacing:-0.03em; }
+        .mkpi .kc { font-size:0.46rem; font-weight:800; color:#2563eb; }
+        .mpanel { border:1px solid #dbe7f7; border-radius:0.65rem; padding:0.5rem 0.55rem; background:#f5f9ff; }
+        .mpt { font-size:0.5rem; font-weight:800; color:#1e3a8a; margin-bottom:0.4rem; }
+        .mbars { display:flex; align-items:flex-end; gap:0.22rem; height:2.6rem; }
+        .mbars i { flex:1; border-radius:2px 2px 0 0; background:#d6e3f5; }
+        .mbars i.on { background:#3b82f6; }
+        .mdonut { width:3rem; height:3rem; border-radius:9999px; margin:0.1rem auto; position:relative; display:grid; place-items:center;
+            background:conic-gradient(#2563eb 0 46%, #60a5fa 46% 73%, #bfdbfe 73% 100%); }
+        .mdonut::after { content:""; width:1.7rem; height:1.7rem; border-radius:9999px; background:#f5f9ff; }
+        .mdonut b { position:absolute; z-index:1; font-size:0.6rem; font-weight:900; color:#0f1e3d; font-family:var(--font-mono); }
+
+        /* 미니 차트 — 화려 버전 (게이지·프로그레스·범례·링) */
+        .mprog { height:0.5rem; border-radius:9999px; background:#e6edf6; overflow:hidden; margin-top:0.4rem; }
+        .mprog > i { display:block; height:100%; border-radius:9999px; }
+        .mleg { display:flex; flex-wrap:wrap; gap:0.28rem 0.5rem; margin-top:0.45rem; }
+        .mleg span { display:inline-flex; align-items:center; gap:0.22rem; font-size:0.44rem; font-weight:700; color:#475569; }
+        .mleg em { width:0.42rem; height:0.42rem; border-radius:2px; display:inline-block; }
+        .mbig { font-family:var(--font-mono); font-weight:800; font-size:1.5rem; line-height:1; letter-spacing:-0.04em; color:#0f1e3d; }
+        .mbig small { font-size:0.6rem; font-weight:800; }
+        .mrow { display:flex; align-items:center; justify-content:space-between; gap:0.4rem; }
+        .mtag { font-size:0.44rem; font-weight:800; padding:0.12rem 0.36rem; border-radius:9999px; white-space:nowrap; }
+        .mdots { display:flex; gap:0.2rem; margin-top:0.45rem; }
+        .mdots i { flex:1; height:0.5rem; border-radius:2px; background:#e6edf6; }
+
+        /* ===== 다크 데이터 스크린 (리더보드) ===== */
+        .board {
+            background:
+                radial-gradient(ellipse 70% 60% at 85% 0%, rgba(56, 132, 255, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 10% 100%, rgba(14, 165, 233, 0.18) 0%, transparent 60%),
+                linear-gradient(165deg, #15294d 0%, #0b1733 100%);
+            border:1px solid #26406e; border-radius:1.5rem;
+            box-shadow:0 26px 60px -22px rgba(11,23,51,0.7), inset 0 1px 0 rgba(180,210,255,0.1);
+        }
+        .rank {
+            display:flex; align-items:center; gap:0.85rem; padding:0.8rem 0.95rem; border-radius:1rem;
+            background:rgba(255,255,255,0.04); border:1px solid rgba(180,210,255,0.1);
+            transition:background .2s ease, transform .2s ease;
+        }
+        .rank:hover { background:rgba(255,255,255,0.08); transform:translateX(3px); }
+        .rank.lead { background:linear-gradient(135deg, rgba(37,99,235,0.3), rgba(6,182,212,0.18)); border-color:rgba(96,165,250,0.5); }
+        .medal {
+            flex-shrink:0; width:2rem; height:2rem; border-radius:9999px; display:grid; place-items:center;
+            font-size:0.82rem; font-weight:900; color:#0b1733; font-family:var(--font-mono);
+        }
+        .m1 { background:linear-gradient(135deg,#67e8f9,#22d3ee); box-shadow:0 0 16px rgba(34,211,238,0.55); }
+        .m2 { background:linear-gradient(135deg,#e2e8f0,#94a3b8); }
+        .m3 { background:linear-gradient(135deg,#93c5fd,#3b82f6); color:#fff; }
+        .mx { background:rgba(255,255,255,0.08); color:#8fb3e6; }
+        .rank .nm { font-size:0.86rem; font-weight:800; color:#eaf2ff; }
+        .rank .tg { font-size:0.62rem; font-weight:600; color:#8fb3e6; margin-top:0.05rem; font-family:var(--font-mono); }
+        .rank .sc { margin-left:auto; text-align:right; }
+        .rank .sc b { font-size:1.05rem; font-weight:800; color:#bfe0ff; font-family:var(--font-mono); letter-spacing:-0.02em; }
+        .rank .sc small { display:block; font-size:0.5rem; font-weight:700; color:#6d8cb8; letter-spacing:0.1em; font-family:var(--font-mono); }
+        .spark { display:flex; align-items:flex-end; gap:2px; height:1.5rem; width:3.2rem; }
+        .spark i { flex:1; border-radius:1px; background:rgba(96,165,250,0.6); }
+
+        /* ===== 주제 카드 ===== */
+        .topic {
+            display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1rem; border-radius:1rem;
+            background:#fff; border:1px solid #dbe7f7; box-shadow:0 1px 2px rgba(23,54,122,0.05);
+            transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+        .topic:hover { transform:translateY(-3px) rotate(-0.5deg); box-shadow:0 14px 26px -14px rgba(23,54,122,0.4); border-color:rgba(59,130,246,0.5); }
+        .topic .ic { flex-shrink:0; width:2.6rem; height:2.6rem; border-radius:0.8rem; display:grid; place-items:center; color:#fff; font-size:1rem;
+            background:linear-gradient(135deg,#3b82f6,#2563eb); box-shadow:0 4px 10px -4px rgba(37,99,235,0.5); }
+        .topic h4 { font-size:0.9rem; font-weight:800; color:#0f1e3d; }
+        .topic p { font-size:0.74rem; color:#64748b; margin-top:0.1rem; }
+
+        /* ===== 프롬프트 카드 ===== */
+        .prompt-card {
+            background: linear-gradient(165deg, #ffffff 0%, #f0f6ff 55%, #dbeafe 100%);
+            border: 2px solid rgba(59, 130, 246, 0.32); border-radius:1.4rem;
+            box-shadow: 0 18px 40px -22px rgba(23,54,122,0.4), 0 0 0 1px rgba(255,255,255,0.85) inset;
+        }
+        .quote { font-size:1rem; font-weight:600; line-height:1.7; color:#0f1e3d; }
+        .quote .hl { color:#2563eb; font-weight:800; }
+
+        /* ===== 스텝 ===== */
+        .step { display:flex; gap:1rem; align-items:flex-start; }
+        .step .no {
+            flex-shrink:0; width:2.5rem; height:2.5rem; border-radius:0.8rem; display:grid; place-items:center; color:#fff; font-weight:800; font-size:1.05rem;
+            font-family:var(--font-mono); background:linear-gradient(135deg,#3b82f6,#2563eb); box-shadow:0 4px 10px -4px rgba(37,99,235,0.5); }
+        .step h4 { font-size:0.98rem; font-weight:800; color:#0f1e3d; margin-bottom:0.2rem; }
+        .step p { font-size:0.86rem; color:#475569; line-height:1.55; }
+
+        /* ===== 시상 카드 ===== */
+        .prize {
+            position:relative; border-radius:1.25rem; padding:1.4rem 1rem 1.2rem; text-align:center; overflow:hidden;
+            background:linear-gradient(180deg,#ffffff,#f2f7ff); border:1px solid rgba(59,130,246,0.35);
+            box-shadow:0 12px 28px -18px rgba(23,54,122,0.4);
+        }
+        .prize.top {
+            background:linear-gradient(180deg,#ecfeff,#dbeafe); border:1.5px solid rgba(34,211,238,0.55);
+            box-shadow:0 16px 34px -16px rgba(8,145,178,0.45);
+        }
+        .prize .trophy { font-size:1.55rem; margin-bottom:0.5rem; }
+        .prize .rk { font-size:0.62rem; font-weight:800; letter-spacing:0.12em; color:#64748b; font-family:var(--font-mono); }
+        .prize .pz { font-size:1.05rem; font-weight:900; color:#0f1e3d; margin-top:0.25rem; line-height:1.3; }
+        .prize .ds { font-size:0.68rem; color:#64748b; margin-top:0.3rem; }
+
+        a, button { -webkit-tap-highlight-color: transparent; }
+        .divider { border:0; border-top:1px solid #d2e0f2; }
+    </style>
+</head>
+<body>
+    <main class="max-w-3xl mx-auto px-4 py-6 pb-12">
+        <div class="ai97-surface rounded-3xl px-5 sm:px-8 pt-7 sm:pt-9 pb-10 sm:pb-12">
+
+            <!-- ===================== 히어로 ===================== -->
+            <header class="text-center fade-in">
+                <p class="eng tracking-[0.4em] text-sm text-[#7fa8e6] leading-none mb-3" aria-hidden="true">◆ &nbsp; ◆ &nbsp; ◆ &nbsp; ◆ &nbsp; ◆</p>
+
+                <img src="https://kikeun.github.io/KIKEUN/ai31.png" alt="PLAYDAY" class="h-24 sm:h-32 w-auto object-contain mx-auto mb-5" decoding="async">
+
+                <div class="mb-4"><span class="kicker"><i class="fas fa-trophy"></i> PLAYDAY VOL.4 · 대시보드 챔피언십</span></div>
+
+                <h1 class="text-[2.05rem] sm:text-[2.75rem] font-black leading-[1.16] tracking-tight mb-4 text-[#0f1e3d]">
+                    현대건설 <span class="accent">AI 시각화 최강자</span>는<br>누구일까?
+                </h1>
+
+                <p class="hero-oneline text-[#475569] font-medium mx-auto">
+                    업무 · 현장 · 취미, 관심 있는 주제를 골라 AI와 함께 <b class="text-[#0f1e3d]">HTML 시각화 자료</b>를 만들어 보세요.
+                </p>
+                <p class="text-[0.98rem] sm:text-[1.1rem] text-[#475569] leading-relaxed font-medium mt-2">
+                    그리고 당신의 <b class="text-[#0f1e3d]">AI 실력</b>을 동료들에게 선보여 주세요 🙌
+                </p>
+
+                <!-- 예시 대시보드 (부채꼴 5종) -->
+                <div class="fan fade-in fade-in-d1">
+
+                    <!-- ① 안전 점검 (시안) -->
+                    <div class="fan-item fan-item--ll">
+                        <div class="mbar" style="background:#e0f7fb;border-bottom-color:#bdeaf2">
+                            <span class="d" style="background:#06b6d4"></span><span class="d" style="background:#67e8f9"></span><span class="d" style="background:#cffafe"></span>
+                            <span class="u">safety.html</span>
+                        </div>
+                        <div class="mbody">
+                            <div class="mtitle">현장 안전 점검</div>
+                            <div class="msub">무재해 D+218</div>
+                            <div class="mpanel">
+                                <div class="mpt">안전 지수</div>
+                                <svg viewBox="0 0 100 54" width="100%" height="40" aria-hidden="true">
+                                    <path d="M6 50 A44 44 0 0 1 94 50" fill="none" stroke="#e2eef2" stroke-width="8" stroke-linecap="round"/>
+                                    <path d="M6 50 A44 44 0 0 1 94 50" fill="none" stroke="#06b6d4" stroke-width="8" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="9.7"/>
+                                </svg>
+                                <div style="text-align:center;margin-top:-0.55rem"><span class="mbig" style="font-size:1.05rem">96<small style="color:#06b6d4">점</small></span></div>
+                            </div>
+                            <div class="mrow" style="margin-top:0.45rem">
+                                <span style="font-size:0.46rem;font-weight:700;color:#5b7aa8">이번 주 점검</span>
+                                <span class="mtag" style="color:#0e7490;background:#cffafe">32건 완료</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ② 식단 칼로리 (에메랄드) -->
+                    <div class="fan-item fan-item--l">
+                        <div class="mbar" style="background:#e7faf0;border-bottom-color:#c4eed7">
+                            <span class="d" style="background:#10b981"></span><span class="d" style="background:#6ee7b7"></span><span class="d" style="background:#d1fae5"></span>
+                            <span class="u">diet.html</span>
+                        </div>
+                        <div class="mbody">
+                            <div class="mtitle">오늘의 식단 칼로리</div>
+                            <div class="msub">1,820 / 2,100 kcal</div>
+                            <div class="mpanel">
+                                <div class="mpt">탄·단·지 비율</div>
+                                <div class="mdonut" style="background:conic-gradient(#10b981 0 50%,#f59e0b 50% 78%,#38bdf8 78% 100%)"><b>50%</b></div>
+                                <div class="mleg">
+                                    <span><em style="background:#10b981"></em>탄수 50</span>
+                                    <span><em style="background:#f59e0b"></em>단백 28</span>
+                                    <span><em style="background:#38bdf8"></em>지방 22</span>
+                                </div>
+                            </div>
+                            <div class="mprog"><i style="width:87%;background:linear-gradient(90deg,#34d399,#10b981)"></i></div>
+                            <div class="mrow" style="margin-top:0.25rem"><span style="font-size:0.44rem;font-weight:700;color:#5b7aa8">목표 대비</span><span style="font-size:0.46rem;font-weight:800;color:#059669;font-family:var(--font-mono)">87%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- ③ 우리 팀 활동 (블루, 메인) -->
+                    <div class="fan-item fan-item--c">
+                        <div class="mbar">
+                            <span class="d" style="background:#3b82f6"></span><span class="d" style="background:#93c5fd"></span><span class="d" style="background:#c7dbf6"></span>
+                            <span class="u"><i class="fas fa-lock text-[0.5rem] mr-0.5"></i>my-dashboard.html</span>
+                        </div>
+                        <div class="mbody">
+                            <div class="mtitle">우리 팀 6월 활동 리포트</div>
+                            <div class="msub">2026.06.01 – 06.16 · ● LIVE</div>
+                            <div class="mkpis">
+                                <div class="mkpi"><div class="kl">처리</div><div class="kv">128</div><div class="kc">▲12%</div></div>
+                                <div class="mkpi"><div class="kl">완료율</div><div class="kv">94%</div><div class="kc">▲6%p</div></div>
+                                <div class="mkpi"><div class="kl">응답</div><div class="kv">2.4h</div><div class="kc">▼0.3</div></div>
+                            </div>
+                            <div class="mpanel">
+                                <div class="mpt">주간 추이</div>
+                                <svg viewBox="0 0 100 34" preserveAspectRatio="none" width="100%" height="36" aria-hidden="true">
+                                    <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="rgba(37,99,235,0.3)"/><stop offset="100%" stop-color="rgba(37,99,235,0)"/>
+                                    </linearGradient></defs>
+                                    <polyline points="0,34 0,26 17,21 34,24 50,13 67,16 84,7 100,4 100,34" fill="url(#ag)" stroke="none"/>
+                                    <polyline points="0,26 17,21 34,24 50,13 67,16 84,7 100,4" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="100" cy="4" r="2.4" fill="#2563eb"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ④ 민원 처리 (바이올렛) -->
+                    <div class="fan-item fan-item--r">
+                        <div class="mbar" style="background:#f1ecfd;border-bottom-color:#ddd0f7">
+                            <span class="d" style="background:#7c3aed"></span><span class="d" style="background:#a78bfa"></span><span class="d" style="background:#ede9fe"></span>
+                            <span class="u">voc.html</span>
+                        </div>
+                        <div class="mbody">
+                            <div class="mtitle">민원 처리 현황</div>
+                            <div class="msub">이번 주 · 구로 현장</div>
+                            <div class="mrow">
+                                <span class="mbig" style="color:#6d28d9">92<small>%</small></span>
+                                <span class="mtag" style="color:#6d28d9;background:#ede9fe">처리율 ▲5%p</span>
+                            </div>
+                            <div class="mpanel" style="margin-top:0.5rem">
+                                <div class="mpt">요일별 접수</div>
+                                <div class="mbars">
+                                    <i style="height:55%;background:#ddd0f7"></i><i style="height:80%;background:#c4b5fd"></i><i class="on" style="height:100%;background:#7c3aed"></i><i style="height:62%;background:#c4b5fd"></i><i style="height:74%;background:#c4b5fd"></i><i style="height:38%;background:#ddd0f7"></i><i style="height:30%;background:#ddd0f7"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ⑤ 운동 기록 (스카이 — 액티비티 링) -->
+                    <div class="fan-item fan-item--rr">
+                        <div class="mbar" style="background:#e6f5fe;border-bottom-color:#c2e6fb">
+                            <span class="d" style="background:#0ea5e9"></span><span class="d" style="background:#7dd3fc"></span><span class="d" style="background:#e0f2fe"></span>
+                            <span class="u">workout.html</span>
+                        </div>
+                        <div class="mbody">
+                            <div class="mtitle">나의 운동 기록</div>
+                            <div class="msub">6월 누적 · 목표 달성</div>
+                            <div class="mpanel" style="text-align:center">
+                                <svg viewBox="0 0 80 80" width="3.5rem" height="3.5rem" aria-hidden="true" style="transform:rotate(-90deg)">
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="#e6f2fb" stroke-width="7"/>
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="#0ea5e9" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="59.8"/>
+                                    <circle cx="40" cy="40" r="25" fill="none" stroke="#e6f2fb" stroke-width="7"/>
+                                    <circle cx="40" cy="40" r="25" fill="none" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" stroke-dasharray="157.1" stroke-dashoffset="47.1"/>
+                                    <circle cx="40" cy="40" r="16" fill="none" stroke="#e6f2fb" stroke-width="7"/>
+                                    <circle cx="40" cy="40" r="16" fill="none" stroke="#22d3ee" stroke-width="7" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="15.1"/>
+                                </svg>
+                                <div class="mdots">
+                                    <i class="on" style="background:#0ea5e9"></i><i class="on" style="background:#0ea5e9"></i><i class="on" style="background:#0ea5e9"></i><i style="background:#e6edf6"></i><i class="on" style="background:#0ea5e9"></i><i class="on" style="background:#0ea5e9"></i><i style="background:#e6edf6"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-[#64748b] mt-1 mb-1">↑ 예시 화면이에요. 손으로 잡아 넘겨보듯 자유롭게!</p>
+
+                <!-- 메인 CTA -->
+                <div class="mt-8 max-w-sm mx-auto fade-in fade-in-d1">
+                    <a href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY"
+                       class="external-escape-link btn-3d group" aria-label="내 대시보드 출품하러 가기 (로그인 필요)">
+                        <span aria-hidden="true">🏆</span>
+                        <span>내 대시보드 출품하기</span>
+                        <span class="arrow-chip" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                    </a>
+                </div>
+            </header>
+
+            <hr class="divider my-9 max-w-2xl mx-auto">
+
+            <!-- ===================== 주제 ===================== -->
+            <section class="fade-in">
+                <div class="text-center mb-5">
+                    <h2 class="text-[1.6rem] sm:text-[2rem] font-black tracking-tight text-[#0f1e3d]">무엇이든 <span class="accent">HTML 시각화</span>가 됩니다</h2>
+                    <p class="text-sm text-[#475569] mt-1.5">주제는 자유롭게 정해 주세요. 아래는 시작을 돕는 예시일 뿐, 무엇이든 환영합니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="topic"><div class="ic"><i class="fas fa-helmet-safety"></i></div><div><h4>안전·현장</h4><p>점검 현황, 무재해 일수, 위험요인</p></div></div>
+                    <div class="topic"><div class="ic"><i class="fas fa-diagram-project"></i></div><div><h4>공정·진척도</h4><p>공정률, 마일스톤, 일정 지연</p></div></div>
+                    <div class="topic"><div class="ic"><i class="fas fa-briefcase"></i></div><div><h4>업무 효율</h4><p>처리 건수, 완료율, 회의 시간</p></div></div>
+                    <div class="topic"><div class="ic"><i class="fas fa-heart-pulse"></i></div><div><h4>운동·건강</h4><p>주간 운동, 걸음 수, 수면 패턴</p></div></div>
+                    <div class="topic"><div class="ic"><i class="fas fa-mug-hot"></i></div><div><h4>취미 기록</h4><p>커피 지출, 등산 횟수, 식물 일지</p></div></div>
+                    <div class="topic"><div class="ic"><span style="font-size:1.1rem;line-height:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;filter:grayscale(1) brightness(0) invert(1)">👥</span></div><div><h4>우리 팀 소개</h4><p>팀원·역할·분위기, 협업 현황</p></div></div>
+                </div>
+            </section>
+
+            <hr class="divider my-9 max-w-2xl mx-auto">
+
+            <!-- ===================== 마지막 멘트 ===================== -->
+            <section class="rounded-2xl border border-[#cbdcf3] bg-gradient-to-b from-[#eff6ff] to-[#dbeafe]/70 p-6 sm:p-7 mb-2 text-center">
+                <p class="text-[1.1rem] sm:text-[1.25rem] font-black text-[#0f1e3d] leading-snug">
+                    가벼운 시작이 멋진 작품이 됩니다.
+                </p>
+                <p class="text-sm sm:text-[0.95rem] text-[#475569] leading-relaxed mt-2.5">
+                    작은 주제 하나를 AI와 함께 시각화하고,<br class="hidden sm:block">
+                    당신만의 HTML 작품으로 이번 PLAYDAY에 도전해 보세요. 🚀
+                </p>
+            </section>
+
+            <!-- ===================== 푸터 ===================== -->
+            <footer class="mt-10 pt-8 border-t border-[#d2e0f2] text-center">
+                <div class="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-xs sm:text-sm text-[#1e3a8a] font-semibold">
+                    <span class="text-[#64748b]">워크이노베이션센터</span>
+                    <span class="text-[#9cb6da]" aria-hidden="true">│</span>
+                    <span class="inline-flex items-center gap-1.5">
+                        <svg class="h-4 w-4 text-[#1e3a8a]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 45L28 35V80L12 90V45Z" fill="currentColor"/>
+                            <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z" fill="currentColor"/>
+                        </svg>
+                        AI디자인랩
+                    </span>
+                </div>
+                <p class="text-xs text-[#64748b] mt-3">© PLAYDAY VOL4 · 현대건설 시각화 챔피언십</p>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        /** 사내 게시판 iframe 임베드에서도 링크가 상위 창에서 열리도록 */
+        function openExternalUrl(url) {
+            if (!url) return;
+            try {
+                const topWin = window.top || window;
+                const opened = topWin.open(url, '_blank', 'noopener,noreferrer');
+                if (opened) return;
+            } catch (e) {}
+            try { (window.top || window).location.href = url; return; } catch (e2) {}
+            window.location.href = url;
+        }
+        document.querySelectorAll('.external-escape-link').forEach((link) => {
+            link.addEventListener('click', function (e) {
+                const url = this.href;
+                if (!url || url === '#' || url.startsWith('javascript:')) return;
+                e.preventDefault();
+                openExternalUrl(url);
+            });
+        });
+    </script>
+</body>
+</html>
