@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>플레이데이 — 여행계획서 만들기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <!-- 달력(날짜 선택) : flatpickr (무료, CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/ko.js"></script>
+    <style>
+        html { background: transparent; }
+        html, body {
+            font-family:
+                'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif !important;
+        }
+        body {
+            color: #2a1530;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background: transparent;
+        }
+
+        /* 여름 선셋 글램 카드 */
+        .ai97-surface {
+            position: relative;
+            background-color: #ffffff;
+            background-image:
+                radial-gradient(120% 80% at 0% 0%, rgba(251, 113, 133, 0.16) 0%, rgba(255, 255, 255, 0) 55%),
+                radial-gradient(120% 80% at 100% 0%, rgba(34, 211, 238, 0.16) 0%, rgba(255, 255, 255, 0) 55%),
+                linear-gradient(180deg, #fffdfb 0%, #fff6fb 100%);
+            border: 1px solid rgba(236, 72, 153, 0.18);
+            box-shadow:
+                0 1px 2px rgba(131, 24, 67, 0.05),
+                0 18px 50px -16px rgba(190, 24, 93, 0.22);
+        }
+        .glass-panel {
+            background: rgba(255, 247, 252, 0.85);
+            border: 1px solid rgba(244, 114, 182, 0.22);
+            box-shadow: 0 1px 3px rgba(131, 24, 67, 0.06);
+        }
+        #mdPreview {
+            font-family: 'Pretendard', ui-monospace, monospace;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            tab-size: 2;
+        }
+        input::placeholder, textarea::placeholder { color: rgb(190 160 175); opacity: 1; }
+
+        .prompt-field-card {
+            container-type: inline-size;
+            background: linear-gradient(
+                160deg,
+                rgba(255, 228, 240, 0.92) 0%,
+                rgba(255, 224, 204, 0.7) 42%,
+                rgba(207, 250, 254, 0.78) 100%
+            );
+            border: 2px solid rgba(236, 72, 153, 0.38);
+            box-shadow:
+                0 6px 28px rgba(236, 72, 153, 0.16),
+                0 0 0 1px rgba(255, 255, 255, 0.65) inset;
+        }
+        .grad-text {
+            background: linear-gradient(100deg, #db2777 0%, #f97316 48%, #06b6d4 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+
+        .story-write-badge {
+            position: absolute; z-index: 2; top: 0.15rem; right: -1.1rem;
+            font-size: 0.72rem; font-weight: 900; letter-spacing: 0.03em; color: #db2777;
+            text-shadow: 0 0 1px rgba(255,255,255,0.95), 0 1px 2px rgba(255,255,255,0.9);
+            transform: rotate(15deg); transform-origin: top right;
+            pointer-events: none; user-select: none;
+            animation: storyBlink 1.25s ease-in-out infinite;
+        }
+        @keyframes storyBlink {
+            0%, 100% { opacity: 1; transform: rotate(15deg) scale(1); }
+            50%      { opacity: 0.55; transform: rotate(15deg) scale(1.04); }
+        }
+
+        .input-line {
+            width: 100%; background: #fff; border: 2px solid rgba(244,114,182,0.45);
+            border-radius: 0.75rem; padding: 0.55rem 0.75rem; font-size: 0.95rem; outline: none;
+            box-shadow: 0 1px 2px rgba(131,24,67,0.05);
+        }
+        .input-line:focus { border-color: #ec4899; box-shadow: 0 0 0 3px rgba(236,72,153,0.18); }
+        textarea.input-line { resize: vertical; line-height: 1.4; }
+
+        /* 칩 */
+        .chip {
+            border: 1.5px solid rgba(236, 72, 153, 0.30);
+            background: rgba(255, 255, 255, 0.7); color: #9d174d;
+            transition: all 0.15s ease;
+        }
+        .chip:hover { border-color: rgba(236,72,153,0.55); box-shadow: 0 2px 10px rgba(236,72,153,0.18); }
+        .chip[aria-pressed="true"] {
+            background: linear-gradient(135deg, #ec4899, #fb7185 55%, #f97316);
+            border-color: transparent; color: #fff; box-shadow: 0 4px 14px rgba(236,72,153,0.35);
+        }
+
+        /* 장소 검색 결과 드롭다운 */
+        .search-results {
+            position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px);
+            background: #fff; border: 1px solid rgba(236,72,153,0.3); border-radius: 0.75rem;
+            box-shadow: 0 10px 30px -8px rgba(131,24,67,0.3); max-height: 14rem; overflow-y: auto;
+        }
+        .search-results button {
+            display: block; width: 100%; text-align: left; padding: 0.55rem 0.75rem;
+            font-size: 0.85rem; border-bottom: 1px solid #fce7f3;
+        }
+        .search-results button:hover { background: #fff1f6; }
+        .search-results button:last-child { border-bottom: none; }
+
+        #map { width: 100%; height: 18rem; border-radius: 1rem; background: #eef2f7; }
+
+        /* 일자별 카드 */
+        .day-card {
+            border: 1.5px solid rgba(236,72,153,0.25);
+            background: rgba(255,255,255,0.75);
+            border-radius: 0.85rem;
+            padding: 0.75rem;
+        }
+        .day-badge {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-weight: 800; font-size: 0.8rem; color: #fff;
+            background: linear-gradient(135deg,#ec4899,#f97316);
+            padding: 0.2rem 0.6rem; border-radius: 999px;
+        }
+
+        /* flatpickr 핑크 테마 */
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange,
+        .flatpickr-day.selected.inRange { background: #ec4899; border-color: #ec4899; }
+        .flatpickr-day.inRange { background: #fce7f3; border-color: #fce7f3; box-shadow: -5px 0 0 #fce7f3, 5px 0 0 #fce7f3; }
+        .flatpickr-day.startRange, .flatpickr-day.endRange { box-shadow: none; }
+
+        @media (prefers-reduced-motion: reduce) { .story-write-badge { animation: none; } }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 text-sm">
+
+    <main class="max-w-3xl mx-auto px-4 py-6 pb-12">
+        <div class="ai97-surface rounded-3xl px-5 sm:px-8 pt-6 sm:pt-7 pb-10 sm:pb-12">
+
+            <header class="border-b border-pink-200/70 pb-4 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <a href="./vol4.html" class="external-escape-link text-pink-700 hover:text-pink-900 text-xs font-bold inline-flex items-center gap-1">
+                        <i class="fas fa-arrow-left"></i> PlayDay로 돌아가기
+                    </a>
+                </div>
+            </header>
+
+            <section class="glass-panel rounded-3xl px-5 sm:px-6 py-5 md:py-6 mb-8 text-center max-w-2xl mx-auto w-full">
+                <p class="text-[20px] md:text-[30px] font-extrabold leading-snug">
+                    떠나고 싶은 그곳, <span class="grad-text">나만의 여행계획서</span>로 만들어 보세요. <span aria-hidden="true">🏝️</span>
+                </p>
+                <p class="mt-4 text-[16px] md:text-[18px] text-slate-600 leading-relaxed">
+                    날짜·출발지·목적지를 정하고 <strong class="text-pink-700">날짜별 하고 싶은 것</strong>만 적으면<br>
+                    AI가 시간표·맛집·예산까지 채워 진짜 계획서로 완성해 줘요. <i class="fas fa-arrow-down ml-0.5 text-xs md:text-sm align-middle" aria-hidden="true"></i>
+                </p>
+            </section>
+
+        <div class="mb-8 max-w-2xl mx-auto w-full border-t border-pink-200/80 pt-5">
+            <h1 class="text-center text-2xl md:text-3xl font-black mb-6 tracking-tight leading-tight">
+                <span class="grad-text">여행계획서 만들기</span>
+            </h1>
+            <div class="rounded-3xl border border-pink-200/80 bg-gradient-to-b from-white to-pink-50/70 shadow-[0_1px_3px_rgba(131,24,67,0.06)] p-4 sm:p-5 md:p-6 flex flex-col gap-6">
+
+            <!-- ===== 여행 정보 입력 ===== -->
+            <div class="prompt-field-card relative rounded-2xl p-4 md:p-5 overflow-visible">
+                <span class="story-write-badge" aria-hidden="true">여기만 채우세요!</span>
+                <label class="block text-base md:text-lg font-extrabold text-slate-900 mb-4 flex items-center gap-2 pr-20 sm:pr-24">
+                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 text-white text-base shadow-sm"><i class="fas fa-plane-departure"></i></span>
+                    여행 정보 입력
+                </label>
+
+                <div class="flex flex-col gap-4">
+                    <!-- 날짜 -->
+                    <div>
+                        <label for="fDates" class="block text-xs font-bold text-slate-700 mb-1"><i class="fas fa-calendar-days text-pink-500 mr-1"></i>여행 날짜 <span class="font-normal text-slate-500">(달력에서 시작일·종료일 클릭)</span></label>
+                        <input id="fDates" type="text" readonly placeholder="날짜를 선택하세요" class="input-line cursor-pointer bg-white" />
+                        <p id="durationText" class="mt-1 text-xs font-bold text-pink-700 hidden"></p>
+                    </div>
+
+                    <!-- 출발지 → 목적지(여행지) + 거리계산 -->
+                    <div class="rounded-xl border border-pink-200/70 bg-white/60 p-3">
+                        <p class="text-xs font-bold text-slate-700 mb-2"><i class="fas fa-route text-pink-500 mr-1"></i>출발지 → 목적지(여행지) <span class="font-normal text-slate-500">· 검색 후 결과를 클릭하세요</span></p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="relative">
+                                <input id="fOrigin" type="text" autocomplete="off" placeholder="출발지 (집·회사 등) 검색 후 Enter" class="input-line" />
+                                <div id="fOriginResults" class="search-results hidden"></div>
+                            </div>
+                            <div class="relative">
+                                <input id="fGoal" type="text" autocomplete="off" placeholder="목적지=여행지 (예: 거제도) 검색 후 Enter" class="input-line" />
+                                <div id="fGoalResults" class="search-results hidden"></div>
+                            </div>
+                        </div>
+                        <div id="map" class="mt-3"></div>
+                        <p id="mapNotice" class="mt-2 text-xs text-slate-500 hidden"></p>
+                        <div id="routeInfo" class="mt-3 hidden rounded-lg bg-gradient-to-r from-pink-100 via-orange-100 to-cyan-100 px-3 py-2 text-sm font-bold text-slate-800 text-center"></div>
+                    </div>
+
+                    <!-- 동행 -->
+                    <div>
+                        <p class="text-xs font-bold text-slate-700 mb-2"><i class="fas fa-people-group text-cyan-500 mr-1"></i>누구와 가시나요?</p>
+                        <div id="withChips" class="flex flex-wrap items-center gap-2">
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧳 혼자</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">💕 연인</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧑‍🤝‍🧑 친구</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">👨‍👩‍👧 가족</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏢 회사 동료</button>
+                            <span class="inline-flex items-center gap-1 text-xs text-slate-600 ml-1">
+                                <input id="fHeadcount" type="number" min="1" inputmode="numeric" placeholder="인원" class="input-line !w-20 !py-1 !px-2 text-center" /> 명
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 분위기 -->
+                    <div>
+                        <p class="text-xs font-bold text-slate-700 mb-2"><i class="fas fa-wand-magic-sparkles text-pink-500 mr-1"></i>원하는 분위기 <span class="font-normal text-slate-500">(선택 · 복수 가능)</span></p>
+                        <div id="moodChips" class="flex flex-wrap gap-2">
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🌴 힐링·휴양</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🍜 맛집·먹방</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏄 액티비티·체험</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">📸 인생샷·감성</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏯 문화·역사</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">💰 가성비</button>
+                        </div>
+                    </div>
+
+                    <!-- 일자별 세부 스케줄 (날짜 선택 시 자동 생성) -->
+                    <div class="border-t border-pink-200/70 pt-4">
+                        <p class="text-sm font-extrabold text-slate-900 mb-1"><i class="fas fa-list-check text-pink-500 mr-1"></i>날짜별 세부 스케줄 <span class="font-normal text-slate-500 text-xs">(내가 직접!)</span></p>
+                        <p class="text-xs text-slate-600 mb-3">하고 싶은 것·가고 싶은 곳만 적으면 AI가 시간표로 완성해요. <span class="text-pink-700 font-semibold">비워두면 AI가 추천</span>합니다.</p>
+                        <p id="dayHint" class="text-xs text-slate-500 bg-white/70 border border-pink-200/60 rounded-lg px-3 py-2">📅 위에서 <strong>여행 날짜</strong>를 먼저 선택하면 Day별 입력칸이 생겨요.</p>
+                        <div id="daySchedule" class="flex flex-col gap-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 생성된 프롬프트 ===== -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-700 shadow-xl overflow-hidden w-full">
+                <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-slate-800 border-b border-slate-700">
+                    <span class="text-xs font-bold text-pink-300 tracking-wider"><i class="fas fa-file-code mr-1"></i>생성된 프롬프트</span>
+                    <div class="flex gap-2">
+                        <button type="button" id="btnCopy" class="text-xs font-bold bg-pink-200 hover:bg-pink-300 text-slate-900 px-3 py-1.5 rounded-lg transition-colors">
+                            <i class="fas fa-copy mr-1"></i>복사
+                        </button>
+                        <button type="button" id="btnReset" class="text-xs font-bold bg-slate-600 hover:bg-slate-500 text-white px-3 py-1.5 rounded-lg transition-colors">초기화</button>
+                    </div>
+                </div>
+                <textarea id="mdPreview" readonly class="w-full min-h-[280px] p-3 text-slate-200 bg-slate-900 border-0 outline-none resize-y text-xs"></textarea>
+            </div>
+
+            <!-- ===== Copilot 바로가기 ===== -->
+            <a href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener noreferrer"
+               class="external-escape-link w-full flex flex-wrap items-center justify-center gap-2 rounded-xl px-4 py-3.5 font-bold shadow-md transition hover:shadow-lg border border-pink-200/80 bg-gradient-to-r from-pink-100 via-orange-100 to-cyan-100 text-slate-800 text-[19px] md:text-[21px] hover:from-pink-50 hover:via-orange-50 hover:to-cyan-50">
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/70 text-pink-600 text-[1.125rem] shadow-sm" aria-hidden="true"><i class="fas fa-robot"></i></span>
+                <span class="text-center min-w-0">
+                    <span class="block text-slate-800">브라우저에서 Copilot 열기(로그인 필수) <i class="fas fa-external-link-alt ml-1 text-[17px] opacity-80 align-middle"></i></span>
+                </span>
+            </a>
+
+            </div>
+        </div>
+
+        <p id="copyToast" class="hidden mt-3 text-center text-xs font-bold text-pink-700">클립보드에 복사했습니다.</p>
+
+        <!-- ===== 만드는 순서 (가이드) — 맨 아래 ===== -->
+        <section class="max-w-2xl mx-auto w-full mt-12">
+            <h2 class="text-center text-xl md:text-2xl font-black mb-5"><span class="grad-text">만드는 순서</span></h2>
+            <div class="rounded-3xl border border-pink-200/80 bg-white/70 shadow-[0_1px_3px_rgba(131,24,67,0.06)] p-4 sm:p-5 md:p-6">
+                <div class="flex items-center justify-center gap-0 text-center">
+                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
+                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-pink-600 text-white text-base shadow"><i class="fas fa-plane-departure"></i></span>
+                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">여행 정보 입력</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
+                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
+                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-orange-500 text-white text-base shadow"><i class="fas fa-copy"></i></span>
+                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">프롬프트 복사</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
+                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
+                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-cyan-500 text-white text-base shadow"><i class="fas fa-robot"></i></span>
+                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">Copilot 열기</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
+                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
+                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-fuchsia-600 text-white text-base shadow"><i class="fas fa-paste"></i></span>
+                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">붙여넣기</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
+                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
+                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-amber-500 text-white text-base shadow"><i class="fas fa-map-location-dot"></i></span>
+                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">계획서 완성</span>
+                    </div>
+                </div>
+
+                <!-- 가이드 영상 토글 -->
+                <div class="mt-6 border-t border-pink-200/70 pt-4">
+                    <button type="button" id="videoToggle" class="w-full flex items-center justify-center gap-2 text-sm font-bold text-pink-700 hover:text-pink-900">
+                        <i class="fas fa-circle-play"></i> 가이드 영상 보기 <i id="videoChevron" class="fas fa-chevron-down text-xs transition-transform"></i>
+                    </button>
+                    <div id="videoWrap" class="hidden mt-3">
+                        <video id="guideVideo" class="w-full rounded-xl shadow" controls playsinline preload="none"
+                               poster="https://kikeun.github.io/KIKEUN/play4.jpg">
+                            <source src="https://kikeun.github.io/KIKEUN/play4.mp4" type="video/mp4">
+                        </video>
+                        <p id="videoFallback" class="hidden mt-2 text-center text-xs text-slate-500">가이드 영상은 준비 중입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-12 pt-8 border-t border-pink-200/70 text-center">
+            <div class="max-w-2xl mx-auto w-full rounded-2xl border border-amber-200/90 bg-gradient-to-b from-amber-50 to-orange-50/60 shadow-sm mb-10 overflow-hidden">
+                <div class="px-3 sm:px-5 py-4 md:py-5 flex flex-col items-stretch gap-2.5 text-slate-800 leading-snug text-center max-w-full">
+                    <p class="text-[clamp(0.6875rem,3vw,0.875rem)] break-words">
+                        AI로 만드신 <strong>나만의 여행계획서</strong>를 <a href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener noreferrer" class="external-escape-link text-slate-900 font-bold underline underline-offset-2 hover:text-slate-950"><strong>PlayDay Gallery</strong> <i class="fas fa-external-link-alt text-[10px] opacity-70"></i></a><span class="text-slate-500 text-[12px] font-semibold">(로그인 필수)</span>에 업로드 해주세요.
+                    </p>
+                    <p class="text-[clamp(0.6875rem,3vw,0.875rem)] font-semibold text-slate-900 break-words">
+                        우수작을 선정하여 <strong class="text-amber-800">스타벅스 상품권</strong>을 보내 드립니다. (제출기한 : 26년 6월 30일)
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-xs text-slate-600 font-semibold">
+                <span class="text-slate-500">워크이노베이션센터</span>
+                <span class="text-slate-300" aria-hidden="true">│</span>
+                <span class="inline-flex items-center gap-1">
+                    <svg class="h-4 w-4 text-slate-700" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z" fill="currentColor"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z" fill="currentColor"/></svg>
+                AI디자인랩
+                </span>
+            </div>
+        </footer>
+
+        </div>
+    </main>
+
+    <script>
+    /* =========================================================================
+       ⚙️ 설치 필요 1곳 — 카카오맵 JS 키
+       1) https://developers.kakao.com → 내 애플리케이션 → 앱 추가 (카카오 로그인만, 카드 불필요)
+       2) [앱 키] 의 "JavaScript 키"를 아래에 붙여넣기
+       3) [플랫폼 → Web] 에 이 페이지가 실제로 열리는 도메인 등록
+          (예: https://kikeun.github.io — iframe '부모'가 아니라 이 HTML이 서빙되는 도메인)
+       ▶ 키는 위 등록 도메인에서만 동작하므로, HTML에 노출돼도 다른 사이트에선 못 씁니다(안전).
+       ▶ 키 미설정 시: 지도/거리계산만 비활성화되고 나머지(날짜·출발/목적지·동행·일정·프롬프트)는 정상 동작.
+       ========================================================================= */
+    const KAKAO_JS_KEY = 'c377aa89a34bd3227ebdd0a4c35e14ea';
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => (s || '').trim();
+    const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+
+    /* ---- 상태 ---- */
+    const state = {
+        startDate: null, endDate: null,
+        origin: null,  // {name, lat, lng}
+        goal: null,    // {name, lat, lng}  ← 목적지 = 여행지
+        routeKm: null, routeMin: null,
+    };
+
+    /* ---- iframe 외부링크 탈출 ---- */
+    function openExternalUrl(url) {
+        try { (window.top || window).open(url, '_blank', 'noopener,noreferrer'); return; } catch (e) {}
+        try { (window.top || window).location.href = url; return; } catch (e) {}
+        window.location.href = url;
+    }
+    document.querySelectorAll('.external-escape-link').forEach((a) => {
+        a.addEventListener('click', (ev) => {
+            const url = a.getAttribute('href');
+            if (!url || url.charAt(0) === '#') return;
+            ev.preventDefault();
+            openExternalUrl(url);
+        });
+    });
+
+    /* ---- 날짜 ---- */
+    function fmtDate(d) {
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return d.getFullYear() + '-' + m + '-' + day;
+    }
+    function dayLabel(start, i) {
+        const d = new Date(start.getTime() + i * 86400000);
+        return 'Day ' + (i + 1) + ' · ' + (d.getMonth() + 1) + '/' + d.getDate() + ' (' + WEEK[d.getDay()] + ')';
+    }
+
+    flatpickr('#fDates', {
+        mode: 'range', locale: 'ko', dateFormat: 'Y-m-d', minDate: 'today',
+        onChange: (sel) => {
+            if (sel.length === 2) {
+                state.startDate = sel[0]; state.endDate = sel[1];
+                const nights = Math.round((sel[1] - sel[0]) / 86400000);
+                const t = $('durationText');
+                t.textContent = '🗓️ ' + nights + '박 ' + (nights + 1) + '일';
+                t.classList.remove('hidden');
+            } else {
+                state.startDate = sel[0] || null; state.endDate = null;
+                $('durationText').classList.add('hidden');
+            }
+            renderDays();
+            refresh();
+        },
+    });
+
+    /* ---- 일자별 입력칸 동적 생성 ---- */
+    function renderDays() {
+        const wrap = $('daySchedule'), hint = $('dayHint');
+        // 기존 입력값 보존(같은 날짜 수면 유지)
+        const prev = Array.from(wrap.querySelectorAll('.day-input')).map((t) => t.value);
+        wrap.innerHTML = '';
+        if (!state.startDate || !state.endDate) { hint.classList.remove('hidden'); return; }
+        hint.classList.add('hidden');
+        const nights = Math.round((state.endDate - state.startDate) / 86400000);
+        for (let i = 0; i <= nights; i++) {
+            const label = dayLabel(state.startDate, i);
+            const card = document.createElement('div');
+            card.className = 'day-card';
+            const top = document.createElement('div');
+            top.className = 'mb-2';
+            top.innerHTML = '<span class="day-badge">📍 ' + label + '</span>';
+            const ta = document.createElement('textarea');
+            ta.className = 'day-input input-line';
+            ta.rows = 2;
+            ta.dataset.label = label;
+            ta.placeholder = '예: 오전 해수욕장, 점심 회, 오후 케이블카 (비워두면 AI가 추천)';
+            if (prev[i] != null) ta.value = prev[i];
+            ta.addEventListener('input', refresh);
+            card.appendChild(top); card.appendChild(ta);
+            wrap.appendChild(card);
+        }
+    }
+
+    /* ---- 칩 ---- */
+    function wireChips(containerId, single) {
+        document.querySelectorAll('#' + containerId + ' .chip').forEach((b) => {
+            b.addEventListener('click', () => {
+                const on = b.getAttribute('aria-pressed') === 'true';
+                if (single && !on) {
+                    document.querySelectorAll('#' + containerId + ' .chip').forEach((o) => o.setAttribute('aria-pressed', 'false'));
+                }
+                b.setAttribute('aria-pressed', on ? 'false' : 'true');
+                refresh();
+            });
+        });
+    }
+    function selectedChips(containerId) {
+        return Array.from(document.querySelectorAll('#' + containerId + ' .chip[aria-pressed="true"]')).map((b) => b.textContent.trim());
+    }
+    wireChips('withChips', true);
+    wireChips('moodChips', false);
+    $('fHeadcount').addEventListener('input', refresh);
+
+    /* ---- 카카오맵 + 장소검색 + OSRM ---- */
+    let map = null, places = null, routeLine = null;
+    const markers = {};
+    const overlays = {};
+    const ROLE_LABEL = { origin: '출발', goal: '도착' };
+
+    function loadKakao() {
+        return new Promise((resolve, reject) => {
+            if (!KAKAO_JS_KEY || KAKAO_JS_KEY === 'YOUR_KAKAO_JS_KEY') { reject('no-key'); return; }
+            const s = document.createElement('script');
+            s.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=' + KAKAO_JS_KEY + '&libraries=services&autoload=false';
+            s.onload = () => window.kakao.maps.load(resolve);
+            s.onerror = () => reject('load-fail');
+            document.head.appendChild(s);
+        });
+    }
+    function initMap() {
+        map = new kakao.maps.Map($('map'), { center: new kakao.maps.LatLng(35.0, 128.0), level: 9 });
+        places = new kakao.maps.services.Places();
+        wirePlaceSearch('fOrigin', 'fOriginResults', 'origin');
+        wirePlaceSearch('fGoal', 'fGoalResults', 'goal');
+    }
+    function setMarker(role, lat, lng, title) {
+        const pos = new kakao.maps.LatLng(lat, lng);
+        if (markers[role]) markers[role].setMap(null);
+        if (overlays[role]) overlays[role].setMap(null);
+        markers[role] = new kakao.maps.Marker({ position: pos, map: map, title: title });
+        const tag = ROLE_LABEL[role] || '';
+        const color = role === 'origin' ? '#ec4899' : '#06b6d4';
+        overlays[role] = new kakao.maps.CustomOverlay({
+            position: pos, yAnchor: 2.2,
+            content: '<div style="white-space:nowrap;font-size:11px;font-weight:800;color:#fff;background:' + color +
+                ';padding:2px 7px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.25)">' + tag + ' · ' + title + '</div>',
+        });
+        overlays[role].setMap(map);
+        const bounds = new kakao.maps.LatLngBounds();
+        Object.values(markers).forEach((m) => bounds.extend(m.getPosition()));
+        map.setBounds(bounds);
+    }
+    function wirePlaceSearch(inputId, resultsId, role) {
+        const input = $(inputId), box = $(resultsId);
+        const run = () => {
+            const kw = esc(input.value);
+            if (!kw) { box.classList.add('hidden'); return; }
+            places.keywordSearch(kw, (data, status) => {
+                box.innerHTML = '';
+                if (status !== kakao.maps.services.Status.OK || !data.length) {
+                    box.innerHTML = '<div class="px-3 py-2 text-xs text-slate-400">검색 결과가 없어요.</div>';
+                    box.classList.remove('hidden'); return;
+                }
+                data.slice(0, 7).forEach((p) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.innerHTML = '<span class="font-semibold text-slate-800">' + p.place_name + '</span>' +
+                        '<span class="block text-[11px] text-slate-500">' + (p.road_address_name || p.address_name || '') + '</span>';
+                    btn.addEventListener('click', () => {
+                        const lat = parseFloat(p.y), lng = parseFloat(p.x);
+                        input.value = p.place_name;
+                        box.classList.add('hidden');
+                        state[role] = { name: p.place_name, lat: lat, lng: lng };
+                        setMarker(role, lat, lng, p.place_name);
+                        maybeRoute();
+                        refresh();
+                    });
+                    box.appendChild(btn);
+                });
+                box.classList.remove('hidden');
+            });
+        };
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+        document.addEventListener('click', (e) => {
+            if (!box.contains(e.target) && e.target !== input) box.classList.add('hidden');
+        });
+    }
+    async function maybeRoute() {
+        if (!state.origin || !state.goal || state.origin.lat == null || state.goal.lat == null) return;
+        const o = state.origin, g = state.goal;
+        const url = 'https://router.project-osrm.org/route/v1/driving/' +
+            o.lng + ',' + o.lat + ';' + g.lng + ',' + g.lat + '?overview=full&geometries=geojson';
+        const info = $('routeInfo');
+        info.textContent = '🚗 이동 거리·시간 계산 중…';
+        info.classList.remove('hidden');
+        try {
+            const res = await fetch(url);
+            const j = await res.json();
+            const r = j.routes && j.routes[0];
+            if (!r) throw new Error('no-route');
+            const km = Math.round(r.distance / 100) / 10;
+            const min = Math.round(r.duration / 60);
+            const h = Math.floor(min / 60), mm = min % 60;
+            const timeStr = (h ? h + '시간 ' : '') + mm + '분';
+            state.routeKm = km; state.routeMin = min;
+            info.innerHTML = '🚗 ' + o.name + ' → ' + g.name + ' · 약 <span class="text-pink-700">' + km + 'km</span> · 약 <span class="text-pink-700">' + timeStr + '</span>';
+            // 지도에 실제 도로 경로 그리기
+            if (routeLine) routeLine.setMap(null);
+            if (map && r.geometry && r.geometry.coordinates) {
+                const path = r.geometry.coordinates.map((c) => new kakao.maps.LatLng(c[1], c[0]));
+                routeLine = new kakao.maps.Polyline({
+                    path: path, strokeWeight: 5, strokeColor: '#ec4899',
+                    strokeOpacity: 0.9, strokeStyle: 'solid',
+                });
+                routeLine.setMap(map);
+                const bounds = new kakao.maps.LatLngBounds();
+                path.forEach((pt) => bounds.extend(pt));
+                map.setBounds(bounds);
+            }
+            refresh();
+        } catch (e) {
+            state.routeKm = null; state.routeMin = null;
+            info.textContent = '거리 계산에 실패했어요. 잠시 후 다시 시도해 주세요.';
+            refresh();
+        }
+    }
+
+    /* ---- 프롬프트 생성 ---- */
+    function periodLine() {
+        if (state.startDate && state.endDate) {
+            const nights = Math.round((state.endDate - state.startDate) / 86400000);
+            return fmtDate(state.startDate) + ' ~ ' + fmtDate(state.endDate) + ' (' + nights + '박 ' + (nights + 1) + '일)';
+        }
+        return '_(날짜 미선택 — AI가 적절히 가정)_';
+    }
+    function withLine() {
+        const who = selectedChips('withChips');
+        const n = esc($('fHeadcount').value);
+        let s = who.length ? who.join(', ') : '_(미선택)_';
+        if (n) s += ' / 총 ' + n + '명';
+        return s;
+    }
+
+    function buildMarkdown() {
+        const dest = (state.goal && state.goal.name) || esc($('fGoal').value) || '_(목적지 미입력)_';
+        const moods = selectedChips('moodChips');
+        const moodLine = moods.length ? moods.join(', ') : 'AI가 동행·여행지에 맞춰 균형 있게 알아서';
+
+        const L = [];
+        L.push('# 지시어: 맞춤형 여행계획서 즉시 작성');
+        L.push('');
+        L.push('너는 수천 명의 여행을 설계해 온 베테랑 여행 플래너다.');
+        L.push('사용자가 직접 짠 아래 [내가 짠 날짜별 계획]을 **반드시 존중**하여, 그대로 따라가기만 하면 되는 **완성형 여행계획서**로 다듬어라.');
+        L.push('');
+        L.push('---');
+        L.push('');
+        L.push('## [여행 정보]');
+        L.push('- 여행지(목적지): ' + dest);
+        L.push('- 여행 기간: ' + periodLine());
+        L.push('- 동행: ' + withLine());
+        if (state.origin) {
+            let move = '- 이동: ' + state.origin.name + ' → ' + dest + ' (자동차)';
+            if (state.routeKm != null) {
+                const h = Math.floor(state.routeMin / 60), mm = state.routeMin % 60;
+                move += ' · 약 ' + state.routeKm + 'km · 약 ' + (h ? h + '시간 ' : '') + mm + '분';
+            }
+            L.push(move);
+        }
+        L.push('- 원하는 분위기: ' + moodLine);
+        L.push('');
+
+        // 사용자가 짠 일자별 계획
+        const dayInputs = Array.from(document.querySelectorAll('#daySchedule .day-input'));
+        if (dayInputs.length) {
+            L.push('---');
+            L.push('');
+            L.push('## [내가 짠 날짜별 계획]');
+            dayInputs.forEach((ta) => {
+                const v = esc(ta.value) || '(자유 — AI가 분위기·동행에 맞춰 추천해 줘)';
+                L.push('- **' + ta.dataset.label + '**: ' + v);
+            });
+            L.push('');
+        }
+
+        L.push('---');
+        L.push('');
+        L.push('## [작성 미션]');
+        L.push('1. **내 일정 존중**: 위 [내가 짠 날짜별 계획]을 토대로 각 날짜를 오전·점심·오후·저녁·밤 시간대별 상세 일정으로 완성한다. 내가 적은 활동·장소는 반드시 포함하고, 비워둔 날·빈 시간대만 분위기·동행에 맞춰 채운다.');
+        L.push('2. **장소 구체화**: 각 시간대마다 실제 존재하는 명소·맛집·카페를 구체적인 이름과 함께 제시하고, 한 줄 추천 이유를 붙인다.');
+        L.push('3. **이동 정보**: 장소 간 이동 수단(도보·대중교통·자동차)과 예상 소요 시간을 적는다. 위 출발지→목적지 이동시간을 첫날 일정에 반영한다.');
+        L.push('4. **예산 가이드**: 교통·숙박·식비·입장료 등 항목별 1인 예상 비용과 총합을 정리한다.');
+        L.push('5. **현실 꿀팁**: 동행과 분위기에 맞춘 실전 팁 3가지(예약·날씨·준비물 등)를 제안한다.');
+        L.push('');
+        L.push('---');
+        L.push('');
+        L.push('## [출력 형식]');
+        L.push('- 맨 위에 한 줄 콘셉트 문구 + 핵심 요약(여행지 / 기간 / 동행 / 예상 총예산).');
+        L.push('- 일정은 **날짜별로 표(Markdown table)** 로 정리한다: | 시간대 | 장소·활동 | 메모(이동·팁) |');
+        L.push('- 마지막에 **"이것만은 꼭" 체크리스트**로 마무리한다.');
+        L.push('');
+        L.push('## [절대 규칙]');
+        L.push('- 실제 존재하는 장소만 추천한다. 애매하면 그 지역의 대표 명소로 대체한다.');
+        L.push('- 동선은 지역(권역)별로 묶어 이동 낭비를 최소화한다.');
+        L.push('- 한국어로, 친근하고 들뜬 말투로 작성한다.');
+        return L.join('\n');
+    }
+
+    function refresh() { $('mdPreview').value = buildMarkdown(); }
+
+    /* ---- 복사 / 초기화 ---- */
+    $('btnCopy').addEventListener('click', async () => {
+        refresh();
+        try {
+            await navigator.clipboard.writeText($('mdPreview').value);
+            const t = $('copyToast');
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2000);
+        } catch (e) {
+            $('mdPreview').select(); document.execCommand('copy');
+            $('copyToast').classList.remove('hidden');
+        }
+    });
+    $('btnReset').addEventListener('click', () => {
+        if (!confirm('입력 내용을 모두 지울까요?')) return;
+        ['fDates', 'fOrigin', 'fGoal', 'fHeadcount'].forEach((id) => { $(id).value = ''; });
+        if ($('fDates')._flatpickr) $('fDates')._flatpickr.clear();
+        document.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        Object.assign(state, { startDate: null, endDate: null, origin: null, goal: null, routeKm: null, routeMin: null });
+        $('durationText').classList.add('hidden');
+        $('routeInfo').classList.add('hidden');
+        Object.values(markers).forEach((m) => m.setMap(null));
+        Object.values(overlays).forEach((o) => o.setMap(null));
+        if (routeLine) { routeLine.setMap(null); routeLine = null; }
+        renderDays();
+        refresh();
+    });
+
+    /* ---- 가이드 영상 토글 ---- */
+    $('videoToggle').addEventListener('click', () => {
+        const w = $('videoWrap'), c = $('videoChevron');
+        const open = w.classList.toggle('hidden') === false;
+        c.style.transform = open ? 'rotate(180deg)' : '';
+    });
+    $('guideVideo').addEventListener('error', () => {
+        $('guideVideo').classList.add('hidden');
+        $('videoFallback').classList.remove('hidden');
+    });
+
+    /* ---- 갑지(vol4.html)에서 sessionStorage로 전달된 목적지 ---- */
+    function applyTransferred() {
+        try {
+            const d = sessionStorage.getItem('PLAYDAY_TRAVEL_DEST');
+            if (d) { $('fGoal').value = d; state.goal = { name: d, lat: null, lng: null }; }
+            sessionStorage.removeItem('PLAYDAY_TRAVEL_DEST');
+        } catch (e) {}
+    }
+
+    /* ---- 지도 초기화 (키 없으면 안내 + 텍스트 입력 폴백) ---- */
+    loadKakao().then(initMap).catch((reason) => {
+        $('map').classList.add('hidden');
+        const n = $('mapNotice');
+        n.classList.remove('hidden');
+        n.textContent = (reason === 'no-key')
+            ? '지도·거리계산은 카카오 JS 키 설정 후 활성화됩니다. (출발지·목적지를 직접 적어도 계획서는 만들어집니다)'
+            : '지도를 불러오지 못했어요. 출발지·목적지를 직접 적어도 계획서는 만들어집니다.';
+        // 키 없을 때: 출발/목적지 텍스트가 프롬프트에 반영되도록
+        $('fOrigin').addEventListener('input', () => {
+            state.origin = $('fOrigin').value ? { name: $('fOrigin').value, lat: null, lng: null } : null;
+            refresh();
+        });
+        $('fGoal').addEventListener('input', () => {
+            state.goal = $('fGoal').value ? { name: $('fGoal').value, lat: null, lng: null } : null;
+            refresh();
+        });
+    });
+
+    applyTransferred();
+    renderDays();
+    refresh();
+    </script>
+</body>
+</html>
