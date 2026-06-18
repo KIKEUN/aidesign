@@ -122,6 +122,94 @@
 
         #map { width: 100%; height: 18rem; border-radius: 1rem; background: #eef2f7; }
 
+        /* 주변 추천(맛집·명소) */
+        .poi-tab {
+            border: 1.5px solid rgba(236,72,153,0.3); background: #fff; color: #9d174d;
+            font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.7rem; border-radius: 999px;
+            transition: all 0.15s ease;
+        }
+        .poi-tab[aria-pressed="true"] {
+            background: linear-gradient(135deg,#ec4899,#f97316); color: #fff; border-color: transparent;
+            box-shadow: 0 3px 10px rgba(236,72,153,0.3);
+        }
+        .poi-item {
+            display: block; text-align: left; width: 100%;
+            border: 1px solid rgba(236,72,153,0.22); background: #fff; border-radius: 0.65rem;
+            padding: 0.5rem 0.65rem; transition: all 0.12s ease;
+        }
+        .poi-item:hover { background: #fff1f6; border-color: rgba(236,72,153,0.45); }
+
+        /* 추천 아코디언 */
+        .reco-head {
+            width: 100%; display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.95rem; font-weight: 800; color: #9d174d;
+            background: linear-gradient(135deg, rgba(255,228,240,0.9), rgba(255,237,213,0.7));
+            border: 1.5px solid rgba(236,72,153,0.3); border-radius: 0.75rem;
+            padding: 0.7rem 0.9rem; transition: all 0.15s ease;
+        }
+        .reco-head:hover { border-color: rgba(236,72,153,0.55); box-shadow: 0 2px 10px rgba(236,72,153,0.15); }
+        .reco-head.reco-open { background: linear-gradient(135deg,#ec4899,#fb7185 55%,#f97316); color: #fff; border-color: transparent; }
+        .reco-chev { font-size: 0.8rem; transition: transform 0.2s ease; }
+        .reco-head.reco-open .reco-chev { transform: rotate(180deg); }
+        .reco-body { padding-top: 0.6rem; }
+
+        /* 미나미 캐릭터 — 목적지 입력 시 제목 글자 '뒤로' 차 타고 천천히 지나가기 (레이아웃 영향 없음) */
+        .minami-wrap { position: relative; }
+        .minami-car {
+            position: absolute; top: 50%; left: 110%; transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none; z-index: 0;
+        }
+        .minami-car.run { animation: minamiDrive 6.5s linear; }
+        @keyframes minamiDrive {
+            0%   { left: 110%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { left: -40%; opacity: 0; }
+        }
+        .minami-bubble {
+            background: #fff; border: 2px solid #ec4899; color: #9d174d;
+            font-weight: 900; font-size: 0.8rem; padding: 0.15rem 0.6rem; border-radius: 999px;
+            box-shadow: 0 2px 8px rgba(236,72,153,0.3); white-space: nowrap; margin-bottom: 0.15rem;
+            animation: minamiBob 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes minamiBob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
+        .minami-vehicle { display: inline-flex; align-items: flex-end; gap: 0.15rem; font-size: 1.8rem; line-height: 1; }
+        .minami-char { height: 2.2rem; width: auto; }
+
+        /* 입력 카드 "여기만 채우세요!" 자리의 미나미 응원(야호~) */
+        .minami-cheer {
+            position: absolute; top: -3rem; right: 0.3rem; z-index: 4;
+            display: flex; flex-direction: column; align-items: center; pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .minami-cheer.fadeout { opacity: 0; }
+        .minami-cheer-bubble {
+            position: relative;
+            font-size: 0.82rem; font-weight: 900; color: #db2777; white-space: nowrap;
+            background: #fff; border: 2px solid #ec4899; padding: 5px 12px; border-radius: 14px;
+            box-shadow: 0 3px 10px rgba(236,72,153,0.25); margin-bottom: 11px;
+            animation: cheerBob 1s ease-in-out infinite;   /* 이미지와 같이 위아래로 흔들림 */
+        }
+        /* 아래로 향한 말풍선 꼬리 (테두리 + 흰 채움) */
+        .minami-cheer-bubble::after {
+            content: ''; position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
+            border-top: 10px solid #ec4899;
+        }
+        .minami-cheer-bubble::before {
+            content: ''; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); z-index: 1;
+            width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-top: 8px solid #fff;
+        }
+        .minami-cheer-img { height: 5.5rem; width: auto; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2)); animation: cheerBounce 1s ease-in-out infinite; }
+        @keyframes cheerBounce { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+        @keyframes cheerBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .minami-cheer.appear { animation: cheerAppear 0.4s cubic-bezier(0.18,0.89,0.32,1.28); }
+        @keyframes cheerAppear { 0% { opacity: 0; transform: translateY(10px) scale(0.7); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        @media (prefers-reduced-motion: reduce) { .minami-cheer-img { animation: none; } }
+        @media (prefers-reduced-motion: reduce) { .minami-car.run { animation-duration: 0.01s; } .minami-bubble { animation: none; } }
+
         /* 일자별 카드 */
         .day-card {
             border: 1.5px solid rgba(236,72,153,0.25);
@@ -160,11 +248,11 @@
 
             <section class="glass-panel rounded-3xl px-5 sm:px-6 py-5 md:py-6 mb-8 text-center max-w-2xl mx-auto w-full">
                 <p class="text-[20px] md:text-[30px] font-extrabold leading-snug">
-                    떠나고 싶은 그곳, <span class="grad-text">나만의 여행계획서</span>로 만들어 보세요. <span aria-hidden="true">🏝️</span>
+                    <span class="grad-text">나만의 여행계획서</span>로 만들어 보세요. <span aria-hidden="true">🏝️</span>
                 </p>
                 <p class="mt-4 text-[16px] md:text-[18px] text-slate-600 leading-relaxed">
-                    날짜·출발지·목적지를 정하고 <strong class="text-pink-700">날짜별 하고 싶은 것</strong>만 적으면<br>
-                    AI가 시간표·맛집·예산까지 채워 진짜 계획서로 완성해 줘요. <i class="fas fa-arrow-down ml-0.5 text-xs md:text-sm align-middle" aria-hidden="true"></i>
+                    날짜·출발지·목적지만 정하면<br>
+                    추천 <strong class="text-pink-700">호텔·맛집·주변 명소</strong>를 골라 담아 나만의 계획서를 완성해요. <i class="fas fa-arrow-down ml-0.5 text-xs md:text-sm align-middle" aria-hidden="true"></i>
                 </p>
             </section>
 
@@ -176,7 +264,10 @@
 
             <!-- ===== 여행 정보 입력 ===== -->
             <div class="prompt-field-card relative rounded-2xl p-4 md:p-5 overflow-visible">
-                <span class="story-write-badge" aria-hidden="true">여기만 채우세요!</span>
+                <div class="minami-cheer hidden" id="minamiCheer" aria-hidden="true">
+                    <span class="minami-cheer-bubble" id="minamiCheerBubble"></span>
+                    <img class="minami-cheer-img" src="https://kikeun.github.io/aidesign/ai71.png?v=2" alt="">
+                </div>
                 <label class="block text-base md:text-lg font-extrabold text-slate-900 mb-4 flex items-center gap-2 pr-20 sm:pr-24">
                     <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 text-white text-base shadow-sm"><i class="fas fa-plane-departure"></i></span>
                     여행 정보 입력
@@ -212,120 +303,83 @@
                     <div>
                         <p class="text-xs font-bold text-slate-700 mb-2"><i class="fas fa-people-group text-cyan-500 mr-1"></i>누구와 가시나요?</p>
                         <div id="withChips" class="flex flex-wrap items-center gap-2">
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧳 혼자</button>
                             <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">💕 연인</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧑‍🤝‍🧑 친구</button>
                             <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">👨‍👩‍👧 가족</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧑‍🤝‍🧑 친구</button>
+                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🧳 혼자</button>
                             <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏢 회사 동료</button>
-                            <span class="inline-flex items-center gap-1 text-xs text-slate-600 ml-1">
-                                <input id="fHeadcount" type="number" min="1" inputmode="numeric" placeholder="인원" class="input-line !w-20 !py-1 !px-2 text-center" /> 명
-                            </span>
                         </div>
                     </div>
 
-                    <!-- 분위기 -->
-                    <div>
-                        <p class="text-xs font-bold text-slate-700 mb-2"><i class="fas fa-wand-magic-sparkles text-pink-500 mr-1"></i>원하는 분위기 <span class="font-normal text-slate-500">(선택 · 복수 가능)</span></p>
-                        <div id="moodChips" class="flex flex-wrap gap-2">
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🌴 힐링·휴양</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🍜 맛집·먹방</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏄 액티비티·체험</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">📸 인생샷·감성</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏯 문화·역사</button>
-                            <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">💰 가성비</button>
+                    <!-- 목적지 주변 추천: 숙소 → 맛집 → 명소 (아코디언) -->
+                    <div id="recoPanel" class="hidden border-t border-pink-200/70 pt-4 flex flex-col gap-2">
+                        <p class="text-xs text-slate-600 mb-1">항목을 <b class="text-pink-700">눌러 펼친 뒤</b> 체크하면, 아래 계획서의 선택한 날짜에 담겨요.</p>
+
+                        <!-- 숙소 -->
+                        <div class="reco-section">
+                            <button type="button" class="reco-head" data-target="bodyHotel"><span>🏨 숙소</span><i class="fas fa-chevron-down reco-chev"></i></button>
+                            <div id="bodyHotel" class="reco-body hidden">
+                                <p class="text-[11px] text-slate-500 mb-2">숙소 <b>종류로 필터</b> (왼쪽 저렴 → 오른쪽 고급). 1박 가격은 항목을 눌러 카카오맵에서 확인하세요.</p>
+                                <div id="stayChips" class="flex flex-wrap gap-2 mb-3">
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" data-kw="게스트하우스" aria-pressed="false">🛌 게스트하우스</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" data-kw="모텔" aria-pressed="false">🏩 모텔</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" data-kw="펜션" aria-pressed="false">🏡 펜션</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" data-kw="호텔" aria-pressed="false">🏨 호텔</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" data-kw="리조트" aria-pressed="false">🏖️ 리조트</button>
+                                </div>
+                                <div id="listHotel" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- 맛집 -->
+                        <div class="reco-section">
+                            <button type="button" class="reco-head" data-target="bodyFood"><span>🍜 주변 맛집</span><i class="fas fa-chevron-down reco-chev"></i></button>
+                            <div id="bodyFood" class="reco-body hidden">
+                                <div id="listFood" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- 명소 (원하는 분위기 선택 시) -->
+                        <div class="reco-section">
+                            <button type="button" class="reco-head" data-target="bodySpot"><span>📸 주변 명소</span><i class="fas fa-chevron-down reco-chev"></i></button>
+                            <div id="bodySpot" class="reco-body hidden">
+                                <p class="text-xs text-slate-600 mb-2"><i class="fas fa-wand-magic-sparkles text-pink-500 mr-1"></i>원하는 분위기를 고르면 그에 맞는 명소가 떠요.</p>
+                                <div id="moodChips" class="flex flex-wrap gap-2 mb-3">
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🌴 힐링·휴양</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🎢 테마파크</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">🏯 문화·역사</button>
+                                    <button type="button" class="chip text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full" aria-pressed="false">💑 이색데이트</button>
+                                </div>
+                                <div id="listSpot" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 일자별 세부 스케줄 (날짜 선택 시 자동 생성) -->
-                    <div class="border-t border-pink-200/70 pt-4">
-                        <p class="text-sm font-extrabold text-slate-900 mb-1"><i class="fas fa-list-check text-pink-500 mr-1"></i>날짜별 세부 스케줄 <span class="font-normal text-slate-500 text-xs">(내가 직접!)</span></p>
-                        <p class="text-xs text-slate-600 mb-3">하고 싶은 것·가고 싶은 곳만 적으면 AI가 시간표로 완성해요. <span class="text-pink-700 font-semibold">비워두면 AI가 추천</span>합니다.</p>
-                        <p id="dayHint" class="text-xs text-slate-500 bg-white/70 border border-pink-200/60 rounded-lg px-3 py-2">📅 위에서 <strong>여행 날짜</strong>를 먼저 선택하면 Day별 입력칸이 생겨요.</p>
-                        <div id="daySchedule" class="flex flex-col gap-3"></div>
-                    </div>
                 </div>
             </div>
 
-            <!-- ===== 생성된 프롬프트 ===== -->
-            <div class="bg-slate-900 rounded-2xl border border-slate-700 shadow-xl overflow-hidden w-full">
-                <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-slate-800 border-b border-slate-700">
-                    <span class="text-xs font-bold text-pink-300 tracking-wider"><i class="fas fa-file-code mr-1"></i>생성된 프롬프트</span>
-                    <div class="flex gap-2">
-                        <button type="button" id="btnCopy" class="text-xs font-bold bg-pink-200 hover:bg-pink-300 text-slate-900 px-3 py-1.5 rounded-lg transition-colors">
-                            <i class="fas fa-copy mr-1"></i>복사
-                        </button>
-                        <button type="button" id="btnReset" class="text-xs font-bold bg-slate-600 hover:bg-slate-500 text-white px-3 py-1.5 rounded-lg transition-colors">초기화</button>
+            <!-- ===== 최종 계획서 ===== -->
+            <div id="finalPlanCard" class="rounded-2xl border-2 border-pink-300/60 bg-white/85 p-4 md:p-5 shadow-[0_4px_20px_rgba(236,72,153,0.12)]">
+                <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
+                    <h3 class="text-base md:text-lg font-black"><span class="grad-text">📋 나의 여행계획서</span></h3>
+                    <div id="planActions" class="hidden flex flex-wrap gap-1.5">
+                        <button type="button" id="btnPrintPlan" class="text-xs font-bold bg-pink-500 hover:bg-pink-600 text-white px-3 py-1.5 rounded-lg transition-colors"><i class="fas fa-file-pdf mr-1"></i>PDF·인쇄</button>
+                        <button type="button" id="btnDownloadPlan" class="text-xs font-bold bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg transition-colors"><i class="fas fa-download mr-1"></i>HTML</button>
                     </div>
                 </div>
-                <textarea id="mdPreview" readonly class="w-full min-h-[280px] p-3 text-slate-200 bg-slate-900 border-0 outline-none resize-y text-xs"></textarea>
+                <div id="finalPlan" class="text-sm text-slate-700"></div>
             </div>
 
-            <!-- ===== Copilot 바로가기 ===== -->
-            <a href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener noreferrer"
-               class="external-escape-link w-full flex flex-wrap items-center justify-center gap-2 rounded-xl px-4 py-3.5 font-bold shadow-md transition hover:shadow-lg border border-pink-200/80 bg-gradient-to-r from-pink-100 via-orange-100 to-cyan-100 text-slate-800 text-[19px] md:text-[21px] hover:from-pink-50 hover:via-orange-50 hover:to-cyan-50">
-                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/70 text-pink-600 text-[1.125rem] shadow-sm" aria-hidden="true"><i class="fas fa-robot"></i></span>
-                <span class="text-center min-w-0">
-                    <span class="block text-slate-800">브라우저에서 Copilot 열기(로그인 필수) <i class="fas fa-external-link-alt ml-1 text-[17px] opacity-80 align-middle"></i></span>
-                </span>
-            </a>
+            <!-- ===== 생성된 프롬프트 (일단 숨김 — 나중에 되살리려면 이 블록 복원) ===== -->
 
             </div>
         </div>
-
-        <p id="copyToast" class="hidden mt-3 text-center text-xs font-bold text-pink-700">클립보드에 복사했습니다.</p>
-
-        <!-- ===== 만드는 순서 (가이드) — 맨 아래 ===== -->
-        <section class="max-w-2xl mx-auto w-full mt-12">
-            <h2 class="text-center text-xl md:text-2xl font-black mb-5"><span class="grad-text">만드는 순서</span></h2>
-            <div class="rounded-3xl border border-pink-200/80 bg-white/70 shadow-[0_1px_3px_rgba(131,24,67,0.06)] p-4 sm:p-5 md:p-6">
-                <div class="flex items-center justify-center gap-0 text-center">
-                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
-                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-pink-600 text-white text-base shadow"><i class="fas fa-plane-departure"></i></span>
-                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">여행 정보 입력</span>
-                    </div>
-                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
-                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
-                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-orange-500 text-white text-base shadow"><i class="fas fa-copy"></i></span>
-                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">프롬프트 복사</span>
-                    </div>
-                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
-                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
-                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-cyan-500 text-white text-base shadow"><i class="fas fa-robot"></i></span>
-                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">Copilot 열기</span>
-                    </div>
-                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
-                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
-                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-fuchsia-600 text-white text-base shadow"><i class="fas fa-paste"></i></span>
-                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">붙여넣기</span>
-                    </div>
-                    <i class="fas fa-chevron-right text-pink-300 text-[11px] sm:text-xs mx-1 sm:mx-2 shrink-0" aria-hidden="true"></i>
-                    <div class="flex flex-col items-center gap-1.5 min-w-[3.75rem] sm:min-w-[5rem]">
-                        <span class="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-amber-500 text-white text-base shadow"><i class="fas fa-map-location-dot"></i></span>
-                        <span class="text-[11px] sm:text-[13px] font-bold text-slate-700 leading-tight">계획서 완성</span>
-                    </div>
-                </div>
-
-                <!-- 가이드 영상 토글 -->
-                <div class="mt-6 border-t border-pink-200/70 pt-4">
-                    <button type="button" id="videoToggle" class="w-full flex items-center justify-center gap-2 text-sm font-bold text-pink-700 hover:text-pink-900">
-                        <i class="fas fa-circle-play"></i> 가이드 영상 보기 <i id="videoChevron" class="fas fa-chevron-down text-xs transition-transform"></i>
-                    </button>
-                    <div id="videoWrap" class="hidden mt-3">
-                        <video id="guideVideo" class="w-full rounded-xl shadow" controls playsinline preload="none"
-                               poster="https://kikeun.github.io/KIKEUN/play4.jpg">
-                            <source src="https://kikeun.github.io/KIKEUN/play4.mp4" type="video/mp4">
-                        </video>
-                        <p id="videoFallback" class="hidden mt-2 text-center text-xs text-slate-500">가이드 영상은 준비 중입니다.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <footer class="mt-12 pt-8 border-t border-pink-200/70 text-center">
             <div class="max-w-2xl mx-auto w-full rounded-2xl border border-amber-200/90 bg-gradient-to-b from-amber-50 to-orange-50/60 shadow-sm mb-10 overflow-hidden">
                 <div class="px-3 sm:px-5 py-4 md:py-5 flex flex-col items-stretch gap-2.5 text-slate-800 leading-snug text-center max-w-full">
                     <p class="text-[clamp(0.6875rem,3vw,0.875rem)] break-words">
-                        AI로 만드신 <strong>나만의 여행계획서</strong>를 <a href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener noreferrer" class="external-escape-link text-slate-900 font-bold underline underline-offset-2 hover:text-slate-950"><strong>PlayDay Gallery</strong> <i class="fas fa-external-link-alt text-[10px] opacity-70"></i></a><span class="text-slate-500 text-[12px] font-semibold">(로그인 필수)</span>에 업로드 해주세요.
+                        <strong>AI를 활용하여 나만의 여행계획서 TOOL</strong>을 직접 만들어 보세요!<br>완성한 결과물을 <a href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener noreferrer" class="external-escape-link text-slate-900 font-bold underline underline-offset-2 hover:text-slate-950"><strong>PlayDay Gallery</strong> <i class="fas fa-external-link-alt text-[10px] opacity-70"></i></a>에 공유해 주세요.
                     </p>
                     <p class="text-[clamp(0.6875rem,3vw,0.875rem)] font-semibold text-slate-900 break-words">
                         우수작을 선정하여 <strong class="text-amber-800">스타벅스 상품권</strong>을 보내 드립니다. (제출기한 : 26년 6월 30일)
@@ -359,6 +413,28 @@
 
     const $ = (id) => document.getElementById(id);
     const esc = (s) => (s || '').trim();
+
+    /* 미나미 캐릭터 이미지 — URL을 넣으면 이모지(🚗) 대신 이 이미지가 차 타고 지나갑니다.
+       예: 'https://kikeun.github.io/KIKEUN/minami.png' (비워두면 이모지로 동작) */
+    const MINAMI_IMG = 'https://kikeun.github.io/aidesign/ai71.png?v=2';
+    let minamiTimer = null;
+    function playMinami(name) {
+        if (!name) return;
+        const cheerWrap = $('minamiCheer');
+        if (cheerWrap) {
+            cheerWrap.classList.remove('hidden', 'fadeout');   // 목적지 입력 시 등장
+            cheerWrap.classList.remove('appear'); void cheerWrap.offsetWidth; cheerWrap.classList.add('appear');
+        }
+        const cheer = $('minamiCheerBubble');
+        if (cheer) cheer.textContent = name + ' 야호~';
+        // 약 5초 뒤 부드럽게 사라짐
+        if (minamiTimer) clearTimeout(minamiTimer);
+        minamiTimer = setTimeout(() => {
+            if (!cheerWrap) return;
+            cheerWrap.classList.add('fadeout');
+            setTimeout(() => { cheerWrap.classList.add('hidden'); cheerWrap.classList.remove('fadeout'); }, 420);
+        }, 5000);
+    }
     const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 
     /* ---- 상태 ---- */
@@ -366,7 +442,10 @@
         startDate: null, endDate: null,
         origin: null,  // {name, lat, lng}
         goal: null,    // {name, lat, lng}  ← 목적지 = 여행지
+        goalRegion: '', // 추천 검색용 지역명(대구/거제시/속초시 …)
         routeKm: null, routeMin: null,
+        activeDay: 0,   // 「나의 여행계획서」에서 현재 담는 중인 날짜 index
+        openReco: null, // 펼쳐진 추천 섹션 'hotel'|'food'|'spot'
     };
 
     /* ---- iframe 외부링크 탈출 ---- */
@@ -408,41 +487,12 @@
                 state.startDate = sel[0] || null; state.endDate = null;
                 $('durationText').classList.add('hidden');
             }
-            renderDays();
             refresh();
         },
     });
 
-    /* ---- 일자별 입력칸 동적 생성 ---- */
-    function renderDays() {
-        const wrap = $('daySchedule'), hint = $('dayHint');
-        // 기존 입력값 보존(같은 날짜 수면 유지)
-        const prev = Array.from(wrap.querySelectorAll('.day-input')).map((t) => t.value);
-        wrap.innerHTML = '';
-        if (!state.startDate || !state.endDate) { hint.classList.remove('hidden'); return; }
-        hint.classList.add('hidden');
-        const nights = Math.round((state.endDate - state.startDate) / 86400000);
-        for (let i = 0; i <= nights; i++) {
-            const label = dayLabel(state.startDate, i);
-            const card = document.createElement('div');
-            card.className = 'day-card';
-            const top = document.createElement('div');
-            top.className = 'mb-2';
-            top.innerHTML = '<span class="day-badge">📍 ' + label + '</span>';
-            const ta = document.createElement('textarea');
-            ta.className = 'day-input input-line';
-            ta.rows = 2;
-            ta.dataset.label = label;
-            ta.placeholder = '예: 오전 해수욕장, 점심 회, 오후 케이블카 (비워두면 AI가 추천)';
-            if (prev[i] != null) ta.value = prev[i];
-            ta.addEventListener('input', refresh);
-            card.appendChild(top); card.appendChild(ta);
-            wrap.appendChild(card);
-        }
-    }
-
     /* ---- 칩 ---- */
-    function wireChips(containerId, single) {
+    function wireChips(containerId, single, onChange) {
         document.querySelectorAll('#' + containerId + ' .chip').forEach((b) => {
             b.addEventListener('click', () => {
                 const on = b.getAttribute('aria-pressed') === 'true';
@@ -451,39 +501,83 @@
                 }
                 b.setAttribute('aria-pressed', on ? 'false' : 'true');
                 refresh();
+                if (onChange && state.goal && state.goal.lat != null) onChange();
             });
         });
     }
     function selectedChips(containerId) {
         return Array.from(document.querySelectorAll('#' + containerId + ' .chip[aria-pressed="true"]')).map((b) => b.textContent.trim());
     }
-    wireChips('withChips', true);
-    wireChips('moodChips', false);
-    $('fHeadcount').addEventListener('input', refresh);
+    wireChips('withChips', true, () => searchCat('food'));
+    wireChips('moodChips', true, () => searchCat('spot'));
+    wireChips('stayChips', true, () => searchCat('hotel'));
+
+    // 추천 아코디언: 헤더 클릭 시 해당 목록만 펼치기(+ 그 종류 마커만 표시)
+    const RECO_TYPE = { bodyHotel: 'hotel', bodyFood: 'food', bodySpot: 'spot' };
+    document.querySelectorAll('.reco-head').forEach((h) => {
+        h.addEventListener('click', () => {
+            const body = $(h.dataset.target);
+            const willOpen = body.classList.contains('hidden');
+            collapseReco();
+            if (willOpen) {
+                body.classList.remove('hidden');
+                h.classList.add('reco-open');
+                state.openReco = RECO_TYPE[h.dataset.target];
+            }
+            applyMarkerVisibility();
+        });
+    });
 
     /* ---- 카카오맵 + 장소검색 + OSRM ---- */
     let map = null, places = null, routeLine = null;
     const markers = {};
     const overlays = {};
     const ROLE_LABEL = { origin: '출발', goal: '도착' };
+    let poiInfo = null;
+    const poiMarkers = { hotel: [], food: [], spot: [] };
+    const pois = { hotel: [], food: [], spot: [] };
+    const LIST_CONTAINER = { hotel: 'listHotel', food: 'listFood', spot: 'listSpot' };
+    let picked = {};  // 담은 장소: id → { p, type:'hotel'|'food'|'spot', day:일차 index }
 
     function loadKakao() {
         return new Promise((resolve, reject) => {
             if (!KAKAO_JS_KEY || KAKAO_JS_KEY === 'YOUR_KAKAO_JS_KEY') { reject('no-key'); return; }
             const s = document.createElement('script');
-            s.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=' + KAKAO_JS_KEY + '&libraries=services&autoload=false';
+            s.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=' + KAKAO_JS_KEY + '&libraries=services&autoload=false';
             s.onload = () => window.kakao.maps.load(resolve);
             s.onerror = () => reject('load-fail');
             document.head.appendChild(s);
         });
     }
+    const DEFAULT_ORIGIN = '현대빌딩 율곡로 75';  // 기본 출발지(회사) = 서울 종로구 율곡로 75 현대빌딩(계동)
+    const DEFAULT_CENTER = { lat: 37.5773, lng: 126.9876 };  // 현대빌딩 좌표(초기 고정)
     function initMap() {
-        map = new kakao.maps.Map($('map'), { center: new kakao.maps.LatLng(35.0, 128.0), level: 9 });
+        map = new kakao.maps.Map($('map'), { center: new kakao.maps.LatLng(DEFAULT_CENTER.lat, DEFAULT_CENTER.lng), level: 6 });
         places = new kakao.maps.services.Places();
         wirePlaceSearch('fOrigin', 'fOriginResults', 'origin');
         wirePlaceSearch('fGoal', 'fGoalResults', 'goal');
+        setDefaultOrigin();
     }
-    function setMarker(role, lat, lng, title) {
+    function applyOrigin(name, lat, lng) {
+        $('fOrigin').value = name;
+        state.origin = { name: name, lat: lat, lng: lng };
+        setMarker('origin', lat, lng, name, false);
+        map.setCenter(new kakao.maps.LatLng(lat, lng));
+        map.setLevel(6);
+        refresh();
+    }
+    function setDefaultOrigin() {
+        places.keywordSearch(DEFAULT_ORIGIN, (data, status) => {
+            if (status === kakao.maps.services.Status.OK && data.length) {
+                const p = data[0];
+                applyOrigin('현대건설(현대빌딩)', parseFloat(p.y), parseFloat(p.x));
+            } else {
+                // 검색 실패 시 좌표로 직접 고정
+                applyOrigin('현대빌딩(서울 종로구 율곡로 75)', DEFAULT_CENTER.lat, DEFAULT_CENTER.lng);
+            }
+        });
+    }
+    function setMarker(role, lat, lng, title, fit) {
         const pos = new kakao.maps.LatLng(lat, lng);
         if (markers[role]) markers[role].setMap(null);
         if (overlays[role]) overlays[role].setMap(null);
@@ -496,9 +590,11 @@
                 ';padding:2px 7px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.25)">' + tag + ' · ' + title + '</div>',
         });
         overlays[role].setMap(map);
-        const bounds = new kakao.maps.LatLngBounds();
-        Object.values(markers).forEach((m) => bounds.extend(m.getPosition()));
-        map.setBounds(bounds);
+        if (fit !== false) {
+            const bounds = new kakao.maps.LatLngBounds();
+            Object.values(markers).forEach((m) => bounds.extend(m.getPosition()));
+            map.setBounds(bounds);
+        }
     }
     function wirePlaceSearch(inputId, resultsId, role) {
         const input = $(inputId), box = $(resultsId);
@@ -521,8 +617,10 @@
                         input.value = p.place_name;
                         box.classList.add('hidden');
                         state[role] = { name: p.place_name, lat: lat, lng: lng };
+                        if (role === 'goal') state.goalRegion = regionName(p);
                         setMarker(role, lat, lng, p.place_name);
                         maybeRoute();
+                        if (role === 'goal') { loadAllPois(); playMinami(p.place_name); }
                         refresh();
                     });
                     box.appendChild(btn);
@@ -575,6 +673,316 @@
         }
     }
 
+    /* ---- 목적지 주변 맛집·명소 (동행·분위기 반영) ---- */
+    // 선택한 장소의 주소에서 지역명(시/군 또는 광역시) 추출 → 지역 전체 검색용
+    function regionName(p) {
+        const addr = (p.address_name || p.road_address_name || '').trim();
+        if (!addr) return p.place_name || '';
+        const t = addr.split(/\s+/);
+        const sigun = t.slice(1).find((x) => /(시|군)$/.test(x));   // 거제시, 속초시 …
+        if (sigun) return sigun;
+        let sido = (t[0] || '').replace(/(특별자치도|특별자치시|광역시|특별시|도)$/, '');  // 대구광역시→대구
+        return sido || (p.place_name || '');
+    }
+    function poiQueries(dest) {
+        const moods = selectedChips('moodChips');
+        const has = (arr, kw) => arr.some((x) => x.indexOf(kw) >= 0);
+        // 맛집 키워드 — 단순하게 (지역 + 맛집)
+        const food = '맛집';
+        // 명소 키워드 (분위기 → 단순 키워드)
+        let spot = '관광명소';
+        if (has(moods, '힐링')) spot = '힐링';
+        else if (has(moods, '테마파크')) spot = '테마파크';
+        else if (has(moods, '문화')) spot = '문화';
+        else if (has(moods, '이색데이트')) spot = '이색데이트';
+        // 숙소 종류 (선택 시 그 종류로, 미선택 시 호텔)
+        const stayBtn = document.querySelector('#stayChips .chip[aria-pressed="true"]');
+        const stay = stayBtn ? stayBtn.dataset.kw : '호텔';
+        return { hotel: dest + ' ' + stay, food: dest + ' ' + food, spot: dest + ' ' + spot };
+    }
+    // 한 종류(hotel/food/spot)만 다시 검색 — 담은 장소(picked)는 건드리지 않음
+    function searchCat(type) {
+        if (!places || !(state.goal && state.goal.lat != null)) return;
+        const dest = state.goal.name || state.goalRegion;   // 선택한 목적지 이름 그대로 (예: 거제도)
+        const q = poiQueries(dest);
+        const opt = { size: 15, sort: 'accuracy' };   // 지역 전체 검색(반경 제한 없음)
+        pois[type] = [];
+        places.keywordSearch(q[type], (d, s) => {
+            if (s === kakao.maps.services.Status.OK) pois[type] = d;
+            renderList(type);
+        }, opt);
+    }
+    // 목적지를 새로 선택했을 때만 호출 — 담은 장소 초기화 후 셋 다 검색
+    function loadAllPois() {
+        if (!places) return;
+        picked = {};
+        state.activeDay = 0;
+        pois.hotel = []; pois.food = []; pois.spot = [];
+        buildFinalPlan();
+        $('recoPanel').classList.remove('hidden');
+        collapseReco();
+        ['hotel', 'food', 'spot'].forEach((t) => {
+            const box = $(LIST_CONTAINER[t]);
+            if (box) box.innerHTML = '<p class="text-xs text-slate-500 px-1 py-1">찾는 중…</p>';
+            searchCat(t);
+        });
+    }
+    function collapseReco() {
+        state.openReco = null;
+        document.querySelectorAll('.reco-body').forEach((b) => b.classList.add('hidden'));
+        document.querySelectorAll('.reco-head').forEach((x) => x.classList.remove('reco-open'));
+    }
+    function applyMarkerVisibility() {
+        ['hotel', 'food', 'spot'].forEach((t) => {
+            (poiMarkers[t] || []).forEach((m) => m.setMap(state.openReco === t ? map : null));
+        });
+    }
+    function renderList(type) {
+        const box = $(LIST_CONTAINER[type]); if (!box) return;
+        (poiMarkers[type] || []).forEach((m) => m.setMap(null)); poiMarkers[type] = [];
+        const list = pois[type] || [];
+        box.innerHTML = '';
+        if (!list.length) {
+            box.innerHTML = '<p class="text-xs text-slate-400 px-1 py-1">결과가 없어요.</p>';
+            return;
+        }
+        list.forEach((p) => {
+            const lat = parseFloat(p.y), lng = parseFloat(p.x);
+            const pos = new kakao.maps.LatLng(lat, lng);
+            const m = new kakao.maps.Marker({ position: pos, map: (state.openReco === type ? map : null) });
+            kakao.maps.event.addListener(m, 'click', () => openPoiInfo(m, p));
+            poiMarkers[type].push(m);
+
+            const cat = (p.category_name || '').split('>').pop().trim();
+            const checked = !!picked[p.id + '@' + state.activeDay];   // 현재 활성 날짜 기준
+            const label = document.createElement('label');
+            label.className = 'poi-item flex items-start gap-2 cursor-pointer';
+            label.innerHTML =
+                '<input type="checkbox" class="mt-1 accent-pink-500 shrink-0"' + (checked ? ' checked' : '') + '>' +
+                '<span class="min-w-0">' +
+                '<span class="block text-[13px] font-bold text-slate-800">' + p.place_name + '</span>' +
+                '<span class="block text-[11px] text-slate-500">' + cat + '</span></span>';
+            const cb = label.querySelector('input');
+            cb.addEventListener('change', () => {
+                const key = p.id + '@' + state.activeDay;
+                if (cb.checked) picked[key] = { p: p, type: type, day: state.activeDay };
+                else delete picked[key];
+                openPoiInfo(m, p);
+                buildFinalPlan();
+            });
+            box.appendChild(label);
+        });
+    }
+    function openPoiInfo(marker, p) {
+        if (!poiInfo) poiInfo = new kakao.maps.InfoWindow({ zIndex: 5 });
+        poiInfo.setContent(
+            '<div style="padding:7px 10px;font-size:12px;max-width:220px;line-height:1.4">' +
+            '<b>' + p.place_name + '</b><br>' +
+            '<span style="color:#777">' + (p.road_address_name || p.address_name || '') + '</span><br>' +
+            '<a href="' + p.place_url + '" target="_blank" rel="noopener" style="color:#db2777;font-weight:700">카카오맵에서 보기 ↗</a></div>'
+        );
+        poiInfo.open(map, marker);
+    }
+    function clearPois() {
+        ['hotel', 'food', 'spot'].forEach((t) => {
+            (poiMarkers[t] || []).forEach((m) => m.setMap(null)); poiMarkers[t] = [];
+            pois[t] = [];
+            const box = $(LIST_CONTAINER[t]); if (box) box.innerHTML = '';
+        });
+        if (poiInfo) poiInfo.close();
+        picked = {};
+        state.activeDay = 0;
+        collapseReco();
+        if ($('recoPanel')) $('recoPanel').classList.add('hidden');
+    }
+
+    /* ---- 최종 계획서 (담은 장소를 "활성 날짜"에 직접 채움) ---- */
+    function dayCountNow() {
+        return (state.startDate && state.endDate)
+            ? Math.round((state.endDate - state.startDate) / 86400000) + 1 : 1;
+    }
+    function planModel() {
+        const dest = (state.goal && state.goal.name) || esc($('fGoal').value) || '';
+        const dayCount = dayCountNow();
+        if (state.activeDay > dayCount - 1) state.activeDay = dayCount - 1;
+        if (state.activeDay < 0) state.activeDay = 0;
+        const buckets = Array.from({ length: dayCount }, () => ({ hotels: [], spots: [], foods: [] }));
+        Object.values(picked).forEach((it) => {
+            const di = Math.min(Math.max(it.day || 0, 0), dayCount - 1);
+            if (it.type === 'hotel') buckets[di].hotels.push(it.p);
+            else if (it.type === 'spot') buckets[di].spots.push(it.p);
+            else buckets[di].foods.push(it.p);
+        });
+        const days = buckets.map((b, i) => ({
+            label: state.startDate ? dayLabel(state.startDate, i) : ('Day ' + (i + 1)),
+            hotels: b.hotels, spots: b.spots, foods: b.foods,
+        }));
+        let move = '';
+        if (state.origin && dest) {
+            move = state.origin.name + ' → ' + dest;
+            if (state.routeKm != null) {
+                const h = Math.floor(state.routeMin / 60), mm = state.routeMin % 60;
+                move += ' (약 ' + state.routeKm + 'km · 약 ' + (h ? h + '시간 ' : '') + mm + '분)';
+            }
+        }
+        return {
+            dest: dest, period: periodLine(), who: withLine(),
+            mood: (selectedChips('moodChips').join(', ') || '-'),
+            move: move, days: days,
+            empty: (!dest && Object.keys(picked).length === 0),
+        };
+    }
+    function catTail(p) {
+        const c = (p.category_name || '').split('>').pop().trim();
+        return c ? ' <span style="color:#9aa">· ' + c + '</span>' : '';
+    }
+    function buildFinalPlan() {
+        const host = $('finalPlan'); if (!host) return;
+        const acts = $('planActions');
+        const m = planModel();
+        if (m.empty) {
+            host.innerHTML = '<p class="text-slate-600 text-sm md:text-base leading-relaxed py-2">여행지를 정하고, <b class="text-pink-700">날짜를 클릭</b>한 뒤 위 추천에서 <b class="text-pink-700">맛집·명소를 체크</b>하면 그 날짜에 담겨요.</p>';
+            if (acts) acts.classList.add('hidden');
+            return;
+        }
+        if (acts) acts.classList.remove('hidden');
+        let h = '';
+        h += '<div class="rounded-xl bg-gradient-to-r from-pink-50 via-orange-50 to-cyan-50 border border-pink-200/60 p-3 mb-3 text-[13px]">';
+        h += '<div class="font-black text-slate-900 mb-0.5">🏝️ ' + (m.dest || '여행지 미정') + ' <span class="font-bold text-slate-600">' + m.period + '</span></div>';
+        h += '<div class="text-slate-600">👥 ' + m.who + '</div>';
+        if (m.move) h += '<div class="text-slate-600">🚗 ' + m.move + '</div>';
+        h += '</div>';
+        h += '<p class="planUiOnly text-[11px] text-slate-500 mb-2">📌 <b>날짜를 클릭</b>해 선택한 뒤, 위 추천에서 장소를 체크하면 그 날짜에 담겨요.</p>';
+        m.days.forEach((d, i) => {
+            const active = i === state.activeDay;
+            h += '<div class="rounded-xl border p-3 mb-2 ' + (active ? 'border-pink-400 ring-2 ring-pink-300 bg-pink-50/60' : 'border-pink-200/50 bg-white/70') + '">';
+            h += '<button type="button" class="dayPick day-badge mb-2" data-day="' + i + '">📍 ' + d.label + (active ? ' · 담는 중' : '') + '</button>';
+            const item = (p) =>
+                '<div class="flex items-center justify-between gap-2 text-[13px] text-slate-700 ml-1">' +
+                '<span>• ' + p.place_name + catTail(p) + '</span>' +
+                '<button type="button" class="planRemove planUiOnly text-slate-400 hover:text-pink-600 text-xs px-1" data-key="' + p.id + '@' + i + '" title="삭제">✕</button></div>';
+            if (d.hotels.length) {
+                h += '<div class="mb-1"><span class="text-[12px] font-extrabold text-cyan-600">🏨 숙소</span>';
+                d.hotels.forEach((p) => { h += item(p); });
+                h += '</div>';
+            }
+            if (d.spots.length) {
+                h += '<div class="mb-1"><span class="text-[12px] font-extrabold text-orange-600">📸 명소</span>';
+                d.spots.forEach((p) => { h += item(p); });
+                h += '</div>';
+            }
+            if (d.foods.length) {
+                h += '<div><span class="text-[12px] font-extrabold text-pink-600">🍜 맛집</span>';
+                d.foods.forEach((p) => { h += item(p); });
+                h += '</div>';
+            }
+            if (!d.hotels.length && !d.spots.length && !d.foods.length) {
+                h += '<div class="text-[12px] text-slate-400">' + (active ? '여기에 담는 중 — 위 추천에서 장소를 체크하세요.' : '비어 있음') + '</div>';
+            }
+            h += '</div>';
+        });
+        host.innerHTML = h;
+        host.querySelectorAll('.dayPick').forEach((b) => {
+            b.addEventListener('click', () => {
+                state.activeDay = parseInt(b.dataset.day, 10);
+                collapseReco();                                  // 추천 아코디언 모두 접기(처음 상태로)
+                buildFinalPlan();
+                ['hotel', 'food', 'spot'].forEach(renderList);   // 체크 표시를 그 날짜 기준으로 갱신
+                applyMarkerVisibility();                         // 펼친 게 없으니 마커도 숨김
+            });
+        });
+        host.querySelectorAll('.planRemove').forEach((b) => {
+            b.addEventListener('click', () => {
+                delete picked[b.dataset.key];
+                buildFinalPlan();
+                ['hotel', 'food', 'spot'].forEach(renderList);
+            });
+        });
+    }
+    function planToText(m) {
+        const L = [];
+        L.push('[나의 여행계획서]');
+        L.push('여행지: ' + (m.dest || '-') + '  ' + m.period);
+        L.push('동행: ' + m.who + ' / 분위기: ' + m.mood);
+        if (m.move) L.push('이동: ' + m.move);
+        L.push('');
+        m.days.forEach((d) => {
+            L.push('■ ' + d.label);
+            if (d.hotels.length) L.push('  - 숙소: ' + d.hotels.map((p) => p.place_name).join(', '));
+            if (d.spots.length) L.push('  - 명소: ' + d.spots.map((p) => p.place_name).join(', '));
+            if (d.foods.length) L.push('  - 맛집: ' + d.foods.map((p) => p.place_name).join(', '));
+            L.push('');
+
+        });
+        return L.join('\n').trim();
+    }
+
+    /* ---- PDF 저장 · HTML 다운로드 · 인쇄 ---- */
+    function escapeHtml(s) {
+        return (s || '').replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+        });
+    }
+    function catText(p) { return (p.category_name || '').split('>').pop().trim(); }
+    const PLAN_DOC_CSS =
+        '*{box-sizing:border-box}body{font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;margin:0;background:#f6f7f9;color:#2a1530}' +
+        '.toolbar{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:10px 16px;text-align:right}' +
+        '.toolbar button{font-size:14px;font-weight:700;background:#ec4899;color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer}' +
+        '.page{max-width:720px;margin:18px auto;background:#fff;padding:28px 28px 36px;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.08)}' +
+        'h1{font-size:24px;margin:0 0 16px;background:linear-gradient(100deg,#db2777,#f97316 50%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}' +
+        '.summary{background:linear-gradient(90deg,#fff1f5,#fff7ed,#ecfeff);border:1px solid #f6cfe0;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:14px}' +
+        '.summary .dest{font-weight:800;font-size:16px;margin-bottom:2px}.summary .dest span{font-weight:600;color:#555;font-size:14px}' +
+        '.day{border:1px solid #f3d4e2;border-radius:12px;padding:12px 14px;margin-bottom:10px;page-break-inside:avoid}' +
+        '.badge{display:inline-block;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,#ec4899,#f97316);padding:3px 10px;border-radius:999px;margin-bottom:8px}' +
+        '.sec{margin:4px 0}.sec b.hotel{color:#0891b2;font-size:13px}.sec b.spot{color:#ea580c;font-size:13px}.sec b.food{color:#db2777;font-size:13px}' +
+        '.sec ul{margin:4px 0 8px;padding-left:20px}.sec li{font-size:14px;margin:2px 0}.cat{color:#999;font-size:12px}.empty{color:#aaa;font-size:13px}' +
+        '.foot{margin-top:18px;text-align:center;color:#999;font-size:12px;border-top:1px solid #eee;padding-top:12px}' +
+        '@media print{.toolbar{display:none}body{background:#fff}.page{box-shadow:none;margin:0;max-width:none;border-radius:0}}';
+    function planDocHTML(m) {
+        let body = '<h1>나의 여행계획서</h1>';
+        body += '<div class="summary"><div class="dest">🏝️ ' + escapeHtml(m.dest || '여행지 미정') + ' <span>' + escapeHtml(m.period) + '</span></div>';
+        body += '<div>👥 ' + escapeHtml(m.who) + '</div>';
+        if (m.move) body += '<div>🚗 ' + escapeHtml(m.move) + '</div>';
+        body += '</div>';
+        const li = (p) => { const c = catText(p); return '<li>' + escapeHtml(p.place_name) + (c ? ' <span class="cat">· ' + escapeHtml(c) + '</span>' : '') + '</li>'; };
+        m.days.forEach((d) => {
+            body += '<div class="day"><div class="badge">📍 ' + escapeHtml(d.label) + '</div>';
+            if (d.hotels.length) body += '<div class="sec"><b class="hotel">🏨 숙소</b><ul>' + d.hotels.map(li).join('') + '</ul></div>';
+            if (d.spots.length) body += '<div class="sec"><b class="spot">📸 명소</b><ul>' + d.spots.map(li).join('') + '</ul></div>';
+            if (d.foods.length) body += '<div class="sec"><b class="food">🍜 맛집</b><ul>' + d.foods.map(li).join('') + '</ul></div>';
+            if (!d.hotels.length && !d.spots.length && !d.foods.length) body += '<div class="empty">일정 없음</div>';
+            body += '</div>';
+        });
+        const title = '여행계획서' + (m.dest ? '_' + m.dest : '');
+        return '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1"><title>' + escapeHtml(title) + '</title>' +
+            '<style>' + PLAN_DOC_CSS + '</style></head><body>' +
+            '<div class="toolbar"><button onclick="window.print()">🖨️ 인쇄 / PDF로 저장</button></div>' +
+            '<div class="page">' + body + '<div class="foot">PlayDay · 워크이노베이션센터 │ AI디자인랩</div></div>' +
+            '</body></html>';
+    }
+    function downloadPlanHTML() {
+        const m = planModel(); if (m.empty) return;
+        const blob = new Blob([planDocHTML(m)], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = (m.dest ? '여행계획서_' + m.dest : '여행계획서') + '.html';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    function printPlan() {
+        const m = planModel(); if (m.empty) return;
+        const ifr = document.createElement('iframe');
+        ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+        document.body.appendChild(ifr);
+        const doc = ifr.contentWindow.document;
+        doc.open(); doc.write(planDocHTML(m)); doc.close();
+        setTimeout(() => {
+            try { ifr.contentWindow.focus(); ifr.contentWindow.print(); } catch (e) {}
+            setTimeout(() => document.body.removeChild(ifr), 1500);
+        }, 350);
+    }
+
     /* ---- 프롬프트 생성 ---- */
     function periodLine() {
         if (state.startDate && state.endDate) {
@@ -585,10 +993,7 @@
     }
     function withLine() {
         const who = selectedChips('withChips');
-        const n = esc($('fHeadcount').value);
-        let s = who.length ? who.join(', ') : '_(미선택)_';
-        if (n) s += ' / 총 ' + n + '명';
-        return s;
+        return who.length ? who.join(', ') : '_(미선택)_';
     }
 
     function buildMarkdown() {
@@ -655,10 +1060,13 @@
         return L.join('\n');
     }
 
-    function refresh() { $('mdPreview').value = buildMarkdown(); }
+    function refresh() {
+        const el = $('mdPreview'); if (el) el.value = buildMarkdown();
+        buildFinalPlan();
+    }
 
     /* ---- 복사 / 초기화 ---- */
-    $('btnCopy').addEventListener('click', async () => {
+    $('btnCopy') && $('btnCopy').addEventListener('click', async () => {
         refresh();
         try {
             await navigator.clipboard.writeText($('mdPreview').value);
@@ -670,31 +1078,26 @@
             $('copyToast').classList.remove('hidden');
         }
     });
-    $('btnReset').addEventListener('click', () => {
+    $('btnReset') && $('btnReset').addEventListener('click', () => {
         if (!confirm('입력 내용을 모두 지울까요?')) return;
-        ['fDates', 'fOrigin', 'fGoal', 'fHeadcount'].forEach((id) => { $(id).value = ''; });
+        ['fDates', 'fOrigin', 'fGoal'].forEach((id) => { $(id).value = ''; });
         if ($('fDates')._flatpickr) $('fDates')._flatpickr.clear();
         document.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', 'false'));
-        Object.assign(state, { startDate: null, endDate: null, origin: null, goal: null, routeKm: null, routeMin: null });
+        Object.assign(state, { startDate: null, endDate: null, origin: null, goal: null, goalRegion: '', routeKm: null, routeMin: null, activeDay: 0, openReco: null });
         $('durationText').classList.add('hidden');
         $('routeInfo').classList.add('hidden');
+        if ($('minamiCheer')) $('minamiCheer').classList.add('hidden');   // 캐릭터 다시 숨김
         Object.values(markers).forEach((m) => m.setMap(null));
         Object.values(overlays).forEach((o) => o.setMap(null));
         if (routeLine) { routeLine.setMap(null); routeLine = null; }
-        renderDays();
+        clearPois();
+        if (map) setDefaultOrigin();  // 출발지는 기본값(현대빌딩)으로 복원
         refresh();
     });
 
-    /* ---- 가이드 영상 토글 ---- */
-    $('videoToggle').addEventListener('click', () => {
-        const w = $('videoWrap'), c = $('videoChevron');
-        const open = w.classList.toggle('hidden') === false;
-        c.style.transform = open ? 'rotate(180deg)' : '';
-    });
-    $('guideVideo').addEventListener('error', () => {
-        $('guideVideo').classList.add('hidden');
-        $('videoFallback').classList.remove('hidden');
-    });
+    /* ---- 최종 계획서 복사 ---- */
+    $('btnPrintPlan') && $('btnPrintPlan').addEventListener('click', printPlan);
+    $('btnDownloadPlan') && $('btnDownloadPlan').addEventListener('click', downloadPlanHTML);
 
     /* ---- 갑지(vol4.html)에서 sessionStorage로 전달된 목적지 ---- */
     function applyTransferred() {
@@ -724,8 +1127,13 @@
         });
     });
 
+    if (MINAMI_IMG && $('minamiImg')) {
+        const im = $('minamiImg');
+        im.onload = () => { im.classList.remove('hidden'); };   // 캐릭터 + 자동차(🚗) 함께 표시
+        im.src = MINAMI_IMG;
+    }
+
     applyTransferred();
-    renderDays();
     refresh();
     </script>
 </body>
