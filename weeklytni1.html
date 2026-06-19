@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 경영 T&amp;I · Weekly Brief — 2026년 6월 3주차 (2026.06.19)</title>
+<style>
+  :root{
+    --bg:#F2F3F6;
+    --card:#FFFFFF;
+    --ink:#101218;
+    --ink-2:#3A4150;
+    --muted:#777F8D;
+    --faint:#9CA3B0;
+    --line:rgba(16,18,24,.10);
+    --navy:#002C5F;
+    --navy-2:#004B93;
+
+    --c-invest:#A26B12;
+    --c-corp:#0D9488;
+    --c-tech:#4F46E5;
+
+    --r-lg:22px;
+    --r-md:16px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Pretendard Variable",Pretendard,"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,Arial,sans-serif;
+    line-height:1.6;letter-spacing:-.012em;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .page{max-width:680px;margin:0 auto;padding:0 20px 56px;}
+
+  /* ===== 마스트헤드 ===== */
+  .masthead{text-align:center;padding:8px 0 10px;}
+
+  /* 안내 ↔ 본문 흐름 구분 (가로 구분선) */
+  .flow-break{
+    margin:46px auto 40px;max-width:120px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--line) 25%,var(--line) 75%,transparent);
+  }
+  .brandmark{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:18px;font-weight:800;letter-spacing:.1em;color:var(--navy);
+    text-transform:uppercase;
+  }
+  .brandmark .sq{display:inline-block;width:14px;height:14px;background:var(--navy);border-radius:4px;}
+  .brandmark .sq2{width:14px;height:14px;border:3px solid var(--navy);border-radius:4px;background:transparent;}
+  .masthead h1{
+    margin:14px 0 10px;font-size:clamp(40px,9vw,58px);font-weight:800;
+    letter-spacing:-.045em;line-height:1.04;color:var(--ink);
+  }
+  .masthead .desc{margin:0;font-size:13.5px;color:var(--ink-2);font-weight:600;}
+  .issue{
+    margin-top:26px;font-size:15px;font-weight:700;color:var(--ink);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .issue .dot{width:4px;height:4px;border-radius:50%;background:var(--faint);}
+  .issue .date{color:var(--muted);font-weight:600;}
+
+  /* ===== 섹션 라벨 (아웃라인 필) ===== */
+  .sec-label{
+    display:inline-block;
+    font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--ink);
+    border:2px solid var(--ink);border-radius:999px;
+    padding:6px 18px;background:var(--card);
+    margin:44px 0 16px;
+  }
+
+  /* ===== 첫 발행 인사말 (인트로) ===== */
+  .intro{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:22px 26px 22px;margin-top:34px;
+    box-shadow:0 10px 28px -20px rgba(16,18,24,.16);
+  }
+  .intro .welcome{
+    position:absolute;left:0;top:1px;
+    display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.06em;
+    color:var(--navy);background:#EAF1FA;border-radius:999px;padding:3px 11px;
+  }
+  .intro .lead{
+    position:relative;padding-left:56px;
+    margin:0 0 16px;font-size:17px;font-weight:700;line-height:1.55;color:var(--ink);letter-spacing:-.02em;
+  }
+  .intro .lead b{color:var(--navy);}
+
+  /* 토글 그룹 (큰 박스 안에 항목들) */
+  .intro .ix-group{
+    border:1px solid var(--line);border-radius:11px;
+    overflow:hidden;background:#FAFBFC;
+  }
+  .intro details.ix{
+    margin:0;background:transparent;
+  }
+  .intro details.ix + details.ix{
+    border-top:1px solid var(--line);
+  }
+  .intro details.ix summary{
+    list-style:none;cursor:pointer;user-select:none;
+    display:flex;align-items:center;gap:9px;
+    padding:11px 15px;
+  }
+  .intro details.ix summary::-webkit-details-marker{display:none;}
+  .intro details.ix .ix-tit{
+    font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.02em;flex:none;
+  }
+  .intro details.ix .ix-tag{
+    font-size:12px;font-weight:700;color:var(--muted);
+  }
+  .intro details.ix .ix-plus{
+    margin-left:auto;flex:none;position:relative;width:15px;height:15px;
+  }
+  .intro details.ix .ix-plus::before,
+  .intro details.ix .ix-plus::after{
+    content:"";position:absolute;background:var(--navy);border-radius:2px;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+  }
+  .intro details.ix .ix-plus::before{width:13px;height:2.5px;}
+  .intro details.ix .ix-plus::after{width:2.5px;height:13px;transition:transform .18s ease;}
+  .intro details.ix[open] .ix-plus::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0;}
+  .intro details.ix > p{
+    margin:0;padding:0 15px 13px;font-size:14px;line-height:1.62;color:var(--ink-2);
+  }
+
+  /* ===== 헤드라인(히어로) 카드 ===== */
+  .hero{
+    position:relative;overflow:hidden;border-radius:var(--r-lg);
+    background:linear-gradient(125deg,#002C5F 0%,#004B93 58%,#0E63B8 100%);
+    color:#fff;padding:34px 30px 30px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .hero svg.motif{position:absolute;right:-30px;top:-20px;height:130%;opacity:.5;pointer-events:none;}
+  .hero .hero-week{
+    position:relative;display:inline-block;
+    font-size:12.5px;font-weight:800;color:var(--navy);
+    background:#fff;border-radius:999px;padding:4px 13px;margin-bottom:18px;
+  }
+  .hero h2{
+    position:relative;margin:0;
+    font-size:clamp(25px,5.6vw,33px);font-weight:800;letter-spacing:-.035em;line-height:1.28;
+  }
+  .hero .hero-rule{position:relative;height:1px;background:rgba(255,255,255,.35);margin:22px 0 12px;max-width:340px;}
+  .hero .hero-foot{
+    position:relative;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+    font-size:13px;font-weight:600;color:rgba(255,255,255,.85);
+  }
+
+  /* ===== 에디터 노트 ===== */
+  .ednote{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:0 0 var(--r-lg) var(--r-lg);
+    margin-top:-14px;padding:30px 30px 24px;
+    box-shadow:0 10px 28px -18px rgba(16,18,24,.18);
+  }
+  .ednote .ed-k{
+    margin:0 0 12px;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+  }
+  .ednote p{margin:0 0 13px;font-size:17.5px;line-height:1.74;color:var(--ink-2);}
+  .ednote p:last-of-type{margin-bottom:0;}
+  .ednote .ed-sign{margin-top:14px;font-size:13px;font-weight:700;color:var(--muted);text-align:right;}
+
+  /* ===== 기사 카드 ===== */
+  .card{
+    display:grid;grid-template-columns:128px 1fr;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+    overflow:hidden;margin-bottom:12px;
+    box-shadow:0 1px 2px rgba(16,18,24,.03),0 10px 24px -18px rgba(16,18,24,.14);
+  }
+  .thumb{position:relative;min-height:128px;background:#1a1a2e;overflow:hidden;}
+  .thumb svg{position:absolute;inset:0;width:100%;height:100%;}
+  .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .card-body{padding:16px 18px 14px;min-width:0;}
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11px;font-weight:800;letter-spacing:.02em;
+    color:var(--cat);background:var(--tint);
+    border-radius:999px;padding:3px 10px;margin-bottom:8px;
+  }
+  .chip .d{width:5px;height:5px;border-radius:50%;background:var(--cat);}
+  .card h3{
+    margin:0 0 8px;font-size:18.5px;font-weight:800;letter-spacing:-.025em;line-height:1.38;color:var(--ink);
+  }
+  .card .sum{margin:0;font-size:15.5px;line-height:1.62;color:var(--ink-2);}
+  .card .sum b{font-weight:700;color:var(--ink);}
+
+  details.insight{margin-top:10px;border-top:1px dashed var(--line);}
+  details.insight summary{
+    list-style:none;cursor:pointer;user-select:none;
+    display:flex;align-items:center;gap:7px;
+    padding:9px 0 2px;font-size:12.5px;font-weight:800;color:var(--cat);
+  }
+  details.insight summary::-webkit-details-marker{display:none;}
+  details.insight summary .chev{
+    width:7px;height:7px;border-right:2px solid var(--cat);border-bottom:2px solid var(--cat);
+    transform:rotate(45deg);transition:transform .16s ease;opacity:.75;margin-top:-2px;
+  }
+  details.insight[open] summary .chev{transform:rotate(-135deg);}
+  details.insight p{
+    margin:6px 0 2px;font-size:13.5px;line-height:1.62;color:var(--ink-2);
+    background:var(--tint);border-radius:10px;padding:10px 13px;
+  }
+  details.insight p b{color:var(--ink);font-weight:700;}
+
+  .src{
+    margin-top:10px;font-size:11.5px;color:var(--faint);font-weight:600;
+    display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;
+  }
+  .src a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line);}
+  .src a:hover{color:var(--ink);border-color:var(--ink);}
+  .src .dt{color:var(--faint);font-weight:500;margin-left:3px;}
+
+  /* 히어로 본문(요약+시사점+출처) — 에디터 노트 내부 하단 */
+  .hero-detail{margin-top:18px;border-top:1px solid var(--line);padding-top:16px;}
+  .hero-detail .sum{margin:0;font-size:15px;line-height:1.7;color:var(--ink-2);}
+  .hero-detail .sum b{font-weight:700;color:var(--ink);}
+
+  /* ===== 분류 기준 ===== */
+  .taxo{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+    padding:16px 18px;display:grid;gap:8px;
+  }
+  .taxo .t-row{display:flex;gap:10px;align-items:baseline;font-size:13px;}
+  .taxo .t-name{flex:none;width:84px;font-weight:800;color:var(--ink);display:inline-flex;align-items:center;gap:6px;}
+  .taxo .t-dot{width:7px;height:7px;border-radius:50%;flex:none;}
+  .taxo .t-desc{color:var(--muted);font-weight:500;}
+
+  /* ===== 푸터 ===== */
+  footer{margin-top:44px;border-top:1px solid var(--line);padding-top:22px;text-align:center;}
+  footer .pub{font-size:13.5px;font-weight:800;color:var(--ink-2);margin:0 0 8px;}
+  footer .note{font-size:12px;color:var(--muted);line-height:1.8;margin:0;}
+  footer .meta-line{margin-top:14px;font-size:11px;color:var(--faint);letter-spacing:.05em;}
+
+  @media (max-width:560px){
+    .page{padding:0 14px 44px;}
+    .card{grid-template-columns:96px 1fr;}
+    .thumb{min-height:96px;}
+    .hero{padding:26px 20px 24px;}
+    .ednote{padding:24px 20px 20px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .card,.hero,.ednote{break-inside:avoid;page-break-inside:avoid;box-shadow:none;}
+    details.insight summary .chev{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="page" style="max-width:680px;margin:0 auto;padding:0 20px 56px;font-family:'Pretendard Variable',Pretendard,'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',system-ui,Arial,sans-serif;color:#101218;line-height:1.6;">
+
+  <!-- ===== 첫 발행 인사말 (메일 인사글) ===== -->
+  <section class="intro">
+    <p class="lead" style="margin:0 0 16px 0;"><span class="welcome">안내</span>금주부터 AI 산업의 주요 동향을 선별·분석하여 전해 드리는<br /><b>『AI 경영 T&amp;I(Trend &amp; Insight)』</b> 메일링 서비스를 새롭게 시작합니다.</p>
+
+    <div style="height:4px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+    <div class="ix-group" style="border:1px solid rgba(16,18,24,.10);border-radius:11px;overflow:hidden;background:#FAFBFC;">
+      <details class="ix" style="background:transparent;">
+        <summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;padding:11px 15px;">
+          <span style="font-size:15px;font-weight:800;color:#101218;letter-spacing:-.02em;">Weekly Brief</span>
+          <span style="font-size:12px;font-weight:700;color:#777F8D;">매주 금요일 오후 정기 발행</span>
+          <span aria-hidden="true" style="margin-left:auto;font-size:20px;font-weight:700;color:#002C5F;line-height:1;">+</span>
+        </summary>
+        <p style="margin:0;padding:0 15px 13px;font-size:14px;line-height:1.62;color:#3A4150;">한 주간의 주요 AI 정책, 기업 동향, 핵심 기술·투자 이슈를 선별하여, 바쁜 일정 중에도 흐름을 빠르게 파악하실 수 있도록 핵심만 간결하게 정리해 드립니다.</p>
+      </details>
+
+      <div style="border-top:1px solid rgba(16,18,24,.10);height:0;line-height:0;font-size:0;">&nbsp;</div>
+
+      <details class="ix" style="background:transparent;">
+        <summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;padding:11px 15px;">
+          <span style="font-size:15px;font-weight:800;color:#101218;letter-spacing:-.02em;">Special Report</span>
+          <span style="font-size:12px;font-weight:700;color:#777F8D;">현안 발생 시 비정기 발행</span>
+          <span aria-hidden="true" style="margin-left:auto;font-size:20px;font-weight:700;color:#002C5F;line-height:1;">+</span>
+        </summary>
+        <p style="margin:0;padding:0 15px 13px;font-size:14px;line-height:1.62;color:#3A4150;">경영 차원의 전략적 판단이 필요한 핵심 현안이 발생했을 때, 그 배경과 당사 관점의 시사점을 심층적으로 분석하여 제공합니다.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 안내 ↔ 본문 흐름 구분 (인라인 hr 호환) -->
+  <div style="height:46px;line-height:1px;font-size:1px;">&nbsp;</div>
+  <hr style="border:none;border-top:1px solid #DDE1E8;max-width:120px;margin:0 auto;" />
+  <div style="height:36px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+  <!-- ===== 마스트헤드 ===== -->
+  <header class="masthead" style="text-align:center;padding:0;">
+    <div class="brandmark" style="display:inline-block;background:#002C5F;color:#fff;padding:10px 26px;border-radius:999px;font-size:22px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;">AI 경영 T&amp;I</div>
+    <h1 style="margin:14px 0 10px;font-size:45px;font-weight:800;letter-spacing:-.035em;line-height:1.1;color:#101218;">Weekly Brief</h1>
+    <p class="desc" style="margin:0;font-size:13.5px;color:#3A4150;font-weight:600;">AI디자인랩이 매주 전하는 경영진용 Trend &amp; Insight</p>
+    <div class="issue" style="margin-top:22px;font-size:15px;font-weight:700;color:#101218;display:inline-flex;align-items:center;gap:10px;">2026년 6월 3주차</div>
+  </header>
+
+  <div style="height:36px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+  <!-- ===== 이번 주 헤드라인 ===== -->
+  <div class="sec-label" style="display:inline-block;font-size:15px;font-weight:800;color:#101218;border:2px solid #101218;border-radius:999px;padding:6px 18px;background:#fff;margin:0 0 16px;">이번 주 헤드라인</div>
+
+  <section class="hero" style="position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(125deg,#002C5F 0%,#004B93 58%,#0E63B8 100%);color:#fff;padding:34px 30px 30px;">
+    <img src="https://img.newspim.com/news/2026/06/18/2606180641176390.jpg" alt="" aria-hidden="true"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,20,60,.82) 0%,rgba(6,48,40,.75) 100%);z-index:1;"></div>
+    <h2 style="position:relative;z-index:2;margin:0;font-size:31px;font-weight:800;letter-spacing:-.035em;line-height:1.3;color:#fff;">李대통령, G7서 'AI 격차 해소·안전' 주도<br />…'모두의 AI' 소개</h2>
+    <div class="hero-rule" style="position:relative;z-index:2;height:1px;background:rgba(255,255,255,.35);margin:22px 0 12px;max-width:340px;"></div>
+    <div class="hero-foot" style="position:relative;z-index:2;font-size:13px;font-weight:600;color:rgba(255,255,255,.85);"><span>투자·산업</span></div>
+  </section>
+
+  <div class="ednote" style="background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:0 0 22px 22px;margin-top:-14px;padding:30px 30px 24px;">
+    <h3 class="ed-k">Editor's Summary</h3>
+    <p>6월 17일(현지시간) 프랑스 에비앙 G7 정상회의 마지막 일정인 <b>업무오찬</b>에서 'AI 도입'이 핵심 의제로 다뤄졌습니다. 오픈AI·앤트로픽·구글 딥마인드·미스트랄 등 세계 주요 AI 기업 CEO들이 G7·초청국 정상들과 한 테이블에 앉은 이례적 자리였습니다. 이재명 대통령은 AI 시대의 두 축으로 <b>"혜택을 모두가 누려야 한다"</b>(격차 해소)와 <b>"악용 시 위협이 크니 안전장치가 필요하다"</b>(안전)를 제시하며 '모두의 AI' 구상을 소개했습니다. AI 규제·안전 규칙이 국제 표준으로 굳어질 수 있어, 기업도 방향을 미리 읽어둘 필요가 있습니다.</p>
+    <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+      <a href="https://www.newspim.com/news/view/20260618000035" target="_blank" rel="noopener">뉴스핌<span class="dt">06.18</span></a>
+      <a href="https://www.dt.co.kr/article/12068195" target="_blank" rel="noopener">디지털타임스<span class="dt">06.18</span></a>
+    </div>
+  </div>
+
+  <div style="height:36px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+  <!-- ===== 이번 주 브리핑 ===== -->
+  <div class="sec-label" style="display:inline-block;font-size:15px;font-weight:800;color:#101218;border:2px solid #101218;border-radius:999px;padding:6px 18px;background:#fff;margin:0 0 16px;">이번 주 브리핑</div>
+
+  <!-- 1. 재계 AX 인재전쟁 -->
+  <article class="card" style="--cat:var(--c-corp);--tint:#EBF6F4;display:grid;grid-template-columns:128px 1fr;background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;overflow:hidden;margin:0 0 12px;">
+    <div class="thumb">
+      <img src="https://image.fnnews.com/resource/media/image/2026/06/12/202606120602487276_l.jpg" alt="재계 AI 인재전쟁" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+    </div>
+    <div class="card-body">
+      <span class="chip"><span class="d"></span>기업동향</span>
+      <h3>"AI 잘하는 사람 모셔라"…삼성·SK·LG 인재 쟁탈전</h3>
+      <p class="sum">전사적 AI 전환을 선언한 대기업들이 인재 확보전에 돌입했습니다. <b>삼성은 17개 계열사가 'AI 보안' 경력직을 동시 채용</b>, SK·LG도 AI 개발자를 대거 모집 중. 특히 <b>SK하이닉스는 6/17 신입 채용에서 학력 제한을 폐지</b> — 학벌보다 실력으로 AI 인재를 잡겠다는 신호입니다.</p>
+      <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+        <a href="https://www.fnnews.com/news/202606151557445336" target="_blank" rel="noopener">파이낸셜뉴스<span class="dt">06.15</span></a>
+        <a href="https://www.fnnews.com/news/202606171850207705" target="_blank" rel="noopener">파이낸셜뉴스<span class="dt">06.17</span></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2. 삼성 디지털 트윈 -->
+  <article class="card" style="--cat:var(--c-corp);--tint:#EBF6F4;display:grid;grid-template-columns:128px 1fr;background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;overflow:hidden;margin:0 0 12px;">
+    <div class="thumb">
+      <img src="https://image.fnnews.com/resource/media/image/2026/06/15/202606151814123352_l.jpg" alt="삼성전자 디지털 트윈 HPC" style="width:100%;height:100%;object-fit:cover;object-position:4% 75%;display:block;"/>
+    </div>
+    <div class="card-body">
+      <span class="chip"><span class="d"></span>기업동향</span>
+      <h3>삼성, 제품을 '가상 공장'에서 먼저 만든다…개발기간 확 단축</h3>
+      <p class="sum">삼성전자가 공장·제품을 컴퓨터 속에 똑같이 만들어 시험하는 <b>'디지털 트윈'</b>을 본격 도입(고성능 서버 517대 자체 구축). 실물로 떨어뜨려 보던 <b>TV 내구성 검사를 15일→2일, 세탁기는 15일→5일</b>로 단축했습니다. 2030년 '스스로 돌아가는 AI 공장'이 목표입니다.</p>
+      <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+        <a href="https://www.fnnews.com/news/202606151813292484" target="_blank" rel="noopener">파이낸셜뉴스<span class="dt">06.15</span></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3. 메타 조직 -->
+  <article class="card" style="--cat:var(--c-corp);--tint:#EBF6F4;display:grid;grid-template-columns:128px 1fr;background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;overflow:hidden;margin:0 0 12px;">
+    <div class="thumb">
+      <img src="https://cdn.aitimes.com/news/photo/202606/211705_214760_5843.jpg" alt="메타 조직 개편" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+    </div>
+    <div class="card-body">
+      <span class="chip"><span class="d"></span>기업동향</span>
+      <h3>메타, 서둘러 만든 AI 조직서 내부 불만 폭발…저커버그 "실수"</h3>
+      <p class="sum">메타가 3월 급하게 만든 AI 조직(약 6,500명)에서 직원들이 <b>"일이 단순 반복적이고 입사 때 들은 것과 다르다"</b>고 집단 반발, 사내 회의에서 욕설 항의까지 나왔습니다. <b>저커버그는 "AI 전환 과정에서 실수가 있었다"고 인정</b>. 빠른 조직 개편의 부작용을 드러낸 사례입니다.</p>
+      <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+        <a href="https://www.aitimes.com/news/articleView.html?idxno=211705" target="_blank" rel="noopener">AI타임스<span class="dt">06.13</span></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 4. 소버린 AI 부상 -->
+  <article class="card" style="--cat:var(--c-tech);--tint:#F1F1FD;display:grid;grid-template-columns:128px 1fr;background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;overflow:hidden;margin:0 0 12px;">
+    <div class="thumb">
+      <img src="https://thumb.mt.co.kr/21/2026/06/2026061409220631539_1.jpg" alt="소버린 AI 부상" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+    </div>
+    <div class="card-body">
+      <span class="chip"><span class="d"></span>기술정보</span>
+      <h3>美, 자국 AI 해외사용 차단…"우리 AI 없으면 위험" 경고음</h3>
+      <p class="sum">미국 정부가 AI 기업 앤트로픽의 최신 모델을 <b>안보를 이유로 외국인은 못 쓰게 차단</b>, 협력 프로그램에 갓 합류한 한국 기관·기업도 곧바로 막혔습니다. <b>"남의 나라 AI에 의존하면 언제든 끊길 수 있다"</b>는 위기감에, 자체 AI를 확보하자는 <b>'AI 주권' 논의가 다시 불붙었습니다</b> — AI가 곧 안보 자산이 됐다는 신호입니다.</p>
+      <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+        <a href="https://www.seoul.co.kr/news/economy/IT/2026/06/15/20260615030005" target="_blank" rel="noopener">서울신문<span class="dt">06.15</span></a>
+        <a href="https://www.khan.co.kr/article/202606142029005" target="_blank" rel="noopener">경향신문<span class="dt">06.14</span></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 5. 새만금 AI 밸리 (강등) -->
+  <article class="card" style="--cat:var(--c-invest);--tint:#F7F0E2;display:grid;grid-template-columns:128px 1fr;background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;overflow:hidden;margin:0 0 12px;">
+    <div class="thumb" style="position:relative;overflow:hidden;min-height:128px;">
+      <img src="https://img.hankyung.com/photo/202606/AA.44627978.1.jpg" alt="새만금 AI 밸리" style="width:100%;height:100%;object-fit:cover;object-position:100% center;display:block;transform:scale(1.4);transform-origin:right center;"/>
+    </div>
+    <div class="card-body">
+      <span class="chip"><span class="d"></span>투자·산업</span>
+      <h3>전북 새만금이 'AI 산업단지'로…삼성 합류도 저울질</h3>
+      <p class="sum">전북 새만금이 국내 최대 AI·첨단산업 거점으로 떠올랐습니다. <b>현대차 9조원 등 10조원 넘는 투자가 확정</b>됐고, 엔비디아 젠슨 황 CEO도 AI 데이터센터 참여 의사를 밝혔습니다. <b>삼성도 반도체 공장 후보지로 검토 중</b>이며, <b>6/29 이재명 대통령 주재 회의에서 거점이 최종 확정</b>될 전망입니다.</p>
+      <div class="src" style="margin-top:14px;padding-top:10px;border-top:1px solid #EEF0F4;font-size:11.5px;color:#9CA3B0;font-weight:600;">출처
+        <a href="https://www.hankyung.com/article/2026061237771" target="_blank" rel="noopener">한국경제<span class="dt">06.12</span></a>
+        <a href="https://www.sedaily.com/article/20053221" target="_blank" rel="noopener">서울경제<span class="dt">06.09</span></a>
+      </div>
+    </div>
+  </article>
+
+  <div style="height:36px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+  <!-- ===== 정보 분류 기준 ===== -->
+  <div class="sec-label" style="display:inline-block;font-size:15px;font-weight:800;color:#101218;border:2px solid #101218;border-radius:999px;padding:6px 18px;background:#fff;margin:0 0 16px;">정보 분류 기준</div>
+  <div class="taxo" style="background:#fff;border:1px solid rgba(16,18,24,.10);border-radius:16px;padding:16px 18px;">
+    <div class="t-row" style="display:flex;gap:10px;align-items:baseline;font-size:13px;margin:0 0 8px;">
+      <span class="t-name" style="width:84px;flex:none;font-weight:800;color:#101218;"><span style="color:#A26B12;font-size:12px;margin-right:6px;">●</span>투자·산업</span>
+      <span class="t-desc" style="color:#777F8D;font-weight:500;">자본과 인프라의 흐름 — 대규모 투자, 시장 재편, 정책·글로벌 동향</span>
+    </div>
+    <div class="t-row" style="display:flex;gap:10px;align-items:baseline;font-size:13px;margin:0 0 8px;">
+      <span class="t-name" style="width:84px;flex:none;font-weight:800;color:#101218;"><span style="color:#0D9488;font-size:12px;margin-right:6px;">●</span>기업동향</span>
+      <span class="t-desc" style="color:#777F8D;font-weight:500;">경쟁사 및 선도 기업의 AI 도입·전환 전략과 움직임</span>
+    </div>
+    <div class="t-row" style="display:flex;gap:10px;align-items:baseline;font-size:13px;">
+      <span class="t-name" style="width:84px;flex:none;font-weight:800;color:#101218;"><span style="color:#4F46E5;font-size:12px;margin-right:6px;">●</span>기술정보</span>
+      <span class="t-desc" style="color:#777F8D;font-weight:500;">신규 AI 모델·제품·기술의 등장과 영향</span>
+    </div>
+  </div>
+
+  <!-- ===== 푸터 ===== -->
+  <div style="height:36px;line-height:1px;font-size:1px;">&nbsp;</div>
+
+  <footer style="border-top:1px solid rgba(16,18,24,.10);padding-top:22px;text-align:center;">
+    <p class="pub">발행 — 워크이노베이션센터 | AI디자인랩</p>
+    <p class="note">
+      본 브리핑은 주요 외신 및 국내 언론, 공신력 있는 전문지 등의 외부 보도를 중심으로 요약한 자료로, 세부 수치는 원문 기준입니다.
+    </p>
+    <div class="meta-line">AI 경영 T&amp;I · WEEKLY BRIEF · 2026년 6월 3주차 (2026.06.19)</div>
+  </footer>
+
+</div>
+
+<script>
+  // 인쇄 시 시사점 전체 펼침 후 원상 복귀
+  (function(){
+    var opened = [];
+    window.addEventListener('beforeprint', function(){
+      opened = [];
+      document.querySelectorAll('details.insight:not([open])').forEach(function(d){
+        d.setAttribute('open',''); opened.push(d);
+      });
+    });
+    window.addEventListener('afterprint', function(){
+      opened.forEach(function(d){ d.removeAttribute('open'); });
+      opened = [];
+    });
+  })();
+</script>
+</body>
+</html>
