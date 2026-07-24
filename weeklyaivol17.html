@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Weekly AI (VOL.17)</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ════════ 테마 토큰 ════════
+       vol17 = 제미나이 딥블루 + 블루/퍼플 그라데이션. 색을 바꾸려면 이 블록만 교체하세요. */
+    :root {
+      --font-sans: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+      --font-cover-headline-min: 2.15rem;
+      --font-cover-headline-vw: 5.6vw;
+      --font-cover-headline-max: 2.9rem;
+      --font-cover-headline-mark-em: 1.18;
+
+      --page:      #ffffff;   /* 카드 밖 배경 (흰색) */
+      --card-top:  #17356B;   /* 카드 상단 (제미나이 블루) */
+      --card-bot:  #07142B;   /* 카드 하단 */
+      --ink:       #F3F6FE;   /* 본문 기본 */
+      --ink-dim:   rgba(243, 246, 254, 0.72);
+      --ink-faint: rgba(243, 246, 254, 0.46);
+      --line:      rgba(160, 190, 250, 0.26);
+      --accent:    #8AB4F8;   /* 포인트 구글 블루 */
+      --accent-2:  #C58AF9;   /* 보조 퍼플 */
+    }
+
+    html { overflow-x: hidden; background: var(--page); }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--page);
+      font-family: var(--font-sans);
+    }
+
+    /* ════════ 캐러셀 셸 (화면 정중앙) ════════ */
+    .carousel-shell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      padding: 40px 16px 48px;
+      gap: 18px;
+    }
+
+    .carousel-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .carousel__viewport {
+      flex: 0 1 540px;
+      min-width: 0;
+      width: 540px;
+      max-width: 540px;
+      overflow: hidden;
+      border-radius: 24px;
+      position: relative;
+      box-shadow:
+        0 40px 80px -30px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(140, 175, 235, 0.10);
+      touch-action: pan-y;
+      background: transparent;
+      transform-origin: top center;
+      -webkit-transform-origin: top center;
+    }
+
+    .carousel__inner {
+      width: 540px;
+      height: 720px;
+      overflow: hidden;
+      border-radius: 24px;
+      position: relative;
+    }
+
+    @media (max-width: 600px) {
+      .carousel__viewport { height: 612px; transform: scale(0.85); -webkit-transform: scale(0.85); }
+      @supports (zoom: 0.85) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.85; }
+      }
+    }
+    @media (max-width: 520px) {
+      .carousel__viewport { height: 540px; transform: scale(0.75); -webkit-transform: scale(0.75); }
+      @supports (zoom: 0.75) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.75; }
+      }
+    }
+    @media (max-width: 460px) {
+      .carousel__viewport { height: 468px; transform: scale(0.65); -webkit-transform: scale(0.65); }
+      @supports (zoom: 0.65) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.65; }
+      }
+    }
+    @media (max-width: 400px) {
+      .carousel__viewport { height: 396px; transform: scale(0.55); -webkit-transform: scale(0.55); }
+      @supports (zoom: 0.55) {
+        .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.55; }
+      }
+    }
+
+    #deck {
+      position: relative !important;
+      width: 540px !important;
+      height: 720px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+    }
+    #deck > .card {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      margin: 0 !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.32s ease, visibility 0s linear 0.32s;
+      pointer-events: none;
+    }
+
+    .wai-nav {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    #hcn-nav-1:checked ~ .carousel-row #hcn-card-1,
+    #hcn-nav-2:checked ~ .carousel-row #hcn-card-2,
+    #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
+    #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
+    #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
+    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6,
+    #hcn-nav-7:checked ~ .carousel-row #hcn-card-7,
+    #hcn-nav-8:checked ~ .carousel-row #hcn-card-8 {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 2;
+      transition: opacity 0.32s ease, visibility 0s linear 0s;
+    }
+
+    .nav-stack { position: relative; width: 44px; height: 44px; flex-shrink: 0; align-self: center; }
+    .nav-stack > .nav-btn { position: absolute; top: 0; left: 0; display: none; }
+
+    #hcn-nav-2:checked ~ .carousel-row .nav-prev-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-prev-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-prev-from-7 { display: inline-flex; }
+    #hcn-nav-8:checked ~ .carousel-row .nav-prev-from-8 { display: inline-flex; }
+    #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
+
+    #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
+    #hcn-nav-2:checked ~ .carousel-row .nav-next-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-next-from-6 { display: inline-flex; }
+    #hcn-nav-7:checked ~ .carousel-row .nav-next-from-7 { display: inline-flex; }
+    #hcn-nav-8:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+
+    .nav-btn.is-disabled { opacity: 0.22; cursor: not-allowed; pointer-events: none; }
+    .nav-btn {
+      flex-shrink: 0;
+      align-self: center;
+      position: relative;
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(23, 53, 107, 0.18);
+      background: #ffffff;
+      color: #17356B;
+      box-shadow: 0 6px 16px -8px rgba(23, 53, 107, 0.3);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .nav-btn:hover:not(.is-disabled) {
+      background: rgba(138, 180, 248, 0.14);
+      border-color: rgba(138, 180, 248, 0.62);
+      color: #3B6FD4;
+      transform: translateY(-1px);
+    }
+    .nav-btn:active:not(.is-disabled) { transform: translateY(0); }
+
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .progress-dots .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(23, 53, 107, 0.22);
+      transition: width 0.32s ease, background 0.32s ease;
+    }
+    #hcn-nav-1:checked ~ .progress-dots .dot:nth-child(1),
+    #hcn-nav-2:checked ~ .progress-dots .dot:nth-child(2),
+    #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
+    #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
+    #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
+    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6),
+    #hcn-nav-7:checked ~ .progress-dots .dot:nth-child(7),
+    #hcn-nav-8:checked ~ .progress-dots .dot:nth-child(8) {
+      width: 24px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    }
+
+    /* ════════ 카드 ════════ */
+    .card {
+      width: 540px;
+      height: 720px;
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      flex-shrink: 0;
+      isolation: isolate;
+    }
+    /* 미세 노이즈 */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      border-radius: inherit;
+      background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      mix-blend-mode: overlay;
+      opacity: 0.6;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(140, 175, 235, 0.12);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 92% 58% at 82% -8%, rgba(138, 180, 248, 0.32) 0%, transparent 62%),
+        radial-gradient(ellipse 72% 48% at 4% 10%, rgba(197, 138, 249, 0.18) 0%, transparent 58%),
+        linear-gradient(168deg, var(--card-top) 0%, #102A54 46%, var(--card-bot) 100%);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 32px 28px;
+    }
+    .card-content--inner { padding: 0; }
+
+    /* 표·차트처럼 잘리면 안 되는 이미지는 카드별 override (§7) */
+    #hcn-card-4 .slide-media-slot,
+    #hcn-card-7 .slide-media-slot { background: #ffffff; }
+    #hcn-card-4 .slide-media-slot > img,
+    #hcn-card-7 .slide-media-slot > img { object-fit: contain; }
+
+    /* ════════ 본문 카드 레이아웃 (좌측 정렬 에디토리얼) ════════ */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .slide-top-copy {
+      position: relative;
+      /* 제목 영역 높이 고정 → 2~8p 미디어 위치·크기 통일 */
+      min-height: 132px;
+      padding: 38px 34px 22px;
+      text-align: left;
+    }
+    /* 좌측 블루 러그 */
+    .slide-top-copy::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 4px;
+      height: 26px;
+      border-radius: 0 4px 4px 0;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+    }
+    /* 우상단 슬라이드 번호 */
+    .slide-num {
+      position: absolute;
+      top: 34px;
+      right: 34px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--ink-faint);
+      font-variant-numeric: tabular-nums;
+    }
+    .slide-top-copy .kicker {
+      margin: 0;
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      word-break: keep-all;
+    }
+    .slide-top-copy .subkicker {
+      display: block;
+      margin: 10px 0 0;
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.24;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      word-break: keep-all;
+    }
+
+    /* 미디어 = 풀블리드 밴드 */
+    .slide-media-slot {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      aspect-ratio: 16 / 9;
+      background:
+        linear-gradient(135deg, rgba(138, 180, 248, 0.12) 0%, rgba(197, 138, 249, 0.08) 100%),
+        #0F2246;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        inset 0 1px 0 rgba(140, 175, 235, 0.14),
+        inset 0 -1px 0 rgba(140, 175, 235, 0.14);
+    }
+    .slide-media-slot .media-ph {
+      color: var(--ink-faint);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      pointer-events: none;
+    }
+    .slide-media-slot > img, .slide-media-slot > video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+    }
+    .slide-media-slot > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+    .media-caption {
+      text-align: left;
+      padding: 8px 34px 0;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink-faint);
+      word-break: keep-all;
+    }
+
+    .slide-bottom-copy {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 26px 34px 18px;
+      text-align: left;
+      color: var(--ink-dim);
+      font-size: 16.5px;
+      font-weight: 500;
+      line-height: 1.72;
+      letter-spacing: -0.018em;
+      word-break: keep-all;
+      overflow: hidden;
+    }
+    .slide-bottom-copy span,
+    .slide-bottom-copy { font-feature-settings: "ss01", "ss02", "case", "tnum"; }
+    .slide-bottom-copy b { font-weight: 800; color: var(--ink); }
+
+    /* 수치 배지 한 줄 (가격·속도 등) */
+    .stat-line {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--accent);
+    }
+
+    .slide-footnote {
+      padding: 0 34px 12px;
+      text-align: left;
+      color: var(--ink-faint);
+      font-size: 10.5px;
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+      word-break: keep-all;
+    }
+    .slide-footnote dl { margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+    .slide-footnote .term { font-weight: 800; color: var(--accent); margin-right: 5px; }
+    .slide-footnote .item { display: block; }
+
+    .footer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: auto;
+      padding: 15px 34px 20px;
+      border-top: 1px solid var(--line);
+    }
+    .footer-logo { width: 22px; height: 22px; flex-shrink: 0; }
+    .footer-logo path { fill: var(--ink); }
+    .footer-text {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ════════ 1p 표지 ════════ */
+    .card--cover .card-content--cover {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    #hcn-card-1 .card-bg {
+      background:
+        radial-gradient(ellipse 100% 62% at 78% 2%, rgba(138, 180, 248, 0.44) 0%, transparent 60%),
+        radial-gradient(ellipse 82% 52% at 8% 28%, rgba(197, 138, 249, 0.24) 0%, transparent 58%),
+        linear-gradient(165deg, #1D4180 0%, #12294F 52%, #06101F 100%);
+    }
+    #hcn-card-1 .cover-media-img {
+      position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+      object-fit: cover; object-position: center center; display: block;
+      opacity: 0.78;
+    }
+    /* 표지 일러스트가 주인공 → 상단 로고는 작게 */
+    #hcn-card-1 .cover-figure img { max-height: 112px; }
+    #hcn-card-1 .cover-bottom-deco {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 62%; z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, rgba(3,7,16,0) 0%, rgba(3,7,16,0.55) 46%, rgba(3,7,16,0.94) 100%);
+    }
+    #hcn-card-1 .card-content--cover { position: relative; z-index: 2; }
+
+    .cover-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
+      padding: 48px 34px 0;
+    }
+    .cover-top { padding-top: 22px; }
+    .cover-figure { margin: 0; line-height: 0; }
+    .cover-figure img { display: block; width: 100%; max-height: 154px; object-fit: contain; object-position: left top; }
+
+    .cover-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px 8px 13px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--ink);
+      background: rgba(138, 180, 248, 0.12);
+      border: 1px solid rgba(138, 180, 248, 0.44);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .cover-badge--top { position: absolute; top: 16px; left: 16px; z-index: 3; }
+    .cover-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 9px rgba(138, 180, 248, 0.95);
+      animation: pulseDot 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.82); }
+    }
+
+    .cover-hero-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 14px;
+    }
+    /* 헤드라인 위 그라데이션 룰 */
+    .cover-hero::before {
+      content: "";
+      display: block;
+      width: 46px;
+      height: 3px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    }
+    .cover-headline {
+      margin: 0;
+      font-size: clamp(var(--font-cover-headline-min), var(--font-cover-headline-vw), var(--font-cover-headline-max));
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.045em;
+      color: #ffffff;
+    }
+    .cover-headline__mark {
+      font-size: calc(1em * var(--font-cover-headline-mark-em));
+      white-space: nowrap;
+      background: linear-gradient(100deg, #8AB4F8 0%, #C58AF9 55%, #F28B82 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: var(--accent);
+    }
+    .cover-dek {
+      margin: 16px 0 0;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: -0.02em;
+      color: var(--ink-dim);
+      word-break: keep-all;
+    }
+    /* 표지 모델 인덱스 */
+    .cover-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 20px;
+    }
+    .cover-index span {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink-dim);
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .cover-index span b { color: var(--accent); font-weight: 800; margin-right: 4px; }
+    #hcn-card-1 .footer { border-top-color: rgba(140, 175, 235, 0.16); }
+
+    /* ════════ 클릭 확대 라이트박스 ════════ */
+    .slide-media-slot > img,
+    .slide-media-slot > video { cursor: zoom-in; }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(3, 6, 12, 0.92);
+      cursor: zoom-out;
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox img,
+    .lightbox video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    /* 제목 순서 스왑: 큰 제목(subkicker) 위, 작은 라벨(kicker) 아래 — 전 카드 */
+    .slide-top-copy { display: flex; flex-direction: column; align-items: flex-start; }
+    .slide-top-copy .subkicker { order: 1; margin: 0; }
+    .slide-top-copy .kicker { order: 2; margin: 8px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="carousel-shell" id="html-cardnews-vol17">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-1" autocomplete="off" checked>
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-2" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-3" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-7" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-8" autocomplete="off">
+
+    <div class="carousel-row">
+      <div class="nav-stack nav-stack--prev">
+        <span class="nav-btn nav-btn--prev nav-prev-disabled is-disabled" aria-hidden="true">←</span>
+        <label class="nav-btn nav-btn--prev nav-prev-from-2" for="hcn-nav-1" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-3" for="hcn-nav-2" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-7" for="hcn-nav-6" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-8" for="hcn-nav-7" aria-label="이전 슬라이드">←</label>
+      </div>
+
+      <div class="carousel__viewport">
+        <div class="carousel__inner">
+          <div id="deck">
+
+            <!-- ▭▭▭ 1p 표지 ▭▭▭ -->
+            <section class="card card--cover" id="hcn-card-1" aria-label="슬라이드 1 표지">
+              <div class="card-bg"></div>
+              <img class="cover-media-img" src="갑지.webp" alt="" loading="eager" decoding="async" />
+              <div class="cover-bottom-deco" aria-hidden="true"></div>
+              <div class="card-content card-content--cover">
+                <span class="cover-badge cover-badge--top">VOL.17 ｜ 구글 제미나이</span>
+                <div class="cover-inner">
+                  <div class="cover-top">
+                    <figure class="cover-figure" aria-hidden="true">
+                      <img src="ai54.png" alt="" loading="eager" decoding="async" />
+                    </figure>
+                  </div>
+                  <div class="cover-hero-wrap">
+                    <div class="cover-hero">
+                      <h1 class="cover-headline">
+                        <strong>GOOGLE의 깜짝 발표</strong><br />
+                        <strong class="cover-headline__mark">GEMINI</strong> <strong>신모델 출시</strong>
+                      </h1>
+                      <p class="cover-dek">새 모델 셋을 한꺼번에, 그런데 기다리던 Pro는 또 빠졌습니다</p>
+                      <div class="cover-index">
+                        <span><b>01</b>3.6 플래시</span>
+                        <span><b>02</b>3.5 플래시-라이트</span>
+                        <span><b>03</b>3.5 플래시 사이버</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 2p 인트로 · 이번 발표 한눈에 ▭▭▭ -->
+            <section class="card" id="hcn-card-2" aria-label="슬라이드 2">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">INTRO</span>
+                    <p class="kicker">2026.07.22 · 구글 발표</p>
+                    <p class="subkicker">새 모델 셋, 정작 Pro는 없었습니다</p>
+                  </div>
+                  <div class="slide-media-slot"><img src="키아트.webp" alt="제미나이 3.6 플래시, 3.5 플래시-라이트, 3.5 플래시 사이버 발표 이미지" loading="eager" decoding="async" /></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      구글이 제미나이 새 모델 <b>세 개</b>를 한 번에 공개했습니다.<br />
+                      효율을 끌어올린 주력 <b>3.6 플래시</b>,<br />
+                      속도와 가격으로 승부하는 <b>3.5 플래시-라이트</b>,<br />
+                      보안 전용 <b>3.5 플래시 사이버</b>입니다.<br />
+                      다들 기다린 최상위 <b>3.5 프로</b>는 이번에도 빠졌습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 3p 3.6 플래시 · 효율 ▭▭▭ -->
+            <section class="card" id="hcn-card-3" aria-label="슬라이드 3">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">01 / 3.6 FLASH</span>
+                    <p class="kicker">모델 01 · 3.6 플래시</p>
+                    <p class="subkicker">말은 줄고, 값은 내렸습니다</p>
+                  </div>
+                  <div class="slide-media-slot"><video autoplay muted loop playsinline preload="auto" disablepictureinpicture><source src="토큰효율.mp4" type="video/mp4"></video></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      같은 일을 하면서 <b>답의 길이를 17% 줄였습니다</b>.<br />
+                      코딩 시험에서는 27만 토큰 쓰던 일을 <b>9만 7천</b>으로 끝냈습니다.<br />
+                      생각하는 단계와 도구를 부르는 횟수도 함께 줄었습니다.<br />
+                      <span class="stat-line">100만 토큰당 입력 1.5달러 · 출력 7.5달러</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 4p 3.6 플래시 · 성능 ▭▭▭ -->
+            <section class="card" id="hcn-card-4" aria-label="슬라이드 4">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">01 / 3.6 FLASH</span>
+                    <p class="kicker">모델 01 · 3.6 플래시</p>
+                    <p class="subkicker">덜 쓰는데 더 잘합니다</p>
+                  </div>
+                  <div class="slide-media-slot"><img src="성능.webp" alt="제미나이 3.6 플래시 벤치마크 성적 비교 그래프" loading="eager" decoding="async" /></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      네 가지 시험 모두 이전 모델을 앞섰습니다.<br />
+                      긴 호흡의 코딩 <b>49%</b>(3.5는 37%),<br />
+                      머신러닝 연구 <b>63.9%</b>(49.7%),<br />
+                      컴퓨터 직접 조작 <b>83.0%</b>(78.4%),<br />
+                      실무 과제 <b>1421점</b>(1349점)을 기록했습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 5p 3.6 플래시 · 활용 시연 ▭▭▭ -->
+            <section class="card" id="hcn-card-5" aria-label="슬라이드 5">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">01 / 3.6 FLASH</span>
+                    <p class="kicker">모델 01 · 3.6 플래시</p>
+                    <p class="subkicker">사진 한 장이 3D 재질이 됩니다</p>
+                  </div>
+                  <div class="slide-media-slot"><video autoplay muted loop playsinline preload="auto" disablepictureinpicture><source src="텍스처.mp4" type="video/mp4"></video></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      구글이 공개한 실제 시연 장면입니다.<br />
+                      제미나이 앱의 <b>캔버스</b>에서 사진의 재질을 뽑아내는<br />
+                      도구를 그 자리에서 만들어 냅니다.<br />
+                      문서 읽기, 차트 해석, 보고서 쓰기 같은<br />
+                      <b>보고 이해하는 일</b>에 특히 강해졌다는 평가입니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 6p 3.5 플래시-라이트 ▭▭▭ -->
+            <section class="card" id="hcn-card-6" aria-label="슬라이드 6">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">02 / FLASH-LITE</span>
+                    <p class="kicker">모델 02 · 3.5 플래시-라이트</p>
+                    <p class="subkicker">가장 빠르고, 가장 쌉니다</p>
+                  </div>
+                  <div class="slide-media-slot"><video autoplay muted loop playsinline preload="auto" disablepictureinpicture><source src="속도비교.mp4" type="video/mp4"></video></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      3.5 계열 중 <b>가장 빠른 모델</b>입니다.<br />
+                      1초에 350개 토큰을 쏟아 냅니다.<br />
+                      터미널 코딩 <b>54%</b>(이전 3.1은 31%),<br />
+                      긴 글 이해 <b>72.2%</b>(60.1%)로 성능도 크게 올랐습니다.<br />
+                      <span class="stat-line">100만 토큰당 입력 0.3달러 · 출력 2.5달러</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 7p 3.5 플래시 사이버 ▭▭▭ -->
+            <section class="card" id="hcn-card-7" aria-label="슬라이드 7">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">03 / FLASH CYBER</span>
+                    <p class="kicker">모델 03 · 3.5 플래시 사이버</p>
+                    <p class="subkicker">뚫리기 전에 먼저 고칩니다</p>
+                  </div>
+                  <div class="slide-media-slot"><img src="사이버.webp" alt="제미나이 3.5 플래시 사이버의 CyberGym 성적 비교 그래프" loading="eager" decoding="async" /></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      보안 구멍을 찾아 고치는 일만 전문으로 배운 모델입니다.<br />
+                      <b>코드멘더</b> 안에서 여러 대가 팀처럼 나눠 일합니다.<br />
+                      보안 시험 <b>83.2%</b>로 훨씬 큰 모델들과 어깨를 나란히 하면서<br />
+                      비용은 더 적게 듭니다.<br />
+                      악용될 수 있어 <b>정부기관과 신뢰 파트너에게만</b> 제공합니다.
+                    </span>
+                  </div>
+                  <div class="slide-footnote">
+                    <dl>
+                      <div class="item"><span class="term">'코드멘더'란?</span>구글이 만든, 코드의 보안 취약점을 찾아 고치는 AI 도구입니다.</div>
+                    </dl>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 8p 이용 방법 & 다음 예고 ▭▭▭ -->
+            <section class="card" id="hcn-card-8" aria-label="슬라이드 8">
+              <div class="card-bg"></div>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <span class="slide-num">HOW TO USE</span>
+                    <p class="kicker">이용 안내</p>
+                    <p class="subkicker">무료버전에서 만날 수 있습니다</p>
+                  </div>
+                  <div class="slide-media-slot"><video autoplay muted loop playsinline preload="auto" disablepictureinpicture><source src="웹디자인.mp4" type="video/mp4"></video></div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      제미나이 앱을 열면 <b>무료로도 3.6 플래시</b>를 쓸 수 있습니다.<br />
+                      요금제가 새로 생긴 건 아닙니다.<br />
+                      유료 구독은 모델을 여는 게 아니라 <b>쓸 수 있는 양</b>을 늘려 줍니다.<br />
+                      구글 검색에도 플래시-라이트가 차례로 적용되고 있습니다.<br />
+                      개발자는 <b>구글 AI 스튜디오</b>, 기업은 <b>제미나이 엔터프라이즈</b>에서 만납니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer">
+                  <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 45L28 35V80L12 90V45Z"/>
+                    <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/>
+                  </svg>
+                  <span class="footer-text">AI디자인랩</span>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-stack nav-stack--next">
+        <label class="nav-btn nav-btn--next nav-next-from-1" for="hcn-nav-2" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-2" for="hcn-nav-3" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-6" for="hcn-nav-7" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-7" for="hcn-nav-8" aria-label="다음 슬라이드">→</label>
+        <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
+      </div>
+    </div>
+
+    <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="미디어 확대 보기">
+    <button class="lightbox-close" type="button" aria-label="닫기">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <video id="lightbox-video" muted loop playsinline controls style="display:none"></video>
+  </div>
+
+  <script>
+    (function () {
+      function ensureInitialChecked() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!checked) {
+          var first = document.getElementById('hcn-nav-1');
+          if (first) first.checked = true;
+        }
+      }
+      ensureInitialChecked();
+      window.addEventListener('pageshow', ensureInitialChecked);
+
+      /* ── 활성 카드에 도착하면 영상을 처음부터 재생, 나머지는 정지 ── */
+      var navs = document.querySelectorAll('input[name="hcn-nav"]');
+      function syncVideos() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        var activeId = checked ? checked.id.replace('hcn-nav-', 'hcn-card-') : 'hcn-card-1';
+        var cards = document.querySelectorAll('#deck > .card');
+        Array.prototype.forEach.call(cards, function (card) {
+          var v = card.querySelector('video');
+          if (!v) return;
+          if (card.id === activeId) {
+            try { v.currentTime = 0; } catch (e) {}
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            v.pause();
+            try { v.currentTime = 0; } catch (e) {}
+          }
+        });
+      }
+      Array.prototype.forEach.call(navs, function (n) {
+        n.addEventListener('change', syncVideos);
+      });
+      syncVideos();
+      window.addEventListener('pageshow', syncVideos);
+
+      /* ── 클릭 확대 라이트박스 (이미지 + 영상) ── */
+      var box = document.getElementById('lightbox');
+      var boxImg = document.getElementById('lightbox-img');
+      var boxVid = document.getElementById('lightbox-video');
+
+      function openImage(src, alt) {
+        boxVid.pause(); boxVid.removeAttribute('src'); boxVid.style.display = 'none';
+        boxImg.src = src;
+        boxImg.alt = alt || '';
+        boxImg.style.display = 'block';
+        box.classList.add('is-open');
+        box.setAttribute('aria-hidden', 'false');
+      }
+      function openVideo(src) {
+        boxImg.style.display = 'none'; boxImg.src = '';
+        boxVid.src = src;
+        boxVid.style.display = 'block';
+        box.classList.add('is-open');
+        box.setAttribute('aria-hidden', 'false');
+        try { boxVid.currentTime = 0; } catch (e) {}
+        var p = boxVid.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      function closeLightbox() {
+        box.classList.remove('is-open');
+        box.setAttribute('aria-hidden', 'true');
+        boxImg.src = '';
+        boxVid.pause();
+        boxVid.removeAttribute('src');
+        boxVid.load();
+      }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest) return;
+        var img = e.target.closest('.slide-media-slot > img');
+        if (img) { e.preventDefault(); openImage(img.currentSrc || img.src, img.alt); return; }
+        var vid = e.target.closest('.slide-media-slot > video');
+        if (vid) {
+          e.preventDefault();
+          var s = vid.currentSrc;
+          if (!s) { var src = vid.querySelector('source'); s = src ? src.src : ''; }
+          if (s) openVideo(s);
+        }
+      });
+
+      box.addEventListener('click', function (e) {
+        if (e.target === boxVid) return; /* 영상 컨트롤 클릭은 닫지 않음 */
+        closeLightbox();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeLightbox();
+      });
+    })();
+  </script>
+</body>
+</html>
