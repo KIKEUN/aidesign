@@ -149,6 +149,7 @@
     .slide-top-copy { position: relative; min-height: 132px; padding: 30px 30px 20px; text-align: center; }
     .slide-top-copy::before { display: none; }
     .slide-num { display: none; }
+    .card-pageno { position: absolute; bottom: 15px; right: 20px; z-index: 6; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: rgba(243,246,254,0.5); font-variant-numeric: tabular-nums; pointer-events: none; }
     .slide-top-copy .kicker { display: none; }
     .slide-top-copy .subkicker { display: block; margin: 0; font-size: 28px; font-weight: 800; line-height: 1.3; letter-spacing: -0.035em; color: var(--ink); word-break: keep-all; }
 
@@ -289,6 +290,7 @@
             <!-- ▭▭▭ 1p 표지 — 제미나이 · 클로드 (좌우 분할) ▭▭▭ -->
             <section class="card card--cover" id="hcn-card-1" aria-label="슬라이드 1 표지">
               <div class="card-bg"></div>
+              <span class="card-pageno">1 / 10</span>
               <div class="cover-spark" aria-hidden="true">
                 <span style="left:16%;top:14%;width:20px"></span>
                 <span style="left:44%;top:9%;width:13px"></span>
@@ -331,6 +333,7 @@
             <!-- ▭▭▭ 2p 제미나이 인트로 ▭▭▭ -->
             <section class="card" id="hcn-card-2" aria-label="슬라이드 2">
               <div class="card-bg"></div>
+              <span class="card-pageno">2 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -355,6 +358,7 @@
             <!-- ▭▭▭ 3p 제미나이 3.6 플래시 · 효율 ▭▭▭ -->
             <section class="card" id="hcn-card-3" aria-label="슬라이드 3">
               <div class="card-bg"></div>
+              <span class="card-pageno">3 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -379,6 +383,7 @@
             <!-- ▭▭▭ 4p 제미나이 3.6 플래시 · 성능 ▭▭▭ -->
             <section class="card" id="hcn-card-4" aria-label="슬라이드 4">
               <div class="card-bg"></div>
+              <span class="card-pageno">4 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -403,6 +408,7 @@
             <!-- ▭▭▭ 5p 제미나이 3.5 플래시-라이트 ▭▭▭ -->
             <section class="card" id="hcn-card-5" aria-label="슬라이드 5">
               <div class="card-bg"></div>
+              <span class="card-pageno">5 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -427,6 +433,7 @@
             <!-- ▭▭▭ 6p 제미나이 3.5 플래시 사이버 ▭▭▭ -->
             <section class="card" id="hcn-card-6" aria-label="슬라이드 6">
               <div class="card-bg"></div>
+              <span class="card-pageno">6 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -452,6 +459,7 @@
             <!-- ▭▭▭ 7p 클로드 Opus 5 · 개요 ▭▭▭ -->
             <section class="card" id="hcn-card-7" aria-label="슬라이드 7">
               <div class="card-bg"></div>
+              <span class="card-pageno">7 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -476,6 +484,7 @@
             <!-- ▭▭▭ 8p 클로드 Opus 5 · 성능 & 비용 (합본) ▭▭▭ -->
             <section class="card" id="hcn-card-8" aria-label="슬라이드 8">
               <div class="card-bg"></div>
+              <span class="card-pageno">8 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -486,11 +495,11 @@
                   <div class="slide-media-slot"><img src="https://www-cdn.anthropic.com/images/4zrzovbb/website/7530b1086992936d7e9d5796a892d1e8fa063253-3840x2160.png" alt="클로드 Opus 5 Frontier-Bench 종합 성능 비교 차트" referrerpolicy="no-referrer" loading="eager" decoding="async" /></div>
                   <div class="slide-bottom-copy">
                     <span>
-                      클로드 <b>Opus 5</b>는 종합 성능이 전 세대의 <b>2배</b>,<br />
+                      <b>클로드 Opus 5</b>는 종합 성능이 전 세대의 <b>2배</b>,<br />
                       추론은 경쟁 2위의 <b>3배</b> 수준입니다.<br />
-                      그런데 값은 반대로 내려갑니다 —<br />
+                      그런데 가격은 반대로 내려갑니다.<br />
                       코딩은 최상위 <b>Fable 5</b>와 거의 같은 성능을 <b>절반 비용</b>에,<br />
-                      컴퓨터 조작은 Fable 5를 넘으며 <b>3분의 1 비용</b>에 해냅니다.
+                      컴퓨터 조작은 <b>Fable 5</b>를 넘으며 <b>3분의 1 비용</b>에 해냅니다.
                     </span>
                   </div>
                 </div>
@@ -501,12 +510,13 @@
             <!-- ▭▭▭ 9p 클로드 Opus 5 · 시각 생성 데모 (풍동) ▭▭▭ -->
             <section class="card" id="hcn-card-9" aria-label="슬라이드 9">
               <div class="card-bg"></div>
+              <span class="card-pageno">9 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
                     <span class="slide-num">CLAUDE · DEMO</span>
                     <p class="kicker">모델 · 클로드 Opus 5</p>
-                    <p class="subkicker">말하면 그 자리에서 만든다</p>
+                    <p class="subkicker">시각 결과물 생성에 강합니다</p>
                   </div>
                   <div class="slide-media-slot">
                     <div class="yt-embed" data-yt="4WQd-8d5j4k">
@@ -519,9 +529,11 @@
                   </div>
                   <div class="slide-bottom-copy">
                     <span>
-                      <b>클로드 Opus 5</b>는 말로 설명하면 결과물을 <b>직접 만들어 냅니다</b>.<br />
-                      영상은 자연어 지시만으로 <b>작동하는 풍동</b>을 즉석에서 구현한 실제 시연입니다.<br />
-                      스스로 점검·수정을 반복해 <b>완성도 높은 결과물</b>을 내놓습니다.
+                      <b>클로드 Opus 5</b>는 그림·3D·시뮬레이션 같은<br />
+                      <b>시각 결과물 생성</b>에 특히 강합니다.<br />
+                      지시 한마디로 <b>작동하는 풍동</b>을<br />
+                      즉석에서 만들어 낸 실제 시연이며,<br />
+                      스스로 고쳐 가며 완성도를 높입니다.
                     </span>
                   </div>
                 </div>
@@ -532,6 +544,7 @@
             <!-- ▭▭▭ 10p 클로드 Opus 5 · 과학·실무 & 이용 ▭▭▭ -->
             <section class="card" id="hcn-card-10" aria-label="슬라이드 10">
               <div class="card-bg"></div>
+              <span class="card-pageno">10 / 10</span>
               <div class="card-content card-content--inner">
                 <div class="slide-body">
                   <div class="slide-top-copy">
@@ -542,10 +555,10 @@
                   <div class="slide-media-slot"><img src="https://www-cdn.anthropic.com/images/4zrzovbb/website/a8fb4f77a9fe240e6f27f3bdc47a137f3c74a29d-2600x2578.png" alt="클로드 Opus 5 과학·실무 성능 비교 차트" referrerpolicy="no-referrer" loading="eager" decoding="async" /></div>
                   <div class="slide-bottom-copy">
                     <span>
-                      <b>클로드 Opus 5</b>는 어려운 전문 분야일수록 이전 세대를 크게 앞섭니다.<br />
-                      유기화학·단백질 같은 과학 과제에서 <b>정답률이 눈에 띄게 올랐고</b>,<br />
-                      금융 모델링에 걸리는 <b>시간을 절반 넘게 줄였습니다</b>.<br />
-                      가격은 이전과 같은 <b>입력 $5·출력 $25</b>(100만 토큰당), 어디서나 씁니다.
+                      <b>클로드 Opus 5</b>는 어려운 전문 과제일수록 강점이 뚜렷합니다.<br />
+                      위 비교처럼 이전 세대를 <b>전반적으로 앞섰고</b>,<br />
+                      난도가 높은 작업일수록 격차가 더 컸습니다.<br />
+                      앱·코드·API 어디서나 쓸 수 있고, 역대 <b>가장 안전하게</b> 설계됐습니다.
                     </span>
                   </div>
                 </div>
