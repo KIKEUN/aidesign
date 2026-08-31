@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Weekly AI (VOL.22)</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ════════ 테마 토큰 ════════ vol22 = 딥 네이비 + 파워오토메이트 블루/시안 */
+    :root {
+      --font-sans: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "SFMono-Regular", ui-monospace, Consolas, "D2Coding", monospace;
+      --font-cover-headline-min: 2.05rem;
+      --font-cover-headline-vw: 5.3vw;
+      --font-cover-headline-max: 2.72rem;
+      --font-cover-headline-mark-em: 1.12;
+      --page:      #ffffff;
+      --card-top:  #10264A;
+      --card-mid:  #0B1B36;
+      --card-bot:  #050C1C;
+      --ink:       #EAF3FF;
+      --ink-dim:   rgba(234, 243, 255, 0.76);
+      --ink-faint: rgba(234, 243, 255, 0.48);
+      --line:      rgba(120, 185, 255, 0.20);
+      --accent:    #3E9AFF;
+      --accent-2:  #45D6D0;
+      --surface:   rgba(214, 238, 255, 0.055);
+    }
+
+    html { overflow-x: hidden; background: var(--page); }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow-x: hidden; background: var(--page); font-family: var(--font-sans); }
+
+    .carousel-shell { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100vh; padding: 40px 16px 48px; gap: 18px; }
+    .carousel-row { display: flex; align-items: center; justify-content: center; gap: 18px; width: 100%; max-width: 700px; position: relative; z-index: 1; }
+    .carousel__viewport {
+      flex: 0 1 540px; min-width: 0; width: 540px; max-width: 540px; overflow: hidden; border-radius: 24px; position: relative;
+      box-shadow: 0 40px 80px -30px rgba(10, 14, 30, 0.75), 0 0 0 1px rgba(120, 185, 255, 0.12);
+      touch-action: pan-y; background: transparent; transform-origin: top center; -webkit-transform-origin: top center;
+    }
+    .carousel__inner { width: 540px; height: 720px; overflow: hidden; border-radius: 24px; position: relative; }
+
+    @media (max-width: 600px) { .carousel__viewport { height: 612px; transform: scale(0.85); -webkit-transform: scale(0.85); } @supports (zoom: 0.85) { .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.85; } } }
+    @media (max-width: 520px) { .carousel__viewport { height: 540px; transform: scale(0.75); -webkit-transform: scale(0.75); } @supports (zoom: 0.75) { .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.75; } } }
+    @media (max-width: 460px) { .carousel__viewport { height: 468px; transform: scale(0.65); -webkit-transform: scale(0.65); } @supports (zoom: 0.65) { .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.65; } } }
+    @media (max-width: 400px) { .carousel__viewport { height: 396px; transform: scale(0.55); -webkit-transform: scale(0.55); } @supports (zoom: 0.55) { .carousel__viewport { transform: none; -webkit-transform: none; zoom: 0.55; } } }
+
+    #deck { position: relative !important; width: 540px !important; height: 720px !important; margin: 0 !important; padding: 0 !important; display: block !important; }
+    #deck > .card { position: absolute !important; top: 0 !important; left: 0 !important; margin: 0 !important; opacity: 0; visibility: hidden; transition: opacity 0.32s ease, visibility 0s linear 0.32s; pointer-events: none; }
+
+    .wai-nav { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden; clip: rect(0 0 0 0); }
+
+    #hcn-nav-1:checked ~ .carousel-row #hcn-card-1,
+    #hcn-nav-2:checked ~ .carousel-row #hcn-card-2,
+    #hcn-nav-3:checked ~ .carousel-row #hcn-card-3,
+    #hcn-nav-4:checked ~ .carousel-row #hcn-card-4,
+    #hcn-nav-5:checked ~ .carousel-row #hcn-card-5,
+    #hcn-nav-6:checked ~ .carousel-row #hcn-card-6 {
+      opacity: 1; visibility: visible; pointer-events: auto; z-index: 2; transition: opacity 0.32s ease, visibility 0s linear 0s;
+    }
+
+    .nav-stack { position: relative; width: 44px; height: 44px; flex-shrink: 0; align-self: center; }
+    .nav-stack > .nav-btn { position: absolute; top: 0; left: 0; display: none; }
+
+    #hcn-nav-2:checked ~ .carousel-row .nav-prev-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-prev-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-prev-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-prev-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-prev-from-6 { display: inline-flex; }
+    #hcn-nav-1:checked ~ .carousel-row .nav-prev-disabled { display: inline-flex; }
+
+    #hcn-nav-1:checked ~ .carousel-row .nav-next-from-1 { display: inline-flex; }
+    #hcn-nav-2:checked ~ .carousel-row .nav-next-from-2 { display: inline-flex; }
+    #hcn-nav-3:checked ~ .carousel-row .nav-next-from-3 { display: inline-flex; }
+    #hcn-nav-4:checked ~ .carousel-row .nav-next-from-4 { display: inline-flex; }
+    #hcn-nav-5:checked ~ .carousel-row .nav-next-from-5 { display: inline-flex; }
+    #hcn-nav-6:checked ~ .carousel-row .nav-next-disabled { display: inline-flex; }
+
+    .nav-btn.is-disabled { opacity: 0.22; cursor: not-allowed; pointer-events: none; }
+    .nav-btn {
+      flex-shrink: 0; align-self: center; position: relative; z-index: 10; width: 44px; height: 44px;
+      display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+      border: 1px solid rgba(30, 78, 140, 0.20); background: #ffffff; color: #1E5A94;
+      box-shadow: 0 6px 16px -8px rgba(30, 78, 140, 0.38); font-size: 17px; font-weight: 700; line-height: 1;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .nav-btn:hover:not(.is-disabled) { background: rgba(62, 154, 255, 0.12); border-color: rgba(62, 154, 255, 0.60); color: #1E7ACC; transform: translateY(-1px); }
+    .nav-btn:active:not(.is-disabled) { transform: translateY(0); }
+
+    .progress-dots { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 2px; flex-wrap: wrap; max-width: 320px; }
+    .progress-dots .dot { width: 6px; height: 6px; border-radius: 999px; background: rgba(30, 78, 140, 0.22); transition: width 0.32s ease, background 0.32s ease; }
+    #hcn-nav-1:checked ~ .progress-dots .dot:nth-child(1),
+    #hcn-nav-2:checked ~ .progress-dots .dot:nth-child(2),
+    #hcn-nav-3:checked ~ .progress-dots .dot:nth-child(3),
+    #hcn-nav-4:checked ~ .progress-dots .dot:nth-child(4),
+    #hcn-nav-5:checked ~ .progress-dots .dot:nth-child(5),
+    #hcn-nav-6:checked ~ .progress-dots .dot:nth-child(6) {
+      width: 24px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    }
+
+    /* ════════ 카드 ════════ */
+    .card { width: 540px; height: 720px; aspect-ratio: 3 / 4; position: relative; overflow: hidden; border-radius: 24px; flex-shrink: 0; isolation: isolate; }
+    .card::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 3; border-radius: inherit;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      mix-blend-mode: overlay; opacity: 0.6;
+    }
+    .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 4; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(120, 185, 255, 0.13); }
+
+    .card-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 92% 58% at 84% -8%, rgba(62, 154, 255, 0.32) 0%, transparent 62%),
+        radial-gradient(ellipse 72% 48% at 2% 12%, rgba(69, 214, 208, 0.16) 0%, transparent 58%),
+        linear-gradient(168deg, var(--card-top) 0%, var(--card-mid) 46%, var(--card-bot) 100%);
+    }
+
+    .card-content { position: relative; z-index: 5; display: flex; flex-direction: column; height: 100%; padding: 32px 28px; }
+    .card-content--inner { padding: 0; }
+
+    .slide-body { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    .slide-top-copy { position: relative; min-height: 116px; padding: 22px 30px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .slide-top-copy .subkicker { display: block; margin: 0; font-size: 28px; font-weight: 800; line-height: 1.28; letter-spacing: -0.045em; color: var(--ink); word-break: keep-all; }
+    .slide-top-copy .kicker { display: block; margin: 9px 0 0; font-size: 19px; font-weight: 700; line-height: 1.35; letter-spacing: -0.035em; color: var(--ink-dim); word-break: keep-all; }
+    .card-pageno { position: absolute; bottom: 15px; right: 20px; z-index: 6; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: rgba(234, 243, 255, 0.42); font-variant-numeric: tabular-nums; pointer-events: none; }
+
+    .slide-media-slot {
+      position: relative; width: 100%; margin: 0; aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, rgba(62, 154, 255, 0.14) 0%, rgba(69, 214, 208, 0.08) 100%), #0C1C38;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 1px 0 rgba(120, 185, 255, 0.16), inset 0 -1px 0 rgba(120, 185, 255, 0.16);
+    }
+    .slide-media-slot > img, .slide-media-slot > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; cursor: zoom-in; }
+
+    .slide-bottom-copy { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 18px 34px 12px; text-align: left; color: var(--ink-dim); font-size: 16.5px; font-weight: 500; line-height: 1.72; letter-spacing: -0.018em; word-break: keep-all; overflow: hidden; }
+    .slide-bottom-copy span, .slide-bottom-copy { font-feature-settings: "ss01", "ss02", "case", "tnum"; }
+    .slide-bottom-copy b { font-weight: 800; color: var(--ink); }
+    .slide-bottom-copy a { display: inline-block; margin-top: 4px; font-weight: 800; color: #7FD4E8; text-decoration: none; border-bottom: 1px solid rgba(127, 212, 232, 0.42); }
+    .slide-bottom-copy .hl { font-weight: 800; color: #7FD4E8; }
+
+
+    .footer { position: relative; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: auto; padding: 15px 34px 20px; border-top: 1px solid var(--line); }
+    .footer-logo { width: 22px; height: 22px; flex-shrink: 0; }
+    .footer-logo path { fill: var(--ink); }
+    .footer-text { font-size: 12px; font-weight: 800; color: var(--ink-dim); letter-spacing: 0.2em; text-transform: uppercase; }
+
+    /* ════════ 슬롯 안 그래픽 패널 (8p 정리) ════════ */
+    .pnl { position: absolute; inset: 0; padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 6px; z-index: 1; }
+    .pnl-cap { margin-top: 3px; text-align: center; font-size: 12.5px; font-weight: 700; letter-spacing: 0.01em; color: var(--ink-faint); }
+
+    .lad { display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-radius: 9px; background: rgba(214, 238, 255, 0.05); border: 1px solid var(--line); }
+    .lad .n { flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; font-weight: 900; color: #04101F; background: linear-gradient(140deg, var(--accent) 0%, var(--accent-2) 100%); }
+    .lad .k { flex: 0 0 92px; font-size: 15.5px; font-weight: 800; letter-spacing: -0.035em; color: var(--ink); }
+    .lad .v { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 600; letter-spacing: -0.03em; color: var(--ink-dim); word-break: keep-all; }
+    .lad--soft { opacity: 0.62; }
+    .lad--soft .n { background: rgba(120, 185, 255, 0.28); color: var(--ink); }
+
+    /* ════════ 1p 표지 ════════ */
+    .card--cover .card-content--cover { padding: 0; display: flex; flex-direction: column; min-height: 0; }
+    #hcn-card-1 .cover-media-img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    #hcn-card-1 .cover-bottom-deco {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 35%; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(10, 14, 30, 0) 0%, rgba(10, 14, 30, 0.42) 12%, rgba(10, 14, 30, 0.92) 24%, #050C1C 30%, #050C1C 100%);
+    }
+    #hcn-card-1 .card-content--cover { position: relative; z-index: 3; }
+    #hcn-card-1 .cover-top { position: relative; padding-top: 20px; }
+    #hcn-card-1 .cover-top::before {
+      content: ""; position: absolute; left: -34px; right: -34px; top: -6px; height: 128px; pointer-events: none;
+      background: radial-gradient(ellipse 66% 68% at 50% 53%, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.52) 42%, rgba(255, 255, 255, 0) 74%);
+    }
+    #hcn-card-1 .cover-figure { position: relative; }
+    #hcn-card-1 .cover-figure img { max-height: 100px; }
+
+    .cover-inner { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; padding: 46px 34px 0; }
+    .cover-figure { margin: 0; line-height: 0; }
+    .cover-figure img { display: block; width: 100%; max-height: 154px; object-fit: contain; object-position: left top; }
+
+    .cover-badge { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px 8px 13px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.2em; color: var(--ink); background: rgba(62, 154, 255, 0.18); border: 1px solid rgba(62, 154, 255, 0.55); border-radius: 999px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .cover-badge--top { position: absolute; top: 16px; left: 16px; z-index: 3; }
+    .cover-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 9px rgba(62, 154, 255, 0.95); animation: pulseDot 2.2s ease-in-out infinite; }
+    @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.82); } }
+
+    .cover-hero-wrap { display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 30px; }
+    .cover-hero::before { content: ""; display: block; width: 46px; height: 3px; margin-bottom: 20px; border-radius: 999px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%); }
+    .cover-headline { margin: 0; font-size: clamp(var(--font-cover-headline-min), var(--font-cover-headline-vw), var(--font-cover-headline-max)); font-weight: 900; line-height: 1.2; letter-spacing: -0.05em; color: #ffffff; }
+    .cover-headline__mark { font-size: calc(1em * var(--font-cover-headline-mark-em)); white-space: nowrap; background: linear-gradient(100deg, #DDF0FF 0%, #7FC0FF 46%, #45D6D0 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--accent); }
+    .cover-headline__no { display: inline-block; margin-left: 0.10em; font-size: calc(1em * 1.46); font-weight: 900; line-height: 1; letter-spacing: -0.02em; color: #6FD0F0; text-shadow: 0 0 22px rgba(62, 154, 255, 0.65), 0 2px 10px rgba(10, 14, 30, 0.7); }
+    #hcn-card-1 .footer { border-top-color: rgba(120, 185, 255, 0.18); }
+
+
+    /* 각주 */
+    .slide-footnote { padding: 0 34px 10px; }
+    .slide-footnote dl { margin: 0; padding: 10px 13px; border-radius: 10px; background: rgba(214, 238, 255, 0.045); border: 1px solid var(--line); }
+    .slide-footnote .item { font-size: 12.5px; font-weight: 600; line-height: 1.6; letter-spacing: -0.03em; color: var(--ink-faint); word-break: keep-all; }
+    .slide-footnote .term { font-weight: 800; color: var(--ink-dim); margin-right: 6px; }
+
+    /* 표지 앱 아이콘 */
+    .cover-apps { display: flex; align-items: center; justify-content: center; gap: 22px; }
+    .app-tile { width: 122px; height: 122px; border-radius: 29px; background: #ffffff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 16px 34px -14px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(120, 185, 255, 0.28); }
+    .app-tile img { width: 92%; height: 92%; object-fit: contain; }
+    .app-tile--todo { background: rgba(214, 238, 255, 0.06); box-shadow: inset 0 0 0 2px rgba(120, 185, 255, 0.34); font-size: 12.5px; font-weight: 800; letter-spacing: 0.06em; color: rgba(120, 185, 255, 0.72); text-align: center; line-height: 1.4; }
+    .app-plus { font-size: 27px; font-weight: 900; color: rgba(234, 243, 255, 0.42); }
+
+    /* 표지 dek */
+    .cover-dek { margin: 14px 0 0; font-size: 15px; font-weight: 700; letter-spacing: -0.035em; color: rgba(234, 243, 255, 0.72); word-break: keep-all; }
+    .cover-dek b { font-weight: 900; color: #7FD4E8; }
+    #hcn-card-1 .card-bg {
+      background:
+        radial-gradient(ellipse 78% 46% at 78% 16%, rgba(62, 154, 255, 0.30) 0%, transparent 64%),
+        radial-gradient(ellipse 62% 40% at 12% 6%, rgba(69, 214, 208, 0.16) 0%, transparent 60%),
+        linear-gradient(180deg, #123055 0%, #0A1C38 46%, #050C1C 100%);
+    }
+    #hcn-card-1 .cover-media-img { object-position: center 40%; }
+
+    #hcn-card-2 .slide-media-slot > img { object-position: center 12%; }
+
+    #hcn-card-3 .slide-media-slot { background: #ffffff; }
+    #hcn-card-3 .slide-media-slot > img { object-fit: contain; }
+
+    #hcn-card-5 .slide-media-slot { background: #ffffff; }
+    #hcn-card-5 .slide-media-slot > img { object-fit: contain; }
+
+    /* 4p 연결 가능 여부 표 */
+    .conn { position: absolute; inset: 0; padding: 13px 16px; display: flex; flex-direction: column; justify-content: center; gap: 5px; z-index: 1; }
+    .conn-row { display: flex; align-items: center; gap: 10px; padding: 6px 13px; border-radius: 9px; background: rgba(214, 238, 255, 0.05); border: 1px solid var(--line); }
+    .conn-row .nm { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 700; letter-spacing: -0.034em; color: var(--ink); word-break: keep-all; }
+    .conn-row .mk { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; line-height: 1; }
+    .conn-row--ok .mk { color: #04101F; background: linear-gradient(140deg, var(--accent) 0%, var(--accent-2) 100%); }
+    .conn-row--no { background: rgba(255, 120, 140, 0.05); border-color: rgba(255, 120, 140, 0.24); }
+    .conn-row--no .nm { color: rgba(234, 243, 255, 0.5); }
+    .conn-row--no .mk { color: #FF9BA8; background: rgba(255, 120, 140, 0.14); box-shadow: inset 0 0 0 1px rgba(255, 120, 140, 0.42); }
+    .conn-cap { margin-top: 3px; text-align: center; font-size: 11.5px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink-faint); }
+
+    /* 유튜브 임베드 슬롯 */
+    .slide-media-slot > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+    .yt-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 7px 12px; font-size: 11.5px; font-weight: 700; letter-spacing: -0.03em; color: rgba(234, 243, 255, 0.82); background: linear-gradient(180deg, rgba(5, 12, 28, 0) 0%, rgba(5, 12, 28, 0.86) 55%); pointer-events: none; }
+
+    /* 유튜브 썸네일 파사드 (클릭하면 재생) */
+    .yt-facade { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: #000; cursor: pointer; display: block; -webkit-tap-highlight-color: transparent; }
+    .yt-facade > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    .yt-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 62px; height: 44px; border-radius: 12px; background: rgba(10, 14, 26, 0.74); display: flex; align-items: center; justify-content: center; transition: background 0.18s ease, transform 0.18s ease; }
+    .yt-play::before { content: ""; width: 0; height: 0; margin-left: 4px; border-style: solid; border-width: 9px 0 9px 15px; border-color: transparent transparent transparent #ffffff; }
+    .yt-facade:hover .yt-play, .yt-facade:focus-visible .yt-play { background: #FF0000; transform: translate(-50%, -50%) scale(1.06); }
+
+    /* 빈 이미지 슬롯 (소스 확정 전) */
+    .media-ph { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 0 26px; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: rgba(120, 185, 255, 0.55); }
+    .media-ph em { font-style: normal; font-size: 12.5px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.55; color: var(--ink-faint); word-break: keep-all; }
+    .slide-media-slot--ph { background: repeating-linear-gradient(135deg, rgba(120, 185, 255, 0.045) 0 10px, rgba(120, 185, 255, 0.015) 10px 20px), #0C1C38; box-shadow: inset 0 0 0 1px rgba(120, 185, 255, 0.18); }
+
+    /* ════════ 라이트박스 ════════ */
+    .lightbox { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(5, 7, 16, 0.93); cursor: zoom-out; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+    .lightbox.is-open { display: flex; }
+    .lightbox img, .lightbox video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6); }
+    .lightbox-close { position: absolute; top: 18px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="carousel-shell" id="html-cardnews-vol22">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-1" autocomplete="off" checked>
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-2" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-3" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-4" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-5" autocomplete="off">
+    <input class="wai-nav" type="radio" name="hcn-nav" id="hcn-nav-6" autocomplete="off">
+
+    <div class="carousel-row">
+      <div class="nav-stack nav-stack--prev">
+        <span class="nav-btn nav-btn--prev nav-prev-disabled is-disabled" aria-hidden="true">←</span>
+        <label class="nav-btn nav-btn--prev nav-prev-from-2" for="hcn-nav-1" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-3" for="hcn-nav-2" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-4" for="hcn-nav-3" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-5" for="hcn-nav-4" aria-label="이전 슬라이드">←</label>
+        <label class="nav-btn nav-btn--prev nav-prev-from-6" for="hcn-nav-5" aria-label="이전 슬라이드">←</label>
+      </div>
+
+      <div class="carousel__viewport">
+        <div class="carousel__inner">
+          <div id="deck">
+
+            <!-- ▭▭▭ 1p 표지 ▭▭▭ -->
+            <section class="card card--cover" id="hcn-card-1" aria-label="슬라이드 1 표지">
+              <div class="card-bg"></div>
+              <img class="cover-media-img" src="표지22.webp" alt="" loading="eager" decoding="async" />
+              <span class="card-pageno">1 / 6</span>
+              <div class="cover-bottom-deco" aria-hidden="true"></div>
+              <div class="card-content card-content--cover">
+                <span class="cover-badge cover-badge--top">VOL.22 ｜ Copilot 소식</span>
+                <div class="cover-inner">
+                  <div class="cover-top">
+                    <figure class="cover-figure"><img src="https://kikeun.github.io/KIKEUN/ai54.png" alt="Weekly AI" referrerpolicy="no-referrer" loading="eager" decoding="async"></figure>
+                  </div>
+                  <div class="cover-hero-wrap">
+                    <div class="cover-hero">
+                      <h1 class="cover-headline">
+                        <strong class="cover-headline__mark">Power Automate</strong><br />
+                        <strong>써보셨나요?</strong>
+                      </h1>
+                      <p class="cover-dek">매주 반복하던 그 일, <b>시켜두면 끝</b></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 2p 이런 일 매주 하시죠 ▭▭▭ -->
+            <section class="card" id="hcn-card-2" aria-label="슬라이드 2">
+              <div class="card-bg"></div>
+              <span class="card-pageno">2 / 6</span>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="subkicker">이런 일, 매주 하고 계시죠</p>
+                    <p class="kicker">어렵진 않은데 계속 손이 갑니다</p>
+                  </div>
+                  <div class="slide-media-slot" aria-label="쌓인 창을 앞에 두고 같은 일을 반복하는 모습">
+                    <img src="p2.webp" alt="반복되는 업무 화살표에 둘러싸여 지친 표정으로 앉아 있는 직장인" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      어렵지도 않고 오래 걸리지도 않는데<br />
+                      매주 똑같이 돌아오는 일들이 있습니다.<br />
+                      옮기고, 알려주고, 정리하는 일들이요.<br />
+                      이런 건 사람이 계속 붙어 있지 않아도 됩니다.<br />
+                      대신 시켜둘 수 있는 <b>Power Automate</b>가 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 3p Power Automate란 ▭▭▭ -->
+            <section class="card" id="hcn-card-3" aria-label="슬라이드 3">
+              <div class="card-bg"></div>
+              <span class="card-pageno">3 / 6</span>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="subkicker">Power Automate</p>
+                    <p class="kicker">언제 무엇을 할지만 정해두면 됩니다</p>
+                  </div>
+                  <div class="slide-media-slot" aria-label="Power Automate 흐름 편집 화면 캡처">
+                    <img src="p3.webp" alt="트리거와 동작이 위에서 아래로 이어진 Power Automate 흐름 편집 화면" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      ‘팀즈에 올린 문서를 엑셀에 자동 리스트업’<br />
+                      같은 규칙 하나를 <b>흐름</b>이라 부릅니다.<br />
+                      코드 없이 화면에서 골라 이으면 끝입니다.<br />
+                      MS 클라우드에 저장돼 <b>컴퓨터를 꺼도 24시간</b> 돕니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 4p 이런 것도 됩니다 ▭▭▭ -->
+            <section class="card" id="hcn-card-4" aria-label="슬라이드 4">
+              <div class="card-bg"></div>
+              <span class="card-pageno">4 / 6</span>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="subkicker">다양하게 연결해서 사용해보세요</p>
+                    <p class="kicker">연결에 따라서 조합은 끝이 없습니다</p>
+                  </div>
+                  <div class="slide-media-slot" aria-label="앱별 연결 가능 여부 표">
+                    <div class="conn">
+                      <div class="conn-row conn-row--ok"><span class="nm">팀즈</span><span class="mk">O</span></div>
+                      <div class="conn-row conn-row--ok"><span class="nm">SharePoint 문서함</span><span class="mk">O</span></div>
+                      <div class="conn-row conn-row--ok"><span class="nm">OneDrive</span><span class="mk">O</span></div>
+                      <div class="conn-row conn-row--ok"><span class="nm">Excel · PPT 등 파일</span><span class="mk">O</span></div>
+                      <div class="conn-row conn-row--no"><span class="nm">Outlook (메일)</span><span class="mk">X</span></div>
+                      <div class="conn-row conn-row--no"><span class="nm">에이전트 연결</span><span class="mk">X</span></div>
+                      <div class="conn-cap">사내에서 연결되는 앱 기준</div>
+                    </div>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      팀즈에 올라온 파일을 <b>문서함 정해둔 자리</b>에<br />
+                      저장해두는 흐름도 만들 수 있습니다.<br />
+                      챙길 일이 생기면 팀즈로 알림을 띄우거나,<br />
+                      사람들에게 메시지를 대신 보내게 할 수도 있고요.<br />
+                      팀즈에 오간 내용을 <b>엑셀에 모아두는 것</b>도 됩니다.
+                    </span>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 5p 말로 만들고, 하나부터 ▭▭▭ -->
+            <section class="card" id="hcn-card-5" aria-label="슬라이드 5">
+              <div class="card-bg"></div>
+              <span class="card-pageno">5 / 6</span>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="subkicker">말로 만들면 됩니다</p>
+                    <p class="kicker">제일 귀찮은 일 하나부터</p>
+                  </div>
+                  <div class="slide-media-slot" aria-label="Power Automate 홈 화면의 흐름 만들기 선택 카드">
+                    <img src="p5.webp" alt="템플릿에서 시작과 Copilot으로 만들기 카드, Copilot 쪽에 빨간 표시" loading="eager" decoding="async" />
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      어떤 버튼을 눌러야 할지 몰라도 됩니다.<br />
+                      “문서함에 파일 올라오면 팀즈로 알려줘”라고 적으면<br />
+                      <b>Copilot이 초안</b>을 대신 짜 줍니다.<br />
+                      만들어둔 템플릿도 많아서 골라 쓰기만 해도 되고요.<br />
+                      이번 주에 제일 많이 반복한 일, 그거 하나만 해보세요.<br />
+                      <a href="https://make.powerautomate.com" target="_blank" rel="noopener noreferrer">make.powerautomate.com</a>
+                    </span>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+            <!-- ▭▭▭ 6p 추천 유튜브 채널 ▭▭▭ -->
+            <section class="card" id="hcn-card-6" aria-label="슬라이드 6">
+              <div class="card-bg"></div>
+              <span class="card-pageno">6 / 6</span>
+              <div class="card-content card-content--inner">
+                <div class="slide-body">
+                  <div class="slide-top-copy">
+                    <p class="subkicker">유튜브 채널 소개</p>
+                  </div>
+                  <div class="slide-media-slot" aria-label="유튜브 영상">
+                    <button type="button" class="yt-facade" data-vid="IKGvvVn5e7c" data-title="안전관리 일정 놓치면 끝! 담당자 자동 알림 시스템 만들기 (Power Automate)" aria-label="영상 재생: 안전관리 일정 놓치면 끝! 담당자 자동 알림 시스템 만들기 (Power Automate)">
+                      <img src="https://i.ytimg.com/vi/IKGvvVn5e7c/maxresdefault.jpg" alt="" referrerpolicy="no-referrer" loading="eager" decoding="async" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/IKGvvVn5e7c/hqdefault.jpg'" />
+                      <span class="yt-play" aria-hidden="true"></span>
+                    </button>
+                  </div>
+                  <div class="slide-bottom-copy">
+                    <span>
+                      다양한 Power Automate 활용법을<br />
+                      소개해주는 유튜브 채널입니다.<br />
+                      쉬운 것부터 하나씩 따라해보세요.<br />
+                      <a href="https://www.youtube.com/@loconam" target="_blank" rel="noopener noreferrer">youtube.com/@loconam</a>
+                    </span>
+                  </div>
+                </div>
+                <div class="footer"><svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 45L28 35V80L12 90V45Z"/><path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z"/></svg><span class="footer-text">AI디자인랩</span></div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-stack nav-stack--next">
+        <label class="nav-btn nav-btn--next nav-next-from-1" for="hcn-nav-2" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-2" for="hcn-nav-3" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-3" for="hcn-nav-4" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-4" for="hcn-nav-5" aria-label="다음 슬라이드">→</label>
+        <label class="nav-btn nav-btn--next nav-next-from-5" for="hcn-nav-6" aria-label="다음 슬라이드">→</label>
+        <span class="nav-btn nav-btn--next nav-next-disabled is-disabled" aria-hidden="true">→</span>
+      </div>
+    </div>
+
+    <div class="progress-dots" aria-hidden="true">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="미디어 확대 보기">
+    <button class="lightbox-close" type="button" aria-label="닫기">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <video id="lightbox-video" muted loop playsinline controls style="display:none"></video>
+  </div>
+
+  <script>
+    (function () {
+      function ensureInitialChecked() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        if (!checked) { var first = document.getElementById('hcn-nav-1'); if (first) first.checked = true; }
+      }
+      ensureInitialChecked();
+      window.addEventListener('pageshow', ensureInitialChecked);
+
+      var navs = document.querySelectorAll('input[name="hcn-nav"]');
+      function syncVideos() {
+        var checked = document.querySelector('input[name="hcn-nav"]:checked');
+        var activeId = checked ? checked.id.replace('hcn-nav-', 'hcn-card-') : 'hcn-card-1';
+        var cards = document.querySelectorAll('#deck > .card');
+        Array.prototype.forEach.call(cards, function (card) {
+          var v = card.querySelector('video');
+          if (v) {
+            if (card.id === activeId) { try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+            else { v.pause(); try { v.currentTime = 0; } catch (e) {} }
+          }
+        });
+      }
+      Array.prototype.forEach.call(navs, function (n) { n.addEventListener('change', syncVideos); });
+      syncVideos();
+      window.addEventListener('pageshow', syncVideos);
+
+
+      // 유튜브: 썸네일 클릭 시 재생. file:// 에서는 임베드가 차단되므로 새 탭.
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest) return;
+        var f = e.target.closest('.yt-facade');
+        if (!f) return;
+        e.preventDefault();
+        var vid = f.getAttribute('data-vid');
+        if (location.protocol === 'file:') {
+          window.open('https://www.youtube.com/watch?v=' + vid, '_blank', 'noopener');
+          return;
+        }
+        var ifr = document.createElement('iframe');
+        ifr.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0';
+        ifr.title = f.getAttribute('data-title') || '';
+        ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        ifr.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        ifr.setAttribute('allowfullscreen', '');
+        f.parentNode.replaceChild(ifr, f);
+      });
+
+      var box = document.getElementById('lightbox');
+      var boxImg = document.getElementById('lightbox-img');
+      var boxVid = document.getElementById('lightbox-video');
+      function openImage(src, alt) { boxVid.pause(); boxVid.removeAttribute('src'); boxVid.style.display = 'none'; boxImg.src = src; boxImg.alt = alt || ''; boxImg.style.display = 'block'; box.classList.add('is-open'); box.setAttribute('aria-hidden', 'false'); }
+      function openVideo(src) { boxImg.style.display = 'none'; boxImg.src = ''; boxVid.src = src; boxVid.style.display = 'block'; box.classList.add('is-open'); box.setAttribute('aria-hidden', 'false'); try { boxVid.currentTime = 0; } catch (e) {} var p = boxVid.play(); if (p && p.catch) p.catch(function () {}); }
+      function closeLightbox() { box.classList.remove('is-open'); box.setAttribute('aria-hidden', 'true'); boxImg.src = ''; boxVid.pause(); boxVid.removeAttribute('src'); boxVid.load(); }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest) return;
+        var img = e.target.closest('.slide-media-slot > img');
+        if (img) { e.preventDefault(); openImage(img.currentSrc || img.src, img.alt); return; }
+        var vid = e.target.closest('.slide-media-slot > video');
+        if (vid) { e.preventDefault(); var s = vid.currentSrc; if (!s) { var src = vid.querySelector('source'); s = src ? src.src : ''; } if (s) openVideo(s); }
+      });
+
+      box.addEventListener('click', function (e) { if (e.target === boxVid) return; closeLightbox(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeLightbox(); } });
+    })();
+  </script>
+</body>
+</html>
