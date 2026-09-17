@@ -6,35 +6,33 @@
 <title>PLAYDAY 06 — 이번 추석, 뭐 볼까?</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Han+Sans&family=Nanum+Pen+Script&family=Saira:wdth,wght@125,800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Pen+Script&family=Saira:wdth,wght@125,800&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --red:#E62429;
-    --red-dark:#B0161B;
-    --blue:#1F3FA8;
-    --blue-dark:#162E7A;
-    --ink:#0B0D17;
-    --paper:#F3F0E7;
+    --red:#E11D2A;
+    --red-dark:#B4141F;
+    --ink:#14161F;
+    --ink-2:#2B2F3D;
     --card:#FFFFFF;
-    --yellow:#FFC629;
-    --line:#D9D2C2;
-    --muted:#4A5068;
+    --muted:#5A6070;
+    --line:#E3E3EA;
+    --yellow:#FFC53D;
     /* 배경 영상 어둡기 — 0이면 원본 그대로, 높일수록 어두워집니다 */
-    --veil:.22;
-    /* 배경 영상 확대율 — 예고편 위아래 검은 띠를 잘라냅니다 (1이면 원본) */
-    --bg-zoom:1.34;
+    --veil:.60;
+    /* 배경 영상 확대율 — 위아래 검은 띠를 잘라냅니다 (1이면 원본) */
+    --bg-zoom:1.06;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     font-family:'Pretendard',-apple-system,sans-serif;
     color:var(--ink);line-height:1.7;
-    background:transparent;   /* 배경은 아래 .bg-video 레이어가 담당 */
+    background:transparent;   /* 배경은 .bg-video 레이어가 담당 */
   }
   .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
 
   /* ───────── 페이지 전체 배경 영상 ───────── */
-  .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#0B1020;}
+  .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#07080C;}
   .bg-video iframe{
     position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%) scale(var(--bg-zoom));
@@ -42,319 +40,255 @@
     min-height:100vh;min-width:177.78vh;     /* 세로가 남으면 세로 기준으로 덮기 */
     border:0;pointer-events:none;
   }
-  /* 영상 위 톤 조절만 — 흐림은 카드에서 처리 */
   .bg-veil{
     position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(180deg,
-      rgba(11,13,23,calc(var(--veil) - .07)) 0%,
-      rgba(11,13,23,var(--veil)) 100%);
+      rgba(7,8,12,calc(var(--veil) - .16)) 0%,
+      rgba(7,8,12,var(--veil)) 46%,
+      rgba(7,8,12,calc(var(--veil) + .10)) 100%);
   }
-
-  /* 배경 영상 소리 토글 */
   .bg-sound{
     position:fixed;right:18px;bottom:18px;z-index:50;
     width:46px;height:46px;border-radius:50%;cursor:pointer;
-    background:var(--ink);border:3px solid var(--ink);
+    background:rgba(20,22,31,.78);border:1px solid rgba(255,255,255,.28);
     color:#fff;font-size:17px;line-height:1;
-    display:grid;place-items:center;
-    box-shadow:3px 3px 0 rgba(11,13,23,.35);
-    transition:background .15s ease, transform .15s ease;
+    display:grid;place-items:center;backdrop-filter:blur(8px);
+    box-shadow:0 6px 20px rgba(0,0,0,.4);
+    transition:background .16s ease, transform .16s ease;
   }
   .bg-sound:hover{background:var(--red);transform:scale(1.07);}
 
-  /* ───────── 상단 히어로 ───────── */
+  /* ───────── 히어로 — 배경 영상이 그대로 비치는 구간 ───────── */
   .hero{
-    position:relative;max-width:900px;margin:0 auto;overflow:hidden;
-    background:var(--ink);
-  }
-  .hero > img{display:block;width:100%;height:auto;border:0;}
-  /* 이미지를 고르게 눌러 글자가 또렷하게 얹히도록 */
-  .hero-overlay{
-    position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(180deg,
-      rgba(8,10,18,.66) 0%, rgba(8,10,18,.48) 42%, rgba(8,10,18,.80) 100%);
-  }
-  .hero-copy{
-    position:absolute;inset:0;z-index:2;
+    position:relative;
+    min-height:clamp(340px,54vh,560px);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;color:#fff;padding:0 20px;
+    text-align:center;color:#fff;padding:64px 20px 54px;
   }
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+    background:linear-gradient(180deg,
+      rgba(7,8,12,.40) 0%, rgba(7,8,12,.14) 45%, rgba(7,8,12,.56) 100%);
+  }
+  .hero > *{position:relative;z-index:1;}
   .wordmark{
     font-family:'Saira','Pretendard',sans-serif;font-weight:800;
-    font-size:clamp(40px,10vw,108px);line-height:1;letter-spacing:.055em;
+    font-size:clamp(42px,10vw,112px);line-height:1;letter-spacing:.055em;
     text-transform:uppercase;
-    text-shadow:0 6px 34px rgba(0,0,0,.55);
+    text-shadow:0 8px 40px rgba(0,0,0,.6);
   }
   .hero-title{
-    margin-top:clamp(14px,2.6vw,28px);
+    margin-top:clamp(16px,2.8vw,30px);
     font-family:'Black Han Sans',sans-serif;font-weight:400;
-    font-size:clamp(19px,3.4vw,36px);letter-spacing:-0.02em;line-height:1.25;
-    text-shadow:0 3px 18px rgba(0,0,0,.65);
+    font-size:clamp(20px,3.6vw,38px);letter-spacing:-0.02em;line-height:1.25;
+    text-shadow:0 3px 20px rgba(0,0,0,.72);
   }
   .hero-sub{
-    margin-top:clamp(9px,1.4vw,15px);
-    font-size:clamp(12.5px,1.8vw,20px);font-weight:700;letter-spacing:-0.02em;
-    color:rgba(255,255,255,.93);
-    text-shadow:0 2px 14px rgba(0,0,0,.7);
+    margin-top:clamp(10px,1.5vw,16px);
+    font-size:clamp(13px,1.8vw,20px);font-weight:600;letter-spacing:-0.02em;
+    color:rgba(255,255,255,.92);
+    text-shadow:0 2px 16px rgba(0,0,0,.78);
   }
-  .hero-sub .em{color:var(--yellow);}
+  .hero-sub .em{color:var(--yellow);font-weight:800;}
 
-  /* ───────── 단계(STEP) 플로우 — 코믹 패널 ───────── */
-  .section{padding:44px 0 56px;position:relative;}
+  /* ───────── 단계(STEP) 카드 ───────── */
+  .section{padding:0 0 60px;position:relative;}
   .flow{position:relative;}
-  /* 썸네일 하단에서 STEP 1로 내려오는 거미줄 한 가닥 */
-  .flow::before{
-    content:"";position:absolute;left:23px;top:-44px;height:44px;
-    border-left:3px dashed var(--ink);opacity:.55;
-  }
-  @media(max-width:600px){.flow::before{left:26px;}}
-
   .step-block{
-    position:relative;z-index:1;margin:0 0 54px 26px;
-    /* 카드 뒤쪽만 살짝 흐리게 — 배경 영상은 선명하게 유지 */
-    background:rgba(255,255,255,.84);
-    backdrop-filter:blur(10px) saturate(115%);
-    -webkit-backdrop-filter:blur(10px) saturate(115%);
-    border:3px solid var(--ink);border-radius:3px;
-    box-shadow:9px 9px 0 rgba(11,13,23,.88);
-    padding:0 32px 32px 40px;
+    position:relative;margin:0 0 26px 0;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(16px) saturate(120%);
+    -webkit-backdrop-filter:blur(16px) saturate(120%);
+    border:1px solid rgba(255,255,255,.7);border-radius:22px;
+    box-shadow:0 24px 60px rgba(0,0,0,.32);
+    padding:0 34px 34px;overflow:hidden;
   }
-  .step-block:last-child{margin-bottom:8px;}
-  .step-block:not(:last-child)::after{
-    content:"";position:absolute;left:-3px;top:100%;height:54px;
-    border-left:3px dashed var(--ink);opacity:.55;
+  .step-block:last-child{margin-bottom:0;}
+  .step-head{
+    margin:0 -34px 28px;padding:26px 34px 24px;
+    background:linear-gradient(120deg, var(--ink) 0%, var(--ink-2) 100%);
+    display:flex;gap:18px;align-items:flex-start;
   }
   .step-num{
-    position:absolute;left:-24px;top:22px;width:48px;height:48px;border-radius:50%;
+    flex:0 0 auto;width:40px;height:40px;border-radius:50%;
     background:var(--red);color:#fff;display:grid;place-items:center;
-    font-family:'Bangers',cursive;font-size:26px;letter-spacing:.04em;padding-top:3px;
-    border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);z-index:3;
+    font-size:17px;font-weight:800;margin-top:2px;
+    box-shadow:0 6px 16px rgba(225,29,42,.45);
   }
-  .step-head{
-    position:relative;overflow:hidden;
-    margin:0 -32px 28px -40px;padding:24px 32px 22px 40px;
-    background:var(--blue);
-    border-bottom:3px solid var(--ink);
-  }
-  /* 스파이디 수트 리듬 — 레드/블루 교차 */
-  .step-head.red{background:var(--red);}
   .step-block.compact{padding-bottom:0;}
-  .step-block.compact .step-head{margin-bottom:0;border-bottom:none;padding-bottom:26px;}
+  .step-block.compact .step-head{margin-bottom:0;}
   .step-head strong{
-    position:relative;display:block;
-    font-family:'Black Han Sans',sans-serif;font-weight:400;
-    font-size:27px;color:#fff;line-height:1.35;letter-spacing:-0.02em;
-    text-shadow:2px 2px 0 rgba(11,13,23,.55);
+    display:block;font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:25px;color:#fff;line-height:1.35;letter-spacing:-0.02em;
   }
   .step-head p{
-    position:relative;font-size:16px;color:rgba(255,255,255,.90);
-    margin-top:8px;max-width:760px;letter-spacing:-0.04em;
+    font-size:15.5px;color:rgba(255,255,255,.80);
+    margin-top:7px;max-width:720px;letter-spacing:-0.03em;line-height:1.65;
   }
   @media(max-width:600px){
-    .step-block{margin-left:0;padding:0 18px 26px;box-shadow:6px 6px 0 rgba(11,13,23,.88);}
-    .step-head{margin:0 -18px 22px -18px;padding:20px 18px;}
-    .step-block:not(:last-child)::after{left:26px;}
-    .step-num{position:static;margin-bottom:12px;}
-    .step-head strong{font-size:22px;}
+    .step-block{padding:0 18px 26px;border-radius:18px;}
+    .step-head{margin:0 -18px 22px;padding:22px 18px 20px;gap:13px;}
+    .step-head strong{font-size:21px;}
+    .step-num{width:34px;height:34px;font-size:15px;}
   }
 
   /* ───────── 추천 카드 입력 영역 ───────── */
   .cur-card{
-    background:var(--card);border:3px solid var(--ink);border-radius:3px;
-    padding:40px 34px 32px;position:relative;overflow:hidden;
-    box-shadow:6px 6px 0 rgba(11,13,23,.85);
+    background:#FCFCFD;border:1px solid var(--line);border-radius:16px;
+    padding:34px 30px 28px;position:relative;
+    box-shadow:0 2px 10px rgba(20,22,31,.05);
   }
-  @media(max-width:600px){.cur-card{padding:36px 18px 26px;}}
-  /* 카드 모서리에 걸린 거미줄 */
-  .card-web{position:absolute;width:112px;height:112px;opacity:.17;pointer-events:none;}
-  .card-web.l{top:0;left:0;}
-  .card-web.r{top:0;right:0;transform:scaleX(-1);}
-  @media(max-width:600px){.card-web{width:74px;height:74px;}}
+  @media(max-width:600px){.cur-card{padding:28px 18px 22px;}}
   .cur-head{
-    position:relative;text-align:center;border-bottom:3px solid var(--ink);
-    padding-bottom:14px;margin-bottom:26px;
+    text-align:center;border-bottom:1px solid var(--line);
+    padding-bottom:16px;margin-bottom:26px;
   }
   .cur-head .small{font-size:11px;letter-spacing:.3em;color:var(--red);font-weight:800;}
   .cur-head h3{
     font-family:'Black Han Sans',sans-serif;font-weight:400;
-    font-size:28px;margin-top:4px;letter-spacing:-0.02em;
+    font-size:26px;margin-top:5px;letter-spacing:-0.02em;
   }
-  .field{position:relative;margin-bottom:28px;}
+  .field{margin-bottom:28px;}
   .field label{
-    display:block;font-size:18px;font-weight:800;color:var(--blue);
+    display:block;font-size:17px;font-weight:700;color:var(--ink);
     letter-spacing:-0.02em;margin-bottom:10px;line-height:1.5;
   }
   .field label em{color:var(--red);font-style:normal;}
   .field input,.field textarea{
-    width:100%;background:transparent;border:none;border-bottom:2px dashed var(--line);
+    width:100%;background:transparent;border:none;border-bottom:1.5px dashed #CFCFDA;
     font-family:'Nanum Pen Script',cursive;font-size:27px;color:var(--ink);
     padding:4px 2px;outline:none;transition:border-color .15s;
   }
   .field textarea{resize:vertical;min-height:48px;line-height:1.5;}
   .field input:focus,.field textarea:focus{border-bottom-color:var(--red);}
-  .field input::placeholder,.field textarea::placeholder{color:#C3BCA8;}
+  .field input::placeholder,.field textarea::placeholder{color:#BFBFCC;}
 
   /* ───────── 알약형 선택 버튼 ───────── */
-  .pills{display:flex;flex-wrap:wrap;gap:9px;}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;}
   .pill{
     font-family:'Pretendard',sans-serif;
-    background:var(--card);border:2.5px solid var(--ink);border-radius:999px;
-    padding:8px 15px;font-size:13.5px;font-weight:700;color:var(--ink);
+    background:#fff;border:1.5px solid var(--line);border-radius:999px;
+    padding:8px 15px;font-size:13.5px;font-weight:600;color:var(--ink);
     cursor:pointer;line-height:1.2;text-align:center;white-space:nowrap;
-    box-shadow:2px 2px 0 var(--ink);
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    transition:all .15s ease;
   }
-  .pill:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
-  .pill.selected{background:var(--red);color:#fff;}
-  .pill.selected:hover{background:var(--red-dark);}
+  .pill:hover{border-color:var(--red);color:var(--red);}
+  .pill.selected{
+    background:var(--red);border-color:var(--red);color:#fff;
+    box-shadow:0 5px 14px rgba(225,29,42,.30);
+  }
+  .pill.selected:hover{background:var(--red-dark);color:#fff;}
   .pills.compact .pill{font-size:13px;padding:7px 13px;}
 
   .field.hl{margin-bottom:22px;}
-  .field.hl label{letter-spacing:-0.04em;white-space:nowrap;}
+  .field.hl label{letter-spacing:-0.03em;}
   .field.hl label .mark{
-    background:linear-gradient(transparent 38%, var(--yellow) 38%);
-    padding:0 4px;font-size:18px;color:var(--ink);
+    background:linear-gradient(transparent 40%, var(--yellow) 40%);
+    padding:0 4px;font-size:17px;color:var(--ink);
   }
   .field.hl textarea{font-size:30px;min-height:64px;}
   .field.hl textarea.ruled{
     border-bottom:none;
     line-height:44px;height:88px;min-height:88px;padding:0 2px;
     background-image:repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 42px,
-      var(--line) 42px,
-      var(--line) 44px
-    );
-    background-attachment:local;
-    resize:none;
+      to bottom, transparent 0, transparent 42px, #DCDCE6 42px, #DCDCE6 44px);
+    background-attachment:local;resize:none;
   }
   .field.hl textarea.ruled:focus{
     background-image:repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 42px,
-      var(--red) 42px,
-      var(--red) 44px
-    );
+      to bottom, transparent 0, transparent 42px, var(--red) 42px, var(--red) 44px);
   }
   .field.hl .count{
     text-align:right;font-size:13px;color:var(--muted);margin-top:6px;font-weight:600;
   }
 
   /* ───────── 실시간 프롬프트 ───────── */
-  .result{margin-top:0;}
   .result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
-  .result-head h4{font-size:15px;font-weight:800;}
+  .result-head h4{font-size:15px;font-weight:700;}
   .copy-btn{
     font-family:'Pretendard',sans-serif;
-    background:var(--red);color:#fff;border:2.5px solid var(--ink);border-radius:8px;
-    padding:9px 18px;font-size:13.5px;font-weight:800;cursor:pointer;
-    box-shadow:3px 3px 0 var(--ink);
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    background:var(--red);color:#fff;border:none;border-radius:10px;
+    padding:10px 20px;font-size:13.5px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 16px rgba(225,29,42,.30);
+    transition:transform .14s ease, background .14s ease;
   }
-  .copy-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);}
-  .copy-btn.done{background:#1E8E4E;}
+  .copy-btn:hover{transform:translateY(-1px);background:var(--red-dark);}
+  .copy-btn.done{background:#1E8E4E;box-shadow:0 6px 16px rgba(30,142,78,.30);}
   .result textarea{
-    width:100%;height:300px;background:#fff;border:2.5px solid var(--ink);
-    border-radius:6px;padding:16px;font-size:12.5px;line-height:1.65;
+    width:100%;height:300px;background:#FCFCFD;border:1px solid var(--line);
+    border-radius:14px;padding:16px;font-size:12.5px;line-height:1.65;
     font-family:'Pretendard';color:var(--ink);resize:vertical;
   }
 
   /* ───────── 링크 버튼 ───────── */
-  .copilot-row{margin-top:20px;text-align:center;}
+  .copilot-row{margin-top:22px;text-align:center;}
   .copilot-btn,.gallery-btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
-    font-family:'Black Han Sans',sans-serif;font-weight:400;letter-spacing:-0.01em;
+    font-family:'Pretendard',sans-serif;font-weight:700;letter-spacing:-0.02em;
     background:var(--red);color:#fff;text-decoration:none;
-    font-size:19px;padding:16px 40px;border-radius:10px;
-    border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
-    transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
+    font-size:16px;padding:16px 38px;border-radius:14px;
+    box-shadow:0 10px 26px rgba(225,29,42,.32);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
   }
   .copilot-btn:hover,.gallery-btn:hover{
-    transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink);background:var(--red-dark);
+    transform:translateY(-2px);box-shadow:0 14px 32px rgba(225,29,42,.40);background:var(--red-dark);
   }
-  .gallery-btn{background:var(--blue);}
-  .gallery-btn:hover{background:var(--blue-dark);}
+  .gallery-btn{background:var(--ink);box-shadow:0 10px 26px rgba(20,22,31,.35);}
+  .gallery-btn:hover{background:var(--ink-2);box-shadow:0 14px 32px rgba(20,22,31,.45);}
 
   /* ───────── TIP 카드 ───────── */
-  .tip-float{
-    position:absolute;top:0;left:calc(100% + 64px);width:280px;
-  }
+  .tip-float{position:absolute;top:0;left:calc(100% + 56px);width:280px;}
   @media(max-width:1330px){
     .tip-float{position:static;width:auto;max-width:340px;margin:22px 0 4px auto;}
   }
-  @keyframes floaty{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-7px);}
-  }
   .tip-card{
-    background:var(--yellow);border:3px solid var(--ink);border-radius:12px;
-    padding:16px 18px 18px;font-size:13px;line-height:1.6;color:var(--ink);
-    box-shadow:5px 5px 0 var(--ink);
-    animation:floaty 3.2s ease-in-out infinite;
-    transition:box-shadow .25s ease, transform .25s ease;
+    background:#FFF8E4;border:1px solid #F3DFA6;border-radius:16px;
+    padding:16px 18px 18px;font-size:13px;line-height:1.65;color:#5A4614;
+    box-shadow:0 10px 26px rgba(20,22,31,.10);
+    transition:transform .2s ease, box-shadow .2s ease;
   }
-  .tip-card + .tip-card{margin-top:16px;animation-delay:.8s;}
-  .tip-card:hover{
-    box-shadow:8px 8px 0 var(--ink);
-    animation-play-state:paused;transform:translateY(-4px);
+  .tip-card + .tip-card{margin-top:14px;}
+  .tip-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(20,22,31,.16);}
+  .tip-card .tip-title{font-weight:800;color:#A87B22;margin-bottom:7px;font-size:14.5px;}
+  .tip-card .hl{
+    background:linear-gradient(transparent 45%, rgba(255,197,61,.85) 45%);
+    padding:0 3px;font-weight:800;
   }
-  .tip-card .tip-title{
-    font-family:'Black Han Sans',sans-serif;font-weight:400;
-    color:var(--red);margin-bottom:7px;font-size:17px;letter-spacing:-0.02em;
-  }
-  .tip-card .hl{background:#fff;padding:0 3px;font-weight:800;box-shadow:0 0 0 1.5px var(--ink);}
-  .tip-card b{font-weight:800;}
+  .tip-card b{font-weight:800;color:#7A5A12;}
   .tip-card .tip-shot{margin-top:12px;}
   .tip-card .tip-shot img{
-    display:block;width:100%;height:auto;border-radius:6px;
-    border:2.5px solid var(--ink);background:#fff;
+    display:block;width:100%;height:auto;border-radius:10px;
+    border:1px solid #EADFC0;background:#fff;
   }
 
   /* ───────── FOOTER ───────── */
   .finish{text-align:center;padding-top:4px;}
-  .finish-note{color:var(--muted);font-size:14px;margin-top:22px;line-height:1.7;font-weight:600;}
+  .finish-note{color:var(--muted);font-size:14px;margin-top:22px;line-height:1.7;}
   .finish .deadline{
-    display:table;margin:14px auto 0;color:#fff;font-size:13px;font-weight:800;
-    border:2.5px solid var(--ink);border-radius:999px;padding:6px 18px;
-    background:var(--ink);box-shadow:3px 3px 0 rgba(11,13,23,.35);
+    display:table;margin:14px auto 0;color:#fff;font-size:13px;font-weight:700;
+    border-radius:999px;padding:7px 20px;background:var(--ink);
   }
-
   .brand-footer{
-    display:flex;align-items:center;justify-content:center;gap:14px;
-    padding:26px 20px 46px;flex-wrap:wrap;
+    display:flex;align-items:center;justify-content:center;
+    padding:30px 20px 54px;
   }
-  .brand-footer img{height:26px;width:auto;display:block;}
   .brand-plate{
-    background:rgba(255,255,255,.84);
-    backdrop-filter:blur(10px) saturate(115%);
-    -webkit-backdrop-filter:blur(10px) saturate(115%);border:3px solid var(--ink);border-radius:3px;
-    padding:14px 26px;box-shadow:5px 5px 0 rgba(11,13,23,.88);
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.7);border-radius:999px;
+    padding:12px 28px;box-shadow:0 14px 34px rgba(0,0,0,.26);
   }
+  .brand-plate img{height:24px;width:auto;display:block;}
 </style>
 </head>
 <body>
 
 <!-- ▼▼▼ 게시판에 붙여넣을 때는 body 내부 전체를 복사하세요 ▼▼▼ -->
 
-<!-- 거미줄 도형 정의 (화면에 보이지 않음) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="web-corner" viewBox="0 0 220 220">
-    <g fill="none" stroke="#0B0D17" stroke-width="2.6" stroke-linecap="round">
-      <path d="M0 0 L220 0 M0 0 L0 220 M0 0 L214 44 M0 0 L44 214 M0 0 L200 96 M0 0 L96 200 M0 0 L158 158" />
-      <path d="M48 0 Q42 42 0 48" />
-      <path d="M98 0 Q86 86 0 98" />
-      <path d="M152 0 Q132 132 0 152" />
-      <path d="M212 0 Q182 182 0 212" />
-    </g>
-  </symbol>
-</svg>
-
-<!-- 페이지 전체 배경으로 재생되는 영상 -->
+<!-- 페이지 전체 배경 영상 -->
 <div class="bg-video" aria-hidden="true">
   <iframe id="bg-yt"
-    src="https://www.youtube-nocookie.com/embed/W7edvITC9g4?autoplay=1&amp;mute=1&amp;start=95&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;iv_load_policy=3&amp;disablekb=1&amp;fs=0&amp;enablejsapi=1"
+    src="https://www.youtube-nocookie.com/embed/UaBv3k5Ooos?autoplay=1&amp;mute=1&amp;start=6&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;iv_load_policy=3&amp;disablekb=1&amp;fs=0&amp;enablejsapi=1"
     title="배경 영상"
     allow="autoplay; encrypted-media; picture-in-picture"
     referrerpolicy="strict-origin-when-cross-origin"></iframe>
@@ -362,15 +296,11 @@
 </div>
 <button type="button" class="bg-sound" id="bg-sound" aria-label="배경 영상 소리 켜기">🔇</button>
 
-<!-- 상단 히어로 -->
+<!-- 히어로 -->
 <div class="hero">
-  <img src="123.png" alt="마블 히어로 단체 이미지" />
-  <div class="hero-overlay" aria-hidden="true"></div>
-  <div class="hero-copy">
-    <h1 class="wordmark">PLAYDAY</h1>
-    <p class="hero-title">이번 추석, 뭐 볼까?</p>
-    <p class="hero-sub">- 연휴에 볼 <span class="em">OTT</span>, AI와 함께 추천해주세요 -</p>
-  </div>
+  <h1 class="wordmark">PLAYDAY</h1>
+  <p class="hero-title">이번 추석, 뭐 볼까?</p>
+  <p class="hero-sub">- 연휴에 볼 <span class="em">OTT</span>, AI와 함께 추천해주세요 -</p>
 </div>
 
 <section class="section">
@@ -378,22 +308,24 @@
     <div class="flow">
 
       <div class="step-block compact">
-        <span class="step-num">1</span>
-        <div class="step-head red">
-          <strong>🕸️ 작품 선정</strong>
-          <p>긴 추석 연휴, 동료들을 소파에 붙잡아 둘 그 작품. 꼭 추천하고 싶은 OTT 한 편을 골라주세요.</p>
+        <div class="step-head">
+          <span class="step-num">1</span>
+          <div>
+            <strong>작품 선정</strong>
+            <p>긴 추석 연휴, 동료들을 소파에 붙잡아 둘 그 작품. 꼭 추천하고 싶은 OTT 한 편을 골라주세요.</p>
+          </div>
         </div>
       </div>
 
       <div class="step-block">
-        <span class="step-num">2</span>
         <div class="step-head">
-          <strong>✍️ 한 줄 추천 쓰기</strong>
-          <p>그 작품을 보며 느낀 점이나 동료들에게 권하고 싶은 이유를 짧고 진정성 있게 적어주세요. 결말과 반전은 비밀로 남겨두고요.</p>
+          <span class="step-num">2</span>
+          <div>
+            <strong>한 줄 추천 쓰기</strong>
+            <p>그 작품을 보며 느낀 점이나 동료들에게 권하고 싶은 이유를 짧고 진정성 있게 적어주세요. 결말과 반전은 비밀로 남겨두고요.</p>
+          </div>
         </div>
         <div class="cur-card">
-          <svg class="card-web l" aria-hidden="true"><use href="#web-corner" /></svg>
-          <svg class="card-web r" aria-hidden="true"><use href="#web-corner" /></svg>
           <div class="cur-head">
             <div class="small">CHUSEOK OTT PICK</div>
             <h3>추석 OTT 추천 카드</h3>
@@ -401,7 +333,7 @@
 
           <div class="field">
             <label>작품 제목 <em>*</em></label>
-            <input id="f-title" type="text" placeholder="예) 스파이더맨: 어크로스 더 유니버스" />
+            <input id="f-title" type="text" placeholder="예) 폭싹 속았수다" />
           </div>
 
           <div class="field">
@@ -449,12 +381,11 @@
             <label>디자인 스타일</label>
             <div class="pills" id="style-pills">
               <button type="button" class="pill selected" data-val="">✨ AI 추천</button>
-              <button type="button" class="pill" data-val="아메리칸 코믹북 스타일, 하프톤 점 질감과 굵은 검정 외곽선, 말풍선과 효과음 글자가 살아있는 디자인">💥 코믹북</button>
-              <button type="button" class="pill" data-val="그래픽 노벨 표지 같은 디자인, 색수차 효과와 강렬한 원색, 과감한 컷 분할 레이아웃">🕸️ 그래픽 노벨</button>
+              <button type="button" class="pill" data-val="OTT 서비스의 작품 상세 화면처럼 어두운 배경에 강렬한 키 비주얼과 또렷한 정보 배치">📺 스트리밍 UI</button>
               <button type="button" class="pill" data-val="클래식한 영화 포스터 스타일, 절제된 타이포그래피와 인상적인 키 비주얼">🎬 시네마 포스터</button>
               <button type="button" class="pill" data-val="여백을 살린 미니멀한 에디토리얼 매거진 레이아웃, 세련되고 절제된 타이포그래피">📖 미니멀 매거진</button>
               <button type="button" class="pill" data-val="어두운 배경에 골드 포인트를 준 무드있고 고급스러운 다크 럭셔리 디자인">🌙 다크 무드</button>
-              <button type="button" class="pill" data-val="90년대 브라운관 TV 감성의 노이즈와 스캔라인 질감이 살아있는 레트로 아날로그 스타일">📺 레트로 TV</button>
+              <button type="button" class="pill" data-val="90년대 브라운관 TV 감성의 노이즈와 스캔라인 질감이 살아있는 레트로 아날로그 스타일">📼 레트로 TV</button>
               <button type="button" class="pill" data-val="선명한 원색과 과장된 그래픽, 통통 튀는 리듬의 키치 팝 스타일">🌈 키치 팝</button>
               <button type="button" class="pill" data-val="거친 필름 그레인 질감에 부드러운 블러를 더한 몽환적이고 감성적인 디자인">🎞️ 필름 그레인</button>
               <button type="button" class="pill" data-val="찢어 붙인 종이와 손글씨, 스티커가 어우러진 콜라주 스타일, 아날로그 핸드메이드 무드">✂️ 콜라주</button>
@@ -469,10 +400,12 @@
       </div>
 
       <div class="step-block">
-        <span class="step-num">3</span>
-        <div class="step-head red">
-          <strong>🤖 Copilot 협업</strong>
-          <p>아래에 준비된 프롬프트를 복사해 Copilot에 그대로 쏘아 보내세요. 여러분의 한 줄 추천사가 멋진 추천 카드로 재탄생합니다.</p>
+        <div class="step-head">
+          <span class="step-num">3</span>
+          <div>
+            <strong>Copilot 협업</strong>
+            <p>아래에 준비된 프롬프트를 복사해 Copilot에 그대로 붙여넣으세요. 여러분의 한 줄 추천사가 멋진 추천 카드로 재탄생합니다.</p>
+          </div>
         </div>
         <div class="result" id="result">
           <div class="result-head">
@@ -481,12 +414,12 @@
           </div>
           <textarea id="result-text" readonly></textarea>
         </div>
-        <div class="copilot-row" style="margin-top:20px;">
+        <div class="copilot-row">
           <a class="copilot-btn" href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener">🤖 Copilot 접속하기 →</a>
         </div>
         <div class="cop-guide" style="margin-top:34px;position:relative;">
-          <h4 style="font-size:15px;margin-bottom:10px;font-weight:800;">💡 Copilot 이미지 기능 이해하기</h4>
-          <img src="image/Copilot_Tip.png" alt="Copilot 이미지 기능 이해하기" style="width:100%;height:auto;display:block;border:3px solid var(--ink);border-radius:6px;" />
+          <h4 style="font-size:15px;margin-bottom:10px;font-weight:700;">💡 Copilot 이미지 기능 이해하기</h4>
+          <img src="image/Copilot_Tip.png" alt="Copilot 이미지 기능 이해하기" style="width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:14px;" />
           <div class="tip-float">
             <div class="tip-card">
               <div class="tip-title">💡 모델설정 TIP</div>
@@ -506,13 +439,15 @@
       </div>
 
       <div class="step-block">
-        <span class="step-num">4</span>
         <div class="step-head">
-          <strong>🎞️ 추천 작품 소개</strong>
-          <p>완성된 카드를 PlayGallery에 올려 동료들에게 소개해주세요.</p>
+          <span class="step-num">4</span>
+          <div>
+            <strong>추천 작품 소개</strong>
+            <p>완성된 카드를 PlayGallery에 올려 동료들에게 소개해주세요.</p>
+          </div>
         </div>
         <div class="finish">
-          <div class="copilot-row">
+          <div class="copilot-row" style="margin-top:4px;">
             <a class="gallery-btn" href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener">🎞️ Play Gallery 이동 →</a>
           </div>
           <p class="finish-note">동료들에게 '좋아요 수'를 가장 많이 받은 우수작을 선정하여 커피 쿠폰을 보내 드립니다.</p>
@@ -573,7 +508,7 @@
 ━━━━━━━━━━━━━━━━━━
 레이아웃의 중심은 추천사입니다.
 - 추천사는 카드 상단이나 정중앙, 시선이 가장 먼저 닿는 자리에 카드에서 가장 큰 글자로 배치하세요.
-- 추천사만 손으로 쓴 메모처럼 다정한 손글씨 느낌으로 표현하세요. 티켓이나 메모지 위에 쓰인 듯한 연출도 좋습니다.
+- 추천사만 손으로 쓴 메모처럼 다정한 손글씨 느낌으로 표현하세요.
 - 손글씨 연출은 추천사에만 한정하세요. 나머지 모든 텍스트는 선택한 디자인 스타일에 어울리는 서체로 자유롭게 구성하세요.
 - 작품 제목보다 추천사가 먼저 읽혀도 괜찮습니다. 그게 이 카드의 의도입니다.
 
@@ -630,7 +565,6 @@
     $('oneline-count').textContent = this.value.length;
   });
 
-  // 알약 버튼 선택 — 그룹별 공통 처리
   function bindPills(groupId, hiddenId, customId){
     var pills = document.querySelectorAll('#' + groupId + ' .pill');
     pills.forEach(function(btn){
@@ -653,10 +587,10 @@
   bindPills('style-pills', 'f-style', 'f-style-custom');
 
   // ───── 배경 영상 (YouTube IFrame Player API) ─────
-  // 자동재생은 브라우저 정책상 '음소거 상태'에서만 허용됩니다.
+  // 6.8초 ~ 26초 구간만 무한 반복. 자동재생은 음소거 상태에서만 허용됩니다.
+  var LOOP_START = 6.8, LOOP_END = 26;
   var ytPlayer = null, sndOn = false;
   var sndBtn = $('bg-sound');
-  var LOOP_START = 95, LOOP_END = 162;   // 1분 35초 ~ 2분 42초 구간만 반복
 
   window.onYouTubeIframeAPIReady = function(){
     ytPlayer = new YT.Player('bg-yt', {
@@ -665,17 +599,15 @@
           e.target.mute();
           e.target.seekTo(LOOP_START);
           e.target.playVideo();
-          // 구간 밖으로 나가면 시작점으로 되돌림
           setInterval(function(){
             if(!ytPlayer || !ytPlayer.getCurrentTime) return;
             try{
               var t = ytPlayer.getCurrentTime();
-              if(t >= LOOP_END || t < LOOP_START - 1){ ytPlayer.seekTo(LOOP_START); }
+              if(t >= LOOP_END || t < LOOP_START - 0.6){ ytPlayer.seekTo(LOOP_START); }
             }catch(err){}
-          }, 250);
+          }, 200);
         },
         onStateChange: function(e){
-          // 구간 끝에 닿으면 시작점으로 되감아 무한 반복
           if(e.data === YT.PlayerState.ENDED){
             e.target.seekTo(LOOP_START);
             e.target.playVideo();
