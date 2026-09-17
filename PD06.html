@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PLAYDAY 06 · 현대극장 — 이번 추석, 뭐 볼까?</title>
+<title>PLAYDAY 06 — 이번 추석, 뭐 볼까?</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Han+Sans&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
@@ -59,35 +59,40 @@
   }
   .bg-sound:hover{background:var(--red);transform:scale(1.07);}
 
-  /* ───────── 상단 썸네일 + 타이틀 밴드 ───────── */
+  /* ───────── 상단 이미지 + 하단 블러 타이틀 띠 ───────── */
   .hero{
-    max-width:900px;margin:0 auto;overflow:hidden;background:var(--ink);
+    position:relative;max-width:900px;margin:0 auto;overflow:hidden;
+    background:var(--ink);
     border:3px solid var(--ink);box-shadow:9px 9px 0 rgba(11,13,23,.88);
   }
-  .hero-img{line-height:0;font-size:0;}
-  .hero-img img{display:block;width:100%;height:auto;border:0;}
+  .hero > img{display:block;width:100%;height:auto;border:0;}
+  /* 이미지 아래쪽만 흐리게 눌러서 그 위에 제목을 얹음 */
   .hero-band{
-    position:relative;color:#fff;background:var(--ink);
-    border-top:3px solid var(--ink);
-    padding:clamp(15px,2.4vw,24px) clamp(18px,3.2vw,34px) clamp(17px,2.8vw,28px);
+    position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;
+    backdrop-filter:blur(16px) saturate(118%);
+    -webkit-backdrop-filter:blur(16px) saturate(118%);
+    background:linear-gradient(180deg, rgba(11,13,23,.30) 0%, rgba(11,13,23,.76) 100%);
+    border-top:2px solid rgba(255,255,255,.45);
+    padding:clamp(13px,2.2vw,22px) clamp(18px,3.2vw,34px) clamp(15px,2.6vw,26px);
   }
   .hero-band::before{
     content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(circle at 88% 130%, rgba(230,36,41,.60), rgba(230,36,41,0) 62%);
+    background:radial-gradient(circle at 90% 140%, rgba(230,36,41,.50), rgba(230,36,41,0) 60%);
   }
   .hero-band > *{position:relative;}
   .hero-band .eyebrow{
     display:block;font-size:clamp(9.5px,1.1vw,12px);font-weight:800;
-    letter-spacing:.26em;color:var(--yellow);margin-bottom:8px;
+    letter-spacing:.26em;color:var(--yellow);margin-bottom:7px;
+    text-shadow:0 2px 8px rgba(0,0,0,.8);
   }
   .hero-band h1{
     font-family:'Black Han Sans',sans-serif;font-weight:400;
     font-size:clamp(23px,4.2vw,46px);line-height:1.14;letter-spacing:-0.02em;
-    text-shadow:3px 0 rgba(230,36,41,.90), -3px 0 rgba(56,190,232,.72);
+    text-shadow:3px 0 rgba(230,36,41,.90), -3px 0 rgba(56,190,232,.72), 0 3px 14px rgba(0,0,0,.6);
   }
   /* OTT 추천 — 한눈에 박히는 코믹 배너 */
   .ott-banner{
-    display:inline-block;margin-top:clamp(10px,1.6vw,18px);
+    display:inline-block;margin-top:clamp(9px,1.5vw,16px);
     font-family:'Black Han Sans',sans-serif;font-weight:400;
     font-size:clamp(14px,2.1vw,25px);letter-spacing:-0.02em;line-height:1.35;
     background:var(--red);color:#fff;
@@ -101,6 +106,7 @@
   }
   @media(max-width:600px){
     .hero{box-shadow:6px 6px 0 rgba(11,13,23,.88);}
+    .hero-band{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
     .ott-banner{padding:5px 12px 3px;box-shadow:3px 3px 0 rgba(0,0,0,.55);}
   }
 
@@ -163,7 +169,7 @@
     .step-head strong{font-size:22px;}
   }
 
-  /* ───────── 추천 티켓 카드 ───────── */
+  /* ───────── 추천 카드 입력 영역 ───────── */
   .cur-card{
     background:var(--card);border:3px solid var(--ink);border-radius:3px;
     padding:40px 34px 32px;position:relative;overflow:hidden;
@@ -367,13 +373,11 @@
 </div>
 <button type="button" class="bg-sound" id="bg-sound" aria-label="배경 영상 소리 켜기">🔇</button>
 
-<!-- 상단 썸네일 + 타이틀 밴드 -->
+<!-- 상단 이미지 + 하단 블러 타이틀 띠 -->
 <div class="hero">
-  <div class="hero-img">
-    <img src="123.png" alt="마블 히어로 단체 이미지" />
-  </div>
+  <img src="123.png" alt="마블 히어로 단체 이미지" />
   <div class="hero-band">
-    <span class="eyebrow">PLAYDAY 06 · 현대극장</span>
+    <span class="eyebrow">PLAYDAY 06</span>
     <h1>이번 추석, 뭐 볼까?</h1>
     <span class="ott-banner">🎟️ 연휴에 볼 <b>OTT 추천</b> 카드 만들기</span>
   </div>
@@ -394,15 +398,15 @@
       <div class="step-block">
         <span class="step-num">2</span>
         <div class="step-head">
-          <strong>🎟️ 추천 티켓 작성</strong>
+          <strong>✍️ 한 줄 추천 쓰기</strong>
           <p>그 작품을 보며 느낀 점이나 동료들에게 권하고 싶은 이유를 짧고 진정성 있게 적어주세요. 결말과 반전은 비밀로 남겨두고요.</p>
         </div>
         <div class="cur-card">
           <svg class="card-web l" aria-hidden="true"><use href="#web-corner" /></svg>
           <svg class="card-web r" aria-hidden="true"><use href="#web-corner" /></svg>
           <div class="cur-head">
-            <div class="small">HYUNDAI THEATER · CHUSEOK PICK</div>
-            <h3>현대극장 추천 티켓</h3>
+            <div class="small">CHUSEOK OTT PICK</div>
+            <h3>추석 OTT 추천 카드</h3>
           </div>
 
           <div class="field">
@@ -428,7 +432,7 @@
           </div>
 
           <div class="field hl">
-            <label><span class="mark">큐레이터 한 줄 추천사</span> <em>*</em> — 왜 권하고 싶은지, 어떤 순간이 마음에 남았는지 짧게 적어주세요.</label>
+            <label><span class="mark">나의 한 줄 추천사</span> <em>*</em> — 왜 권하고 싶은지, 어떤 순간이 마음에 남았는지 짧게 적어주세요.</label>
             <textarea id="f-oneline" class="ruled" rows="2" maxlength="100" placeholder="예) 내가 특별할 필요는 없다고 말해주는 이야기"></textarea>
             <div class="count"><span id="oneline-count">0</span> / 100자</div>
           </div>
@@ -541,18 +545,18 @@
 <!-- ▲▲▲ 여기까지 ▲▲▲ -->
 <script>
 (function(){
-  var TEMPLATE = `당신은 '현대극장'이라는 OTT 큐레이션 채널의 큐레이터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 큐레이션 인포그래픽으로 만드는 일을 합니다.
+  var TEMPLATE = `당신은 OTT 작품을 소개하는 콘텐츠 큐레이션 에디터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 인포그래픽으로 만드는 일을 합니다.
 
-이 카드에서 가장 중요한 것은 화려한 디자인도, 줄거리 요약도 아닌 '큐레이터의 한 줄 추천사'입니다.
+이 카드에서 가장 중요한 것은 화려한 디자인도, 줄거리 요약도 아닌 '추천인의 한 줄 추천사'입니다.
 추천사가 가장 먼저 눈에 들어오고, 나머지 모든 요소는 그 추천사를 뒷받침하도록 만드세요.
 그리고 예쁘게 만드는 것보다 작품의 실제 내용을 정확하게 전달하는 것이 더 중요합니다.
 
 ━━━━━━━━━━━━━━━━━━
-[큐레이터 입력 내용]
+[추천인 입력 내용]
 ━━━━━━━━━━━━━━━━━━
 ■ 작품 제목: {TITLE}
 ■ 볼 수 있는 곳: {OTT}
-■ 큐레이터의 한 줄 추천사(가장 중요): {ONELINE}
+■ 한 줄 추천사(가장 중요): {ONELINE}
 ■ 이런 분께 권해요: {TARGET}
 ■ 시청 상황: {MOOD}
 ■ 디자인 스타일: {STYLE}
@@ -590,12 +594,12 @@
 - 시청 포인트 3~4가지 — 추천사에 고개가 끄덕여지도록, 그 근거가 되는 내용 위주로 (스포일러 금지)
 - 이 작품이 연휴의 시간을 어떻게 채워줄지 한두 가지
 - 마무리 메시지 한 문장 (작품의 실제 핵심에서 도출하되, 등장인물의 대사처럼 따옴표를 쓰지 마세요)
-- '현대극장' — 작은 극장 로고나 티켓 도장처럼 카드 한쪽 구석에
+- 'PLAYDAY 06 · 추석 OTT 추천' — 작은 태그처럼 카드 한쪽 구석에
 
 ━━━━━━━━━━━━━━━━━━
 [디자인]
 ━━━━━━━━━━━━━━━━━━
-- 세로형 A4 비율, 극장 로비에 걸린 추천 포스터 같은 완성도 높은 디자인
+- 세로형 A4 비율, 그대로 공유하고 싶어지는 완성도 높은 디자인
 - 위에 적은 디자인 스타일을 충실히 반영하고, 그에 어울리는 색감을 직접 제안해서 적용하세요.
 - 시청 상황에 맞는 온도로 연출하세요. 가족과 함께라면 밝고 따뜻하게, 혼자 보는 밤이라면 차분하고 깊게.
 - 번호 카드를 일렬로 나열하는 획일적인 레이아웃 대신, 추천사를 중심에 둔 채 작품의 분위기에 맞는 레이아웃을 선택하세요.
@@ -662,19 +666,28 @@
   // 자동재생은 브라우저 정책상 '음소거 상태'에서만 허용됩니다.
   var ytPlayer = null, sndOn = false;
   var sndBtn = $('bg-sound');
+  var LOOP_START = 95, LOOP_END = 162;   // 1분 35초 ~ 2분 42초 구간만 반복
 
   window.onYouTubeIframeAPIReady = function(){
     ytPlayer = new YT.Player('bg-yt', {
       events: {
         onReady: function(e){
           e.target.mute();
-          e.target.seekTo(95);
+          e.target.seekTo(LOOP_START);
           e.target.playVideo();
+          // 구간 밖으로 나가면 시작점으로 되돌림
+          setInterval(function(){
+            if(!ytPlayer || !ytPlayer.getCurrentTime) return;
+            try{
+              var t = ytPlayer.getCurrentTime();
+              if(t >= LOOP_END || t < LOOP_START - 1){ ytPlayer.seekTo(LOOP_START); }
+            }catch(err){}
+          }, 250);
         },
         onStateChange: function(e){
-          // 끝나면 1분 35초 지점으로 되감아 무한 반복
+          // 구간 끝에 닿으면 시작점으로 되감아 무한 반복
           if(e.data === YT.PlayerState.ENDED){
-            e.target.seekTo(95);
+            e.target.seekTo(LOOP_START);
             e.target.playVideo();
           }
         }
