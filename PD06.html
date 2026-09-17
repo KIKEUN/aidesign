@@ -42,10 +42,7 @@
   }
   .bg-veil{
     position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,
-      rgba(7,8,12,calc(var(--veil) - .16)) 0%,
-      rgba(7,8,12,var(--veil)) 46%,
-      rgba(7,8,12,calc(var(--veil) + .10)) 100%);
+    background:rgba(7,8,12,var(--veil));
   }
   .bg-sound{
     position:fixed;right:18px;bottom:18px;z-index:50;
@@ -65,12 +62,6 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;color:#fff;padding:64px 20px 54px;
   }
-  .hero::after{
-    content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-    background:linear-gradient(180deg,
-      rgba(7,8,12,.40) 0%, rgba(7,8,12,.14) 45%, rgba(7,8,12,.56) 100%);
-  }
-  .hero > *{position:relative;z-index:1;}
   .wordmark{
     font-family:'Saira','Pretendard',sans-serif;font-weight:800;
     font-size:clamp(42px,10vw,112px);line-height:1;letter-spacing:.055em;
@@ -261,6 +252,40 @@
     border:1px solid #EADFC0;background:#fff;
   }
 
+  /* ───────── 펼치기 토글 ───────── */
+  .guide-toggle{
+    border:1px solid var(--line);border-radius:14px;
+    background:#FCFCFD;overflow:hidden;
+  }
+  .guide-toggle summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:center;gap:9px;
+    padding:16px 20px;font-size:15px;font-weight:700;color:var(--ink);
+    transition:background .15s ease;
+  }
+  .guide-toggle summary::-webkit-details-marker{display:none;}
+  .guide-toggle summary::marker{content:"";}
+  .guide-toggle summary:hover{background:#F2F2F6;}
+  .guide-toggle summary .cue{
+    margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;
+  }
+  .guide-toggle summary .cue .txt::before{content:"펼치기";}
+  .guide-toggle[open] summary .cue .txt::before{content:"접기";}
+  .guide-toggle summary .cue::after{
+    content:"▾";font-size:12px;line-height:1;transition:transform .22s ease;
+  }
+  .guide-toggle[open] summary .cue::after{transform:rotate(180deg);}
+  .guide-body{
+    padding:20px;border-top:1px solid var(--line);
+    animation:guideIn .22s ease;
+  }
+  @keyframes guideIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+  @media(max-width:600px){
+    .guide-toggle summary{padding:14px 16px;font-size:14px;gap:7px;}
+    .guide-body{padding:16px;}
+  }
+
   /* ───────── FOOTER ───────── */
   .finish{text-align:center;padding-top:4px;}
   .finish-note{color:var(--muted);font-size:14px;margin-top:22px;line-height:1.7;}
@@ -418,8 +443,15 @@
           <a class="copilot-btn" href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener">🤖 Copilot 접속하기 →</a>
         </div>
         <div class="cop-guide" style="margin-top:34px;position:relative;">
-          <h4 style="font-size:15px;margin-bottom:10px;font-weight:700;">💡 Copilot 이미지 기능 이해하기</h4>
-          <img src="PD06_copilot_tip.png" alt="Copilot 이미지 생성 기능 사용법 — 플러스 버튼에서 이미지 생성 선택, 옵션으로 타입·사이즈·스타일 지정" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;border:1px solid var(--line);border-radius:14px;background:#fff;" />
+          <details class="guide-toggle">
+            <summary>
+              💡 Copilot 이미지 기능 이해하기
+              <span class="cue"><span class="txt"></span></span>
+            </summary>
+            <div class="guide-body">
+              <img src="PD06_copilot_tip.png" alt="Copilot 이미지 생성 기능 사용법 — 플러스 버튼에서 이미지 생성 선택, 옵션으로 타입·사이즈·스타일 지정" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;border:1px solid var(--line);border-radius:10px;background:#fff;" />
+            </div>
+          </details>
           <div class="tip-float">
             <div class="tip-card">
               <div class="tip-title">💡 모델설정 TIP</div>
