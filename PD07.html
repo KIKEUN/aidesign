@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PLAYDAY 07 — 이번 추석연휴, 뭐 볼까?</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --red:#E11D2A;
+    --red-dark:#B4141F;
+    --ink:#14161F;
+    --ink-2:#2B2F3D;
+    --card:#FFFFFF;
+    --muted:#5A6070;
+    --line:#E3E3EA;
+    --yellow:#FFC53D;
+    /* 배경 영상 어둡기 — 0이면 원본 그대로, 높일수록 어두워집니다 */
+    --veil:.60;
+    /* 배경 영상 확대율 — 위아래 검은 띠를 잘라냅니다 (1이면 원본) */
+    --bg-zoom:1.06;
+    /* 모든 세로 간격 — 이 값 하나로 전체가 맞춰집니다 */
+    --gap:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Pretendard',-apple-system,sans-serif;
+    color:var(--ink);line-height:1.7;
+    background:transparent;   /* 배경은 .bg-video 레이어가 담당 */
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+
+  /* ───────── 페이지 전체 배경 영상 ───────── */
+  .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#07080C;}
+  .bg-video iframe{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(var(--bg-zoom));
+    width:100vw;height:56.25vw;              /* 가로 기준 16:9 */
+    min-height:100vh;min-width:177.78vh;     /* 세로가 남으면 세로 기준으로 덮기 */
+    border:0;pointer-events:none;
+  }
+  .bg-veil{
+    position:absolute;inset:0;pointer-events:none;
+    background:rgba(7,8,12,var(--veil));
+  }
+  /* ───────── 상단 히어로 이미지 ───────── */
+  .hero-wrap{max-width:900px;margin:0 auto;padding:var(--gap) 20px 0;}
+  .hero-img{
+    position:relative;border-radius:22px;overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,.38);
+    container-type:inline-size;   /* 아래 글자·로고가 배너 폭에 맞춰 커지도록 */
+  }
+  /* 사진은 살짝 흐리게 — scale로 블러 가장자리 잘라냄 */
+  .hero-img .photo{
+    display:block;width:100%;aspect-ratio:16/9;
+    object-fit:cover;object-position:center 44%;
+    filter:blur(4px);transform:scale(1.07);
+  }
+  /* 글자 가독성용 스크림 */
+  .hero-img .scrim{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(7,8,12,.62) 0%, rgba(7,8,12,.48) 45%, rgba(7,8,12,.74) 100%);
+  }
+  .hero-copy{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;color:#fff;padding:clamp(18px,4vw,48px);
+  }
+  .hero-copy .logo{
+    width:clamp(240px,62vw,620px);height:auto;display:block;margin-bottom:-7.4%;
+    width:clamp(240px,72cqw,680px);margin-bottom:-8.5cqw;
+    filter:drop-shadow(0 6px 26px rgba(0,0,0,.6));
+  }
+  .intro-title{
+    margin-top:clamp(6px,1vw,18px);
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:clamp(24px,3.4vw,44px);
+    font-size:clamp(24px,5cqw,48px);letter-spacing:-0.025em;line-height:1.2;
+    text-shadow:0 3px 18px rgba(0,0,0,.75);
+  }
+  .intro-sub{
+    margin-top:clamp(9px,1.3vw,18px);
+    font-size:clamp(14px,1.6vw,20px);
+    font-size:clamp(14px,2.35cqw,23px);font-weight:600;
+    color:rgba(255,255,255,.94);letter-spacing:-0.02em;line-height:1.6;
+    text-shadow:0 2px 14px rgba(0,0,0,.8);
+  }
+  .intro-sub .em{color:var(--yellow);font-weight:800;}
+
+  /* ───────── 단계(STEP) 카드 ───────── */
+  .section{padding:var(--gap) 0 0;position:relative;}
+  .flow{position:relative;}
+  .step-block{
+    position:relative;margin:0 0 var(--gap) 0;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(16px) saturate(120%);
+    -webkit-backdrop-filter:blur(16px) saturate(120%);
+    border:1px solid rgba(255,255,255,.7);border-radius:22px;
+    box-shadow:0 24px 60px rgba(0,0,0,.32);
+    padding:0 34px 34px;overflow:hidden;
+  }
+  .step-block:last-child{margin-bottom:0;}
+  .step-head{
+    margin:0 -34px 28px;padding:26px 34px 24px;
+    background:linear-gradient(120deg, var(--ink) 0%, var(--ink-2) 100%);
+    display:flex;gap:18px;align-items:flex-start;
+  }
+  .step-num{
+    flex:0 0 auto;width:40px;height:40px;border-radius:50%;
+    background:var(--red);color:#fff;display:grid;place-items:center;
+    font-size:17px;font-weight:800;margin-top:2px;
+    box-shadow:0 6px 16px rgba(225,29,42,.45);
+  }
+  .step-block.compact{padding-bottom:0;}
+  .step-block.compact .step-head{margin-bottom:0;}
+  .step-head strong{
+    display:block;font-family:'Pretendard',sans-serif;font-weight:800;
+    font-size:26px;color:#fff;line-height:1.35;letter-spacing:-0.035em;
+    text-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  .step-head p{
+    font-size:15.5px;color:rgba(255,255,255,.80);
+    margin-top:7px;max-width:720px;letter-spacing:-0.03em;line-height:1.65;
+  }
+  @media(max-width:600px){
+    .step-block{padding:0 18px 26px;border-radius:18px;}
+    .step-head{margin:0 -18px 22px;padding:22px 18px 20px;gap:13px;}
+    .step-head strong{font-size:21px;}
+    .step-num{width:34px;height:34px;font-size:15px;}
+  }
+
+  /* ───────── 추천 카드 입력 영역 ───────── */
+  .cur-card{
+    background:#FCFCFD;border:1px solid var(--line);border-radius:16px;
+    padding:34px 30px 28px;position:relative;
+    box-shadow:0 2px 10px rgba(20,22,31,.05);
+  }
+  @media(max-width:600px){.cur-card{padding:28px 18px 22px;}}
+  .cur-head{
+    text-align:center;border-bottom:1px solid var(--line);
+    padding-bottom:16px;margin-bottom:26px;
+  }
+  .cur-head .small{font-size:11px;letter-spacing:.3em;color:var(--red);font-weight:800;}
+  .cur-head h3{
+    font-family:'Gowun Batang',serif;font-weight:700;
+    font-size:27px;margin-top:6px;letter-spacing:-0.02em;
+  }
+  .field{margin-bottom:28px;}
+  .field label{
+    display:block;font-size:17px;font-weight:700;color:var(--ink);
+    letter-spacing:-0.02em;margin-bottom:10px;line-height:1.5;
+  }
+  .field label em{color:var(--red);font-style:normal;}
+  .field input,.field textarea{
+    width:100%;background:transparent;border:none;border-bottom:1.5px dashed #CFCFDA;
+    font-family:'Nanum Pen Script',cursive;font-size:27px;color:var(--ink);
+    padding:4px 2px;outline:none;transition:border-color .15s;
+  }
+  .field textarea{resize:vertical;min-height:48px;line-height:1.5;}
+  .field input:focus,.field textarea:focus{border-bottom-color:var(--red);}
+  .field input::placeholder,.field textarea::placeholder{color:#BFBFCC;}
+
+  /* ───────── 알약형 선택 버튼 ───────── */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-family:'Pretendard',sans-serif;
+    background:#fff;border:1.5px solid var(--line);border-radius:999px;
+    padding:8px 15px;font-size:13.5px;font-weight:600;color:var(--ink);
+    cursor:pointer;line-height:1.2;text-align:center;white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--red);color:var(--red);}
+  .pill.selected{
+    background:var(--red);border-color:var(--red);color:#fff;
+    box-shadow:0 5px 14px rgba(225,29,42,.30);
+  }
+  .pill.selected:hover{background:var(--red-dark);color:#fff;}
+  .pills.compact .pill{font-size:13px;padding:7px 13px;}
+
+  .field.hl{margin-bottom:22px;}
+  .field.hl label{letter-spacing:-0.03em;}
+  .field.hl label .mark{
+    background:linear-gradient(transparent 40%, var(--yellow) 40%);
+    padding:0 4px;font-size:17px;color:var(--ink);
+  }
+  .field.hl textarea{font-size:30px;min-height:64px;}
+  .field.hl textarea.ruled{
+    border-bottom:none;
+    line-height:44px;height:88px;min-height:88px;padding:0 2px;
+    background-image:repeating-linear-gradient(
+      to bottom, transparent 0, transparent 42px, #DCDCE6 42px, #DCDCE6 44px);
+    background-attachment:local;resize:none;
+  }
+  .field.hl textarea.ruled:focus{
+    background-image:repeating-linear-gradient(
+      to bottom, transparent 0, transparent 42px, var(--red) 42px, var(--red) 44px);
+  }
+  .field.hl .count{
+    text-align:right;font-size:13px;color:var(--muted);margin-top:6px;font-weight:600;
+  }
+
+  /* ───────── 실시간 프롬프트 ───────── */
+  .result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+  .result-head h4{font-size:15px;font-weight:700;}
+  .copy-btn{
+    font-family:'Pretendard',sans-serif;
+    background:var(--red);color:#fff;border:none;border-radius:10px;
+    padding:10px 20px;font-size:13.5px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 16px rgba(225,29,42,.30);
+    transition:transform .14s ease, background .14s ease;
+  }
+  .copy-btn:hover{transform:translateY(-1px);background:var(--red-dark);}
+  .copy-btn.done{background:#1E8E4E;box-shadow:0 6px 16px rgba(30,142,78,.30);}
+  .result textarea{
+    width:100%;height:300px;background:#FCFCFD;border:1px solid var(--line);
+    border-radius:14px;padding:16px;font-size:12.5px;line-height:1.65;
+    font-family:'Pretendard';color:var(--ink);resize:vertical;
+  }
+
+  /* ───────── 링크 버튼 ───────── */
+  .copilot-row{margin-top:22px;text-align:center;}
+  .copilot-btn,.gallery-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    font-family:'Pretendard',sans-serif;font-weight:700;letter-spacing:-0.02em;
+    background:var(--red);color:#fff;text-decoration:none;
+    font-size:16px;padding:16px 38px;border-radius:14px;
+    box-shadow:0 10px 26px rgba(225,29,42,.32);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+  }
+  .copilot-btn:hover,.gallery-btn:hover{
+    transform:translateY(-2px);box-shadow:0 14px 32px rgba(225,29,42,.40);background:var(--red-dark);
+  }
+  .gallery-btn{background:var(--ink);box-shadow:0 10px 26px rgba(20,22,31,.35);}
+  .gallery-btn:hover{background:var(--ink-2);box-shadow:0 14px 32px rgba(20,22,31,.45);}
+
+  /* ───────── TIP 카드 ───────── */
+  .tip-float{position:absolute;top:0;left:calc(100% + 56px);width:280px;}
+  @media(max-width:1330px){
+    .tip-float{position:static;width:auto;max-width:340px;margin:22px 0 4px auto;}
+  }
+  .tip-card{
+    background:#FFF8E4;border:1px solid #F3DFA6;border-radius:16px;
+    padding:16px 18px 18px;font-size:13px;line-height:1.65;color:#5A4614;
+    box-shadow:0 10px 26px rgba(20,22,31,.10);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .tip-card + .tip-card{margin-top:14px;}
+  .tip-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(20,22,31,.16);}
+  .tip-card .tip-title{font-weight:800;color:#A87B22;margin-bottom:7px;font-size:14.5px;}
+  .tip-card .hl{
+    background:linear-gradient(transparent 45%, rgba(255,197,61,.85) 45%);
+    padding:0 3px;font-weight:800;
+  }
+  .tip-card b{font-weight:800;color:#7A5A12;}
+  .tip-card .tip-shot{margin-top:12px;}
+  .tip-card .tip-shot img{
+    display:block;width:100%;height:auto;border-radius:10px;
+    border:1px solid #EADFC0;background:#fff;
+  }
+
+  /* ───────── 펼치기 토글 ───────── */
+  .guide-toggle{
+    border:1px solid var(--line);border-radius:14px;
+    background:#FCFCFD;overflow:hidden;
+  }
+  .guide-toggle summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:center;gap:9px;
+    padding:16px 20px;font-size:15px;font-weight:700;color:var(--ink);
+    transition:background .15s ease;
+  }
+  .guide-toggle summary::-webkit-details-marker{display:none;}
+  .guide-toggle summary::marker{content:"";}
+  .guide-toggle summary:hover{background:#F2F2F6;}
+  .guide-toggle summary .cue{
+    margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;
+  }
+  .guide-toggle summary .cue .txt::before{content:"펼치기";}
+  .guide-toggle[open] summary .cue .txt::before{content:"접기";}
+  .guide-toggle summary .cue::after{
+    content:"▾";font-size:12px;line-height:1;transition:transform .22s ease;
+  }
+  .guide-toggle[open] summary .cue::after{transform:rotate(180deg);}
+  .guide-body{
+    padding:20px;border-top:1px solid var(--line);
+    animation:guideIn .22s ease;
+  }
+  @keyframes guideIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+  @media(max-width:600px){
+    .guide-toggle summary{padding:14px 16px;font-size:14px;gap:7px;}
+    .guide-body{padding:16px;}
+  }
+
+  /* ───────── FOOTER ───────── */
+  .finish{text-align:center;padding-top:4px;}
+  .finish-note{color:var(--muted);font-size:14px;margin-top:22px;line-height:1.7;}
+  .finish .deadline{
+    display:table;margin:14px auto 0;color:#fff;font-size:13px;font-weight:700;
+    border-radius:999px;padding:7px 20px;background:var(--ink);
+  }
+  .brand-footer{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:var(--gap) 20px var(--gap);flex-wrap:wrap;
+  }
+  .footer-org,.footer-text{
+    font-size:15px;font-weight:800;letter-spacing:-0.02em;
+    color:rgba(255,255,255,.88);
+    text-shadow:0 2px 10px rgba(0,0,0,.65);
+  }
+  .footer-div{
+    width:1.5px;height:19px;flex-shrink:0;
+    background:rgba(255,255,255,.42);
+  }
+  .footer-lab{display:inline-flex;align-items:center;gap:7px;}
+  .footer-logo{width:21px;height:21px;flex-shrink:0;}
+  .footer-logo path{fill:#fff;}
+  @media(max-width:600px){
+    .brand-footer{gap:10px;}
+    .footer-org,.footer-text{font-size:13px;}
+    .footer-logo{width:18px;height:18px;}
+    .footer-div{height:16px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ▼▼▼ 게시판에 붙여넣을 때는 body 내부 전체를 복사하세요 ▼▼▼ -->
+
+<!-- 페이지 전체 배경 영상 -->
+<div class="bg-video" aria-hidden="true">
+  <iframe id="bg-yt"
+    src="https://www.youtube-nocookie.com/embed/UaBv3k5Ooos?autoplay=1&amp;mute=1&amp;start=6&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;iv_load_policy=3&amp;disablekb=1&amp;fs=0&amp;enablejsapi=1"
+    title="배경 영상"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div class="bg-veil"></div>
+</div>
+
+<!-- 상단 히어로 이미지 -->
+<div class="hero-wrap">
+  <div class="hero-img">
+    <img class="photo" src="PD07_top.png" alt="거실에서 가족이 함께 OTT를 보는 모습" />
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <img class="logo" src="PD07_logo.png" alt="PLAYDAY" />
+      <p class="intro-title">이번 추석연휴, 뭐 볼까?</p>
+      <p class="intro-sub">동료에게 권하고 싶은 <span class="em">OTT</span> 한 편, AI와 함께 추천해주세요.</p>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="flow">
+
+      <div class="step-block compact">
+        <div class="step-head">
+          <span class="step-num">1</span>
+          <div>
+            <strong>작품 선정</strong>
+            <p>긴 연휴, 동료들을 소파에 붙잡아 둘 그 작품. 꼭 추천하고 싶은 OTT 한 편을 골라주세요.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-head">
+          <span class="step-num">2</span>
+          <div>
+            <strong>한 줄 추천 쓰기</strong>
+            <p>그 작품을 보며 느낀 점이나 동료들에게 권하고 싶은 이유를 짧고 진정성 있게 적어주세요.</p>
+          </div>
+        </div>
+        <div class="cur-card">
+          <div class="cur-head">
+            <div class="small">HOLIDAY OTT PICK</div>
+            <h3>연휴 OTT 추천 카드</h3>
+          </div>
+
+          <div class="field">
+            <label>작품 제목 <em>*</em></label>
+            <input id="f-title" type="text" placeholder="예) 폭싹 속았수다" />
+          </div>
+
+          <div class="field">
+            <label>어디서 볼 수 있나요 <em>*</em></label>
+            <div class="pills compact" id="ott-pills">
+              <button type="button" class="pill selected" data-val="넷플릭스">넷플릭스</button>
+              <button type="button" class="pill" data-val="티빙">티빙</button>
+              <button type="button" class="pill" data-val="쿠팡플레이">쿠팡플레이</button>
+              <button type="button" class="pill" data-val="웨이브">웨이브</button>
+              <button type="button" class="pill" data-val="디즈니+">디즈니+</button>
+              <button type="button" class="pill" data-val="왓챠">왓챠</button>
+              <button type="button" class="pill" data-val="Apple TV+">Apple TV+</button>
+              <button type="button" class="pill" data-val="유튜브">유튜브</button>
+              <button type="button" class="pill" data-val="__custom__">✏️ 직접 입력</button>
+            </div>
+            <input id="f-ott-custom" type="text" placeholder="플랫폼 이름을 적어주세요" style="display:none;margin-top:12px;" />
+            <input id="f-ott" type="hidden" value="넷플릭스" />
+          </div>
+
+          <div class="field hl">
+            <label><span class="mark">나의 한 줄 추천사</span> <em>*</em> — 왜 권하고 싶은지, 어떤 순간이 마음에 남았는지 짧게 적어주세요.</label>
+            <textarea id="f-oneline" class="ruled" rows="2" maxlength="100" placeholder="예) 내가 특별할 필요는 없다고 말해주는 이야기"></textarea>
+            <div class="count"><span id="oneline-count">0</span> / 100자</div>
+          </div>
+
+          <div class="field">
+            <label>이런 분께 권해요 <em>*</em></label>
+            <input id="f-target" type="text" placeholder="예) 연휴에 혼자 조용히 마음을 채우고 싶은 사람" />
+          </div>
+
+          <div class="field">
+            <label>이렇게 보세요 — 시청 상황</label>
+            <div class="pills compact" id="mood-pills">
+              <button type="button" class="pill selected" data-val="">✨ AI 추천</button>
+              <button type="button" class="pill" data-val="온 가족이 거실에 모여 함께 보기 좋은 작품">👨‍👩‍👧 온 가족 함께</button>
+              <button type="button" class="pill" data-val="연휴에 혼자 조용히 몰입해서 보기 좋은 작품">🛋️ 혼자 몰입</button>
+              <button type="button" class="pill" data-val="연휴 내내 한 번에 몰아볼 수 있는 시리즈">📺 연휴 정주행</button>
+              <button type="button" class="pill" data-val="이동 시간이나 자투리 시간에 가볍게 보기 좋은 작품">🚗 귀성길에</button>
+              <button type="button" class="pill" data-val="새벽에 혼자 불 끄고 보기 좋은 작품">🌙 새벽 감성</button>
+            </div>
+            <input id="f-mood" type="hidden" value="" />
+          </div>
+
+          <div class="field">
+            <label>디자인 스타일</label>
+            <div class="pills" id="style-pills">
+              <button type="button" class="pill selected" data-val="">✨ AI 추천</button>
+              <button type="button" class="pill" data-val="OTT 서비스의 작품 상세 화면처럼 어두운 배경에 강렬한 키 비주얼과 또렷한 정보 배치">📺 스트리밍 UI</button>
+              <button type="button" class="pill" data-val="클래식한 영화 포스터 스타일, 절제된 타이포그래피와 인상적인 키 비주얼">🎬 시네마 포스터</button>
+              <button type="button" class="pill" data-val="여백을 살린 미니멀한 에디토리얼 매거진 레이아웃, 세련되고 절제된 타이포그래피">📖 미니멀 매거진</button>
+              <button type="button" class="pill" data-val="어두운 배경에 골드 포인트를 준 무드있고 고급스러운 다크 럭셔리 디자인">🌙 다크 무드</button>
+              <button type="button" class="pill" data-val="90년대 브라운관 TV 감성의 노이즈와 스캔라인 질감이 살아있는 레트로 아날로그 스타일">📼 레트로 TV</button>
+              <button type="button" class="pill" data-val="선명한 원색과 과장된 그래픽, 통통 튀는 리듬의 키치 팝 스타일">🌈 키치 팝</button>
+              <button type="button" class="pill" data-val="거친 필름 그레인 질감에 부드러운 블러를 더한 몽환적이고 감성적인 디자인">🎞️ 필름 그레인</button>
+              <button type="button" class="pill" data-val="찢어 붙인 종이와 손글씨, 스티커가 어우러진 콜라주 스타일, 아날로그 핸드메이드 무드">✂️ 콜라주</button>
+              <button type="button" class="pill" data-val="손으로 그린 듯한 따뜻한 일러스트와 부드러운 색감의 아기자기한 디자인">🖍️ 일러스트</button>
+              <button type="button" class="pill" data-val="Y2K 감성의 사이버 팝 스타일, 선명한 네온 컬러와 메탈릭한 질감">🛸 Y2K 사이버</button>
+              <button type="button" class="pill" data-val="__custom__">✏️ 직접 입력</button>
+            </div>
+            <input id="f-style-custom" type="text" placeholder="원하는 스타일을 자유롭게 적어주세요" style="display:none;margin-top:12px;" />
+            <input id="f-style" type="hidden" value="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-head">
+          <span class="step-num">3</span>
+          <div>
+            <strong>Copilot 협업</strong>
+            <p>아래에 준비된 프롬프트를 복사해 Copilot에 그대로 붙여넣으세요. 여러분의 한 줄 추천사가 멋진 추천 카드로 재탄생합니다.</p>
+          </div>
+        </div>
+        <div class="result" id="result">
+          <div class="result-head">
+            <h4>📋 완성 프롬프트 — 전체 복사해서 Copilot에서 사용하세요</h4>
+            <button class="copy-btn" id="btn-copy">전체 복사</button>
+          </div>
+          <textarea id="result-text" readonly></textarea>
+        </div>
+        <div class="copilot-row">
+          <a class="copilot-btn" href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener">🤖 Copilot 접속하기 →</a>
+        </div>
+        <div class="cop-guide" style="margin-top:34px;position:relative;">
+          <details class="guide-toggle">
+            <summary>
+              💡 Copilot 이미지 기능 이해하기
+              <span class="cue"><span class="txt"></span></span>
+            </summary>
+            <div class="guide-body">
+              <img src="PD07_copilot_tip.png" alt="Copilot 이미지 생성 기능 사용법 — 플러스 버튼에서 이미지 생성 선택, 옵션으로 타입·사이즈·스타일 지정" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;border:1px solid var(--line);border-radius:10px;background:#fff;" />
+            </div>
+          </details>
+          <div class="tip-float">
+            <div class="tip-card">
+              <div class="tip-title">💡 모델설정 TIP</div>
+              기본 설정된 '자동' 모드 대신 <b><span class="hl">GPT 5.6 깊이 생각하기로 변경</span></b>해 보세요! 훨씬 더 똑똑하고 디테일한 결과가 나옵니다.
+            </div>
+            <div class="tip-card">
+              <div class="tip-title">🎯 한 번에 안 나올 때</div>
+              카드가 마음에 안 들면 처음부터 다시 쓰지 마세요.<br />
+              <b><span class="hl">"추천사를 더 크게"</span></b>, <b><span class="hl">"색을 더 어둡게"</span></b>처럼 <b>고칠 부분만 이어서 말하면</b> 그 부분만 수정해 줍니다.<br />
+              한글이 깨져 나오면 <b>"카드 안의 한글을 정확하게 다시 써 줘"</b>라고 요청하세요.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-head">
+          <span class="step-num">4</span>
+          <div>
+            <strong>추천 작품 소개</strong>
+            <p>완성된 카드를 PlayGallery에 올려 동료들에게 소개해주세요.</p>
+          </div>
+        </div>
+        <div class="finish">
+          <div class="copilot-row" style="margin-top:4px;">
+            <a class="gallery-btn" href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener">🎞️ Play Gallery 이동 →</a>
+          </div>
+          <p class="finish-note">동료들에게 '좋아요 수'를 가장 많이 받은 우수작을 선정하여 네이버포인트를 드립니다.</p>
+          <div class="deadline">제출기한 : '26년 10월 2일</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="brand-footer">
+    <span class="footer-org">워크이노베이션센터</span>
+    <span class="footer-div" aria-hidden="true"></span>
+    <span class="footer-lab">
+      <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 45L28 35V80L12 90V45Z" />
+        <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z" />
+      </svg>
+      <span class="footer-text">AI디자인랩</span>
+    </span>
+  </div>
+</div>
+
+<!-- ▲▲▲ 여기까지 ▲▲▲ -->
+<script>
+(function(){
+  var TEMPLATE = `당신은 OTT 작품을 소개하는 콘텐츠 큐레이션 에디터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 인포그래픽으로 만드는 일을 합니다.
+
+이 카드에서 가장 중요한 것은 화려한 디자인도, 줄거리 요약도 아닌 '추천인의 한 줄 추천사'입니다.
+추천사가 가장 먼저 눈에 들어오고, 나머지 모든 요소는 그 추천사를 뒷받침하도록 만드세요.
+그리고 예쁘게 만드는 것보다 작품의 실제 내용을 정확하게 전달하는 것이 더 중요합니다.
+
+━━━━━━━━━━━━━━━━━━
+[추천인 입력 내용]
+━━━━━━━━━━━━━━━━━━
+■ 작품 제목: {TITLE}
+■ 볼 수 있는 곳: {OTT}
+■ 한 줄 추천사(가장 중요): {ONELINE}
+■ 이런 분께 권해요: {TARGET}
+■ 시청 상황: {MOOD}
+■ 디자인 스타일: {STYLE}
+
+━━━━━━━━━━━━━━━━━━
+[작업 순서]
+━━━━━━━━━━━━━━━━━━
+1. 작품의 정확한 제목, 공개 연도, 제작 국가, 장르, 분량(러닝타임 또는 회차)을 확인하세요. 제목이 비슷한 다른 작품이나 같은 시리즈의 다른 편과 혼동하지 마세요.
+2. 공식 소개, 공개된 시놉시스, 신뢰할 수 있는 정보를 바탕으로 작품의 핵심을 조사하세요.
+3. 확인된 내용만으로 카드에 들어갈 원고를 먼저 확정한 뒤, 그 원고 그대로 이미지를 만드세요.
+4. 생성 후 추천사와 작품명·플랫폼명의 오탈자, 한글 깨짐을 검수하고 문제가 있으면 수정해서 완성하세요.
+
+━━━━━━━━━━━━━━━━━━
+[내용 원칙]
+━━━━━━━━━━━━━━━━━━
+- 확인된 사실만 사용하세요. 없는 인물, 없는 대사, 출처 없는 평점이나 순위를 만들지 마세요.
+- 결말, 반전, 핵심 사건은 절대 노출하지 마세요. 스포일러 없이 궁금하게만 만드세요.
+- 추천사는 한 글자도 의미를 바꾸지 말고 그대로 사용하세요.
+- 실제 배우의 얼굴, 작품의 스틸컷, 공식 포스터를 그대로 복제하지 말고, 작품의 분위기를 상징하는 독창적인 비주얼로 표현하세요.
+- 실존 인물의 얼굴은 생성하지 마세요.
+
+━━━━━━━━━━━━━━━━━━
+[카드 구성 — 추천사가 가장 중요합니다]
+━━━━━━━━━━━━━━━━━━
+레이아웃의 중심은 추천사입니다.
+- 추천사는 카드 상단이나 정중앙, 시선이 가장 먼저 닿는 자리에 카드에서 가장 큰 글자로 배치하세요.
+- 추천사만 손으로 쓴 메모처럼 다정한 손글씨 느낌으로 표현하세요.
+- 손글씨 연출은 추천사에만 한정하세요. 나머지 모든 텍스트는 선택한 디자인 스타일에 어울리는 서체로 자유롭게 구성하세요.
+- 작품 제목보다 추천사가 먼저 읽혀도 괜찮습니다. 그게 이 카드의 의도입니다.
+
+포함할 요소:
+- 작품 제목, 볼 수 있는 곳(OTT 플랫폼), 장르와 분량
+- 작품의 핵심을 담은 부제 한 문장
+- "이런 분께 권해요" — 위에 적힌 문구 그대로
+- 시청 포인트 3~4가지 — 추천사에 고개가 끄덕여지도록, 그 근거가 되는 내용 위주로 (스포일러 금지)
+- 이 작품이 연휴의 시간을 어떻게 채워줄지 한두 가지
+- 마무리 메시지 한 문장 (작품의 실제 핵심에서 도출하되, 등장인물의 대사처럼 따옴표를 쓰지 마세요)
+- 'PLAYDAY 07 · 연휴 OTT 추천' — 작은 태그처럼 카드 한쪽 구석에
+
+━━━━━━━━━━━━━━━━━━
+[디자인]
+━━━━━━━━━━━━━━━━━━
+- 그대로 공유하고 싶어지는 완성도 높은 디자인
+- 위에 적은 디자인 스타일을 충실히 반영하고, 그에 어울리는 색감을 직접 제안해서 적용하세요.
+- 시청 상황에 맞는 온도로 연출하세요. 가족과 함께라면 밝고 따뜻하게, 혼자 보는 밤이라면 차분하고 깊게.
+- 번호 카드를 일렬로 나열하는 획일적인 레이아웃 대신, 추천사를 중심에 둔 채 작품의 분위기에 맞는 레이아웃을 선택하세요.
+- 정보 위계를 분명하게 — 추천사 > 작품 제목 > 본문 순서로 크기를 구분하세요.
+- 한글은 또렷하게, 너무 작은 글자는 금지합니다.
+- 작품 내용과 관계없는 인물이나 사물은 넣지 마세요.`;
+
+  function $(id){return document.getElementById(id);}
+
+  function buildPrompt(){
+    var title = $('f-title').value.trim();
+    var oneline = $('f-oneline').value.trim();
+    var target = $('f-target').value.trim();
+
+    var ottVal = $('f-ott').value;
+    var ott = ottVal === '__custom__' ? $('f-ott-custom').value.trim() : ottVal;
+
+    var mood = $('f-mood').value;
+
+    var styleVal = $('f-style').value;
+    var style = styleVal === '__custom__' ? $('f-style-custom').value.trim() : styleVal;
+
+    var p = TEMPLATE
+      .split('{TITLE}').join(title || '(작품 제목을 입력하세요)')
+      .split('{OTT}').join(ott || '(볼 수 있는 곳을 선택하세요)')
+      .split('{ONELINE}').join(oneline || '(추천사를 입력하세요)')
+      .split('{TARGET}').join(target || '(추천 대상을 입력하세요)')
+      .split('{MOOD}').join(mood || '작품의 분위기에 가장 어울리는 시청 상황을 직접 제안해서 적용')
+      .split('{STYLE}').join(style || '작품의 장르와 분위기에 가장 어울리는 스타일을 직접 제안해서 적용');
+    $('result-text').value = p;
+  }
+
+  ['f-title','f-oneline','f-target','f-ott-custom','f-style-custom'].forEach(function(id){
+    $(id).addEventListener('input', buildPrompt);
+  });
+
+  $('f-oneline').addEventListener('input', function(){
+    $('oneline-count').textContent = this.value.length;
+  });
+
+  function bindPills(groupId, hiddenId, customId){
+    var pills = document.querySelectorAll('#' + groupId + ' .pill');
+    pills.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        pills.forEach(function(b){ b.classList.remove('selected'); });
+        this.classList.add('selected');
+        var val = this.getAttribute('data-val');
+        $(hiddenId).value = val;
+        if(customId){
+          $(customId).style.display = (val === '__custom__') ? 'block' : 'none';
+          if(val === '__custom__'){ $(customId).focus(); }
+        }
+        buildPrompt();
+      });
+    });
+  }
+
+  bindPills('ott-pills', 'f-ott', 'f-ott-custom');
+  bindPills('mood-pills', 'f-mood', null);
+  bindPills('style-pills', 'f-style', 'f-style-custom');
+
+  // ───── 배경 영상 (YouTube IFrame Player API) ─────
+  // 6.8초 ~ 26초 구간만 무한 반복. 자동재생은 음소거 상태에서만 허용됩니다.
+  var LOOP_START = 6.8, LOOP_END = 26;
+  var ytPlayer = null;
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('bg-yt', {
+      events: {
+        onReady: function(e){
+          e.target.mute();
+          e.target.seekTo(LOOP_START);
+          e.target.playVideo();
+          setInterval(function(){
+            if(!ytPlayer || !ytPlayer.getCurrentTime) return;
+            try{
+              var t = ytPlayer.getCurrentTime();
+              if(t >= LOOP_END || t < LOOP_START - 0.6){ ytPlayer.seekTo(LOOP_START); }
+            }catch(err){}
+          }, 200);
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.ENDED){
+            e.target.seekTo(LOOP_START);
+            e.target.playVideo();
+          }
+        }
+      }
+    });
+  };
+
+  (function loadYouTubeAPI(){
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+
+  // 자동재생이 막힌 환경에서는 첫 클릭에 재생
+  document.addEventListener('click', function once(){
+    if(ytPlayer && ytPlayer.playVideo){ ytPlayer.playVideo(); }
+    document.removeEventListener('click', once);
+  });
+
+  $('btn-copy').addEventListener('click', function(){
+    var ta = $('result-text');
+    var btn = this;
+    function done(){
+      btn.textContent = '복사 완료!';
+      btn.classList.add('done');
+      setTimeout(function(){btn.textContent='전체 복사';btn.classList.remove('done');},1800);
+    }
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    function fallbackCopy(){
+      try{ if(document.execCommand('copy')){ done(); } }catch(e){}
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(done).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  });
+
+  buildPrompt();
+})();
+</script>
+</body>
+</html>
