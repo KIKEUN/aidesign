@@ -39,18 +39,17 @@
     min-height:100vh;min-width:177.78vh;     /* 세로가 남으면 세로 기준으로 덮기 */
     border:0;pointer-events:none;
   }
-  /* 영상 위 종이 베일 + 하프톤 망점 — 본문 가독성 확보 */
+  /* 영상 위 종이 베일 — 본문 가독성 확보 */
   .bg-veil{
     position:absolute;inset:0;pointer-events:none;
     background:
       radial-gradient(circle at 12% 0%, rgba(230,36,41,.14), rgba(230,36,41,0) 460px),
       radial-gradient(circle at 88% 8%, rgba(31,63,168,.16), rgba(31,63,168,0) 500px),
-      radial-gradient(rgba(11,13,23,.26) 1px, transparent 1.25px),
       linear-gradient(180deg,
         rgba(243,240,231,calc(var(--veil) - .10)) 0%,
         rgba(243,240,231,var(--veil)) 42%,
         rgba(243,240,231,calc(var(--veil) + .12)) 100%);
-    background-size:auto, auto, 5px 5px, auto;
+    background-size:auto, auto, auto;
   }
   /* 배경 영상 소리 토글 */
   .bg-sound{
@@ -74,10 +73,8 @@
   .hero-scrim{
     position:absolute;inset:0;pointer-events:none;z-index:1;
     background:
-      radial-gradient(rgba(11,13,23,.20) 1px, transparent 1.25px),
       linear-gradient(to top right,
         rgba(11,13,23,.94) 2%, rgba(11,13,23,.62) 34%, rgba(11,13,23,0) 66%);
-    background-size:5px 5px, auto;
   }
   .hero-copy{
     position:absolute;left:0;bottom:0;z-index:2;color:#fff;
@@ -110,21 +107,6 @@
   @media(max-width:600px){
     .hero-img{box-shadow:6px 6px 0 rgba(11,13,23,.88);}
     .ott-banner{padding:5px 12px 3px;box-shadow:3px 3px 0 var(--ink);}
-  }
-
-  /* ───────── 코믹 효과음 배지 ───────── */
-  .fx{
-    position:absolute;top:-20px;right:22px;z-index:5;
-    font-family:'Bangers',cursive;font-size:24px;letter-spacing:.07em;
-    color:#fff;background:var(--red);
-    border:3px solid var(--ink);border-radius:7px;
-    padding:7px 17px 3px;box-shadow:4px 4px 0 var(--ink);
-    transform:rotate(6deg);
-  }
-  .fx.yellow{background:var(--yellow);color:var(--ink);transform:rotate(-5deg);}
-  .fx.blue{background:var(--blue);transform:rotate(-4deg);}
-  @media(max-width:600px){
-    .fx{font-size:19px;padding:5px 13px 2px;right:14px;top:-16px;}
   }
 
   /* ───────── 단계(STEP) 플로우 — 코믹 패널 ───────── */
@@ -160,11 +142,6 @@
     margin:0 -32px 28px -40px;padding:24px 32px 22px 40px;
     background:var(--blue);
     border-bottom:3px solid var(--ink);
-  }
-  .step-head::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.2px);
-    background-size:6px 6px;
   }
   /* 스파이디 수트 리듬 — 레드/블루 교차 */
   .step-head.red{background:var(--red);}
@@ -407,7 +384,6 @@
 
       <div class="step-block compact">
         <span class="step-num">1</span>
-        <span class="fx yellow">THWIP!</span>
         <div class="step-head red">
           <strong>🕸️ 작품 선정</strong>
           <p>긴 추석 연휴, 동료들을 소파에 붙잡아 둘 그 작품. 꼭 추천하고 싶은 OTT 한 편을 골라주세요.</p>
@@ -499,7 +475,6 @@
 
       <div class="step-block">
         <span class="step-num">3</span>
-        <span class="fx blue">ZAP!</span>
         <div class="step-head red">
           <strong>🤖 Copilot 협업</strong>
           <p>아래에 준비된 프롬프트를 복사해 Copilot에 그대로 쏘아 보내세요. 여러분의 한 줄 추천사가 멋진 추천 카드로 재탄생합니다.</p>
@@ -537,7 +512,6 @@
 
       <div class="step-block">
         <span class="step-num">4</span>
-        <span class="fx">BOOM!</span>
         <div class="step-head">
           <strong>🎞️ 추천 작품 소개</strong>
           <p>완성된 카드를 PlayGallery에 올려 동료들에게 소개해주세요.</p>
