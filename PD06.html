@@ -302,26 +302,19 @@
     border-radius:999px;padding:7px 20px;background:var(--ink);
   }
   .brand-footer{
-    display:flex;align-items:center;justify-content:center;gap:12px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
     padding:34px 20px 56px;
   }
-  .brand-mark{
-    display:grid;place-items:center;
-    width:36px;height:36px;border-radius:10px;
-    background:var(--red);color:#fff;
-    font-size:14px;font-weight:800;letter-spacing:-0.02em;
-    box-shadow:0 6px 18px rgba(225,29,42,.40);
+  .footer-logo{width:24px;height:24px;flex-shrink:0;}
+  .footer-logo path{fill:#fff;}
+  .footer-text{
+    font-size:12.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(255,255,255,.80);
+    text-shadow:0 2px 10px rgba(0,0,0,.65);
   }
-  .brand-text{
-    display:flex;flex-direction:column;line-height:1.25;text-align:left;
-    text-shadow:0 2px 10px rgba(0,0,0,.6);
-  }
-  .brand-text .org{
-    font-size:11px;font-weight:600;letter-spacing:.14em;
-    color:rgba(255,255,255,.62);
-  }
-  .brand-text .lab{
-    font-size:15px;font-weight:800;letter-spacing:-0.02em;color:#fff;
+  @media(max-width:600px){
+    .footer-text{font-size:11px;letter-spacing:.16em;}
+    .footer-logo{width:20px;height:20px;}
   }
 </style>
 </head>
@@ -514,11 +507,11 @@
 
 <div class="wrap">
   <div class="brand-footer">
-    <span class="brand-mark" aria-hidden="true">AI</span>
-    <span class="brand-text">
-      <span class="org">WORK INNOVATION CENTER</span>
-      <span class="lab">AI디자인랩</span>
-    </span>
+    <svg class="footer-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 45L28 35V80L12 90V45Z" />
+      <path d="M28 5 L82 32 V48 L38 70 V54 L66 40 L28 21 V5 Z" />
+    </svg>
+    <span class="footer-text">워크이노베이션센터 · AI디자인랩</span>
   </div>
 </div>
 
