@@ -65,13 +65,52 @@
   .bg-sound:hover{background:var(--red);transform:scale(1.07);}
 
   /* ───────── 상단 썸네일 이미지 ───────── */
-  .hero-img{max-width:900px;margin:0 auto;line-height:0;font-size:0;}
-  .hero-img img{
-    display:block;width:100%;height:auto;
-    border:3px solid var(--ink);
-    box-shadow:9px 9px 0 rgba(11,13,23,.88);
+  .hero-img{
+    position:relative;max-width:900px;margin:0 auto;overflow:hidden;
+    border:3px solid var(--ink);box-shadow:9px 9px 0 rgba(11,13,23,.88);
   }
-  @media(max-width:600px){.hero-img img{box-shadow:6px 6px 0 rgba(11,13,23,.88);}}
+  .hero-img img{display:block;width:100%;height:auto;border:0;}
+  /* 좌하단 대각 스크림 — 글자 자리만 어둡게, 캐릭터는 살림 */
+  .hero-scrim{
+    position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:
+      radial-gradient(rgba(11,13,23,.20) 1px, transparent 1.25px),
+      linear-gradient(to top right,
+        rgba(11,13,23,.94) 2%, rgba(11,13,23,.62) 34%, rgba(11,13,23,0) 66%);
+    background-size:5px 5px, auto;
+  }
+  .hero-copy{
+    position:absolute;left:0;bottom:0;z-index:2;color:#fff;
+    padding:0 clamp(16px,3.2vw,34px) clamp(14px,2.6vw,28px);
+  }
+  .hero-copy .eyebrow{
+    display:block;font-size:clamp(9.5px,1.1vw,12px);font-weight:800;
+    letter-spacing:.26em;color:var(--yellow);margin-bottom:6px;
+    text-shadow:0 2px 8px rgba(0,0,0,.85);
+  }
+  .hero-copy h1{
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:clamp(22px,4vw,44px);line-height:1.14;letter-spacing:-0.02em;
+    text-shadow:3px 0 rgba(230,36,41,.90), -3px 0 rgba(56,190,232,.75), 0 4px 16px rgba(0,0,0,.72);
+  }
+  /* OTT 추천 — 한눈에 박히는 코믹 배너 */
+  .ott-banner{
+    display:inline-block;margin-top:clamp(9px,1.4vw,16px);
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:clamp(14px,2.1vw,25px);letter-spacing:-0.02em;line-height:1.35;
+    background:var(--red);color:#fff;
+    border:3px solid var(--ink);border-radius:8px;
+    padding:7px 18px 5px;box-shadow:4px 4px 0 var(--ink);
+    transform:rotate(-1.2deg);
+  }
+  .ott-banner b{
+    font-weight:400;background:var(--yellow);color:var(--ink);
+    padding:0 7px;border-radius:4px;box-shadow:0 0 0 2px var(--ink);
+  }
+  @media(max-width:600px){
+    .hero-img{box-shadow:6px 6px 0 rgba(11,13,23,.88);}
+    .ott-banner{padding:5px 12px 3px;box-shadow:3px 3px 0 var(--ink);}
+  }
 
   /* ───────── 코믹 효과음 배지 ───────── */
   .fx{
@@ -353,7 +392,13 @@
 
 <!-- 상단 썸네일 이미지 -->
 <div class="hero-img">
-  <img src="image/PD06.png" alt="PLAYDAY 06 현대극장 — 이번 추석, 뭐 볼까? 연휴에 볼 OTT 한 편을 AI 추천 카드로. 이웃집 큐레이터가 되는 4단계" />
+  <img src="PD06_hero.webp" alt="PLAYDAY 06 현대극장 — 이번 추석, 뭐 볼까? 연휴에 볼 OTT 추천 카드 만들기" />
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <span class="eyebrow">PLAYDAY 06 · 현대극장</span>
+    <h1>이번 추석,<br />뭐 볼까?</h1>
+    <span class="ott-banner">🎟️ 연휴에 볼 <b>OTT 추천</b> 카드 만들기</span>
+  </div>
 </div>
 
 <section class="section">
@@ -521,7 +566,7 @@
 <!-- ▲▲▲ 여기까지 ▲▲▲ -->
 <script>
 (function(){
-  var TEMPLATE = `당신은 '현대극장(現代劇場)'이라는 OTT 큐레이션 채널의 큐레이터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 큐레이션 인포그래픽으로 만드는 일을 합니다.
+  var TEMPLATE = `당신은 '현대극장'이라는 OTT 큐레이션 채널의 큐레이터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 큐레이션 인포그래픽으로 만드는 일을 합니다.
 
 이 카드에서 가장 중요한 것은 화려한 디자인도, 줄거리 요약도 아닌 '큐레이터의 한 줄 추천사'입니다.
 추천사가 가장 먼저 눈에 들어오고, 나머지 모든 요소는 그 추천사를 뒷받침하도록 만드세요.
@@ -570,7 +615,7 @@
 - 시청 포인트 3~4가지 — 추천사에 고개가 끄덕여지도록, 그 근거가 되는 내용 위주로 (스포일러 금지)
 - 이 작품이 연휴의 시간을 어떻게 채워줄지 한두 가지
 - 마무리 메시지 한 문장 (작품의 실제 핵심에서 도출하되, 등장인물의 대사처럼 따옴표를 쓰지 마세요)
-- '현대극장 現代劇場' — 작은 극장 로고나 티켓 도장처럼 카드 한쪽 구석에
+- '현대극장' — 작은 극장 로고나 티켓 도장처럼 카드 한쪽 구석에
 
 ━━━━━━━━━━━━━━━━━━
 [디자인]
