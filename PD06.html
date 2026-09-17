@@ -72,11 +72,11 @@
   /* 이미지 아래쪽을 부드럽게 눌러서 그 위에 제목을 얹음 */
   .hero-band{
     position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;
-    padding:clamp(26px,4.4vw,46px) clamp(18px,3.2vw,34px) clamp(15px,2.6vw,26px);
+    padding:clamp(30px,5.2vw,58px) clamp(18px,3.4vw,38px) clamp(17px,2.8vw,30px);
   }
   /* 블러·어둠은 이 층에만 — 위쪽으로 서서히 사라지게 마스크 처리 */
   .hero-band .veil{
-    position:absolute;left:0;right:0;bottom:0;top:-52px;pointer-events:none;
+    position:absolute;left:0;right:0;bottom:0;top:-64px;pointer-events:none;
     backdrop-filter:blur(7px) saturate(112%);
     -webkit-backdrop-filter:blur(7px) saturate(112%);
     background:linear-gradient(180deg,
@@ -98,17 +98,17 @@
   .hero-logo b{font-weight:400;color:var(--yellow);}
   .hero-band h1{
     font-family:'Black Han Sans',sans-serif;font-weight:400;
-    font-size:clamp(23px,4.2vw,46px);line-height:1.14;letter-spacing:-0.02em;
+    font-size:clamp(28px,6.4vw,64px);line-height:1.10;letter-spacing:-0.025em;
     text-shadow:3px 0 rgba(230,36,41,.90), -3px 0 rgba(56,190,232,.72), 0 3px 14px rgba(0,0,0,.6);
   }
   /* OTT 추천 — 한눈에 박히는 코믹 배너 */
   .ott-banner{
-    display:inline-block;margin-top:clamp(9px,1.5vw,16px);
+    display:inline-block;margin-top:clamp(10px,1.8vw,20px);
     font-family:'Black Han Sans',sans-serif;font-weight:400;
-    font-size:clamp(14px,2.1vw,25px);letter-spacing:-0.02em;line-height:1.35;
+    font-size:clamp(15px,3.1vw,34px);letter-spacing:-0.02em;line-height:1.35;
     background:var(--red);color:#fff;
     border:3px solid #fff;border-radius:8px;
-    padding:7px 18px 5px;box-shadow:4px 4px 0 rgba(0,0,0,.55);
+    padding:9px 22px 7px;box-shadow:5px 5px 0 rgba(0,0,0,.55);
     transform:rotate(-1.2deg);
   }
   .ott-banner b{
