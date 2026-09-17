@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PLAYDAY 06 · 현대극장 — 이번 추석, 뭐 볼까?</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Han+Sans&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --red:#E62429;
+    --red-dark:#B0161B;
+    --blue:#1F3FA8;
+    --blue-dark:#162E7A;
+    --ink:#0B0D17;
+    --paper:#F3F0E7;
+    --card:#FFFFFF;
+    --yellow:#FFC629;
+    --line:#D9D2C2;
+    --muted:#4A5068;
+    /* 배경 영상을 덮는 종이 베일 농도 — 낮출수록 영상이 선명해집니다 */
+    --veil:.70;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Pretendard',-apple-system,sans-serif;
+    color:var(--ink);line-height:1.7;
+    background:transparent;   /* 배경은 아래 .bg-video 레이어가 담당 */
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+
+  /* ───────── 페이지 전체 배경 영상 ───────── */
+  .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#0B1020;}
+  .bg-video iframe{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:100vw;height:56.25vw;              /* 가로 기준 16:9 */
+    min-height:100vh;min-width:177.78vh;     /* 세로가 남으면 세로 기준으로 덮기 */
+    border:0;pointer-events:none;
+  }
+  /* 영상 위 종이 베일 + 하프톤 망점 — 본문 가독성 확보 */
+  .bg-veil{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(230,36,41,.14), rgba(230,36,41,0) 460px),
+      radial-gradient(circle at 88% 8%, rgba(31,63,168,.16), rgba(31,63,168,0) 500px),
+      radial-gradient(rgba(11,13,23,.26) 1px, transparent 1.25px),
+      linear-gradient(180deg,
+        rgba(243,240,231,calc(var(--veil) - .10)) 0%,
+        rgba(243,240,231,var(--veil)) 42%,
+        rgba(243,240,231,calc(var(--veil) + .12)) 100%);
+    background-size:auto, auto, 5px 5px, auto;
+  }
+  /* 배경 영상 소리 토글 */
+  .bg-sound{
+    position:fixed;right:18px;bottom:18px;z-index:50;
+    width:46px;height:46px;border-radius:50%;cursor:pointer;
+    background:var(--ink);border:3px solid var(--ink);
+    color:#fff;font-size:17px;line-height:1;
+    display:grid;place-items:center;
+    box-shadow:3px 3px 0 rgba(11,13,23,.35);
+    transition:background .15s ease, transform .15s ease;
+  }
+  .bg-sound:hover{background:var(--red);transform:scale(1.07);}
+
+  /* ───────── 상단 썸네일 이미지 ───────── */
+  .hero-img{max-width:900px;margin:0 auto;line-height:0;font-size:0;}
+  .hero-img img{
+    display:block;width:100%;height:auto;
+    border:3px solid var(--ink);
+    box-shadow:9px 9px 0 rgba(11,13,23,.88);
+  }
+  @media(max-width:600px){.hero-img img{box-shadow:6px 6px 0 rgba(11,13,23,.88);}}
+
+  /* ───────── 코믹 효과음 배지 ───────── */
+  .fx{
+    position:absolute;top:-20px;right:22px;z-index:5;
+    font-family:'Bangers',cursive;font-size:24px;letter-spacing:.07em;
+    color:#fff;background:var(--red);
+    border:3px solid var(--ink);border-radius:7px;
+    padding:7px 17px 3px;box-shadow:4px 4px 0 var(--ink);
+    transform:rotate(6deg);
+  }
+  .fx.yellow{background:var(--yellow);color:var(--ink);transform:rotate(-5deg);}
+  .fx.blue{background:var(--blue);transform:rotate(-4deg);}
+  @media(max-width:600px){
+    .fx{font-size:19px;padding:5px 13px 2px;right:14px;top:-16px;}
+  }
+
+  /* ───────── 단계(STEP) 플로우 — 코믹 패널 ───────── */
+  .section{padding:44px 0 56px;position:relative;}
+  .flow{position:relative;}
+  /* 썸네일 하단에서 STEP 1로 내려오는 거미줄 한 가닥 */
+  .flow::before{
+    content:"";position:absolute;left:23px;top:-44px;height:44px;
+    border-left:3px dashed var(--ink);opacity:.55;
+  }
+  @media(max-width:600px){.flow::before{left:26px;}}
+
+  .step-block{
+    position:relative;z-index:1;margin:0 0 54px 26px;
+    background:var(--card);
+    border:3px solid var(--ink);border-radius:3px;
+    box-shadow:9px 9px 0 rgba(11,13,23,.88);
+    padding:0 32px 32px 40px;
+  }
+  .step-block:last-child{margin-bottom:8px;}
+  .step-block:not(:last-child)::after{
+    content:"";position:absolute;left:-3px;top:100%;height:54px;
+    border-left:3px dashed var(--ink);opacity:.55;
+  }
+  .step-num{
+    position:absolute;left:-24px;top:22px;width:48px;height:48px;border-radius:50%;
+    background:var(--red);color:#fff;display:grid;place-items:center;
+    font-family:'Bangers',cursive;font-size:26px;letter-spacing:.04em;padding-top:3px;
+    border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);z-index:3;
+  }
+  .step-head{
+    position:relative;overflow:hidden;
+    margin:0 -32px 28px -40px;padding:24px 32px 22px 40px;
+    background:var(--blue);
+    border-bottom:3px solid var(--ink);
+  }
+  .step-head::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.2px);
+    background-size:6px 6px;
+  }
+  /* 스파이디 수트 리듬 — 레드/블루 교차 */
+  .step-head.red{background:var(--red);}
+  .step-block.compact{padding-bottom:0;}
+  .step-block.compact .step-head{margin-bottom:0;border-bottom:none;padding-bottom:26px;}
+  .step-head strong{
+    position:relative;display:block;
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:27px;color:#fff;line-height:1.35;letter-spacing:-0.02em;
+    text-shadow:2px 2px 0 rgba(11,13,23,.55);
+  }
+  .step-head p{
+    position:relative;font-size:16px;color:rgba(255,255,255,.90);
+    margin-top:8px;max-width:760px;letter-spacing:-0.04em;
+  }
+  @media(max-width:600px){
+    .step-block{margin-left:0;padding:0 18px 26px;box-shadow:6px 6px 0 rgba(11,13,23,.88);}
+    .step-head{margin:0 -18px 22px -18px;padding:20px 18px;}
+    .step-block:not(:last-child)::after{left:26px;}
+    .step-num{position:static;margin-bottom:12px;}
+    .step-head strong{font-size:22px;}
+  }
+
+  /* ───────── 추천 티켓 카드 ───────── */
+  .cur-card{
+    background:var(--card);border:3px solid var(--ink);border-radius:3px;
+    padding:40px 34px 32px;position:relative;overflow:hidden;
+    box-shadow:6px 6px 0 rgba(11,13,23,.85);
+  }
+  @media(max-width:600px){.cur-card{padding:36px 18px 26px;}}
+  /* 카드 모서리에 걸린 거미줄 */
+  .card-web{position:absolute;width:112px;height:112px;opacity:.17;pointer-events:none;}
+  .card-web.l{top:0;left:0;}
+  .card-web.r{top:0;right:0;transform:scaleX(-1);}
+  @media(max-width:600px){.card-web{width:74px;height:74px;}}
+  .cur-head{
+    position:relative;text-align:center;border-bottom:3px solid var(--ink);
+    padding-bottom:14px;margin-bottom:26px;
+  }
+  .cur-head .small{font-size:11px;letter-spacing:.3em;color:var(--red);font-weight:800;}
+  .cur-head h3{
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    font-size:28px;margin-top:4px;letter-spacing:-0.02em;
+  }
+  .field{position:relative;margin-bottom:28px;}
+  .field label{
+    display:block;font-size:18px;font-weight:800;color:var(--blue);
+    letter-spacing:-0.02em;margin-bottom:10px;line-height:1.5;
+  }
+  .field label em{color:var(--red);font-style:normal;}
+  .field input,.field textarea{
+    width:100%;background:transparent;border:none;border-bottom:2px dashed var(--line);
+    font-family:'Nanum Pen Script',cursive;font-size:27px;color:var(--ink);
+    padding:4px 2px;outline:none;transition:border-color .15s;
+  }
+  .field textarea{resize:vertical;min-height:48px;line-height:1.5;}
+  .field input:focus,.field textarea:focus{border-bottom-color:var(--red);}
+  .field input::placeholder,.field textarea::placeholder{color:#C3BCA8;}
+
+  /* ───────── 알약형 선택 버튼 ───────── */
+  .pills{display:flex;flex-wrap:wrap;gap:9px;}
+  .pill{
+    font-family:'Pretendard',sans-serif;
+    background:var(--card);border:2.5px solid var(--ink);border-radius:999px;
+    padding:8px 15px;font-size:13.5px;font-weight:700;color:var(--ink);
+    cursor:pointer;line-height:1.2;text-align:center;white-space:nowrap;
+    box-shadow:2px 2px 0 var(--ink);
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .pill:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
+  .pill.selected{background:var(--red);color:#fff;}
+  .pill.selected:hover{background:var(--red-dark);}
+  .pills.compact .pill{font-size:13px;padding:7px 13px;}
+
+  .field.hl{margin-bottom:22px;}
+  .field.hl label{letter-spacing:-0.04em;white-space:nowrap;}
+  .field.hl label .mark{
+    background:linear-gradient(transparent 38%, var(--yellow) 38%);
+    padding:0 4px;font-size:18px;color:var(--ink);
+  }
+  .field.hl textarea{font-size:30px;min-height:64px;}
+  .field.hl textarea.ruled{
+    border-bottom:none;
+    line-height:44px;height:88px;min-height:88px;padding:0 2px;
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 42px,
+      var(--line) 42px,
+      var(--line) 44px
+    );
+    background-attachment:local;
+    resize:none;
+  }
+  .field.hl textarea.ruled:focus{
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 42px,
+      var(--red) 42px,
+      var(--red) 44px
+    );
+  }
+  .field.hl .count{
+    text-align:right;font-size:13px;color:var(--muted);margin-top:6px;font-weight:600;
+  }
+
+  /* ───────── 실시간 프롬프트 ───────── */
+  .result{margin-top:0;}
+  .result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+  .result-head h4{font-size:15px;font-weight:800;}
+  .copy-btn{
+    font-family:'Pretendard',sans-serif;
+    background:var(--red);color:#fff;border:2.5px solid var(--ink);border-radius:8px;
+    padding:9px 18px;font-size:13.5px;font-weight:800;cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .copy-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);}
+  .copy-btn.done{background:#1E8E4E;}
+  .result textarea{
+    width:100%;height:300px;background:#fff;border:2.5px solid var(--ink);
+    border-radius:6px;padding:16px;font-size:12.5px;line-height:1.65;
+    font-family:'Pretendard';color:var(--ink);resize:vertical;
+  }
+
+  /* ───────── 링크 버튼 ───────── */
+  .copilot-row{margin-top:20px;text-align:center;}
+  .copilot-btn,.gallery-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    font-family:'Black Han Sans',sans-serif;font-weight:400;letter-spacing:-0.01em;
+    background:var(--red);color:#fff;text-decoration:none;
+    font-size:19px;padding:16px 40px;border-radius:10px;
+    border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);
+    transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
+  }
+  .copilot-btn:hover,.gallery-btn:hover{
+    transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink);background:var(--red-dark);
+  }
+  .gallery-btn{background:var(--blue);}
+  .gallery-btn:hover{background:var(--blue-dark);}
+
+  /* ───────── TIP 카드 ───────── */
+  .tip-float{
+    position:absolute;top:0;left:calc(100% + 64px);width:280px;
+  }
+  @media(max-width:1330px){
+    .tip-float{position:static;width:auto;max-width:340px;margin:22px 0 4px auto;}
+  }
+  @keyframes floaty{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-7px);}
+  }
+  .tip-card{
+    background:var(--yellow);border:3px solid var(--ink);border-radius:12px;
+    padding:16px 18px 18px;font-size:13px;line-height:1.6;color:var(--ink);
+    box-shadow:5px 5px 0 var(--ink);
+    animation:floaty 3.2s ease-in-out infinite;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  .tip-card + .tip-card{margin-top:16px;animation-delay:.8s;}
+  .tip-card:hover{
+    box-shadow:8px 8px 0 var(--ink);
+    animation-play-state:paused;transform:translateY(-4px);
+  }
+  .tip-card .tip-title{
+    font-family:'Black Han Sans',sans-serif;font-weight:400;
+    color:var(--red);margin-bottom:7px;font-size:17px;letter-spacing:-0.02em;
+  }
+  .tip-card .hl{background:#fff;padding:0 3px;font-weight:800;box-shadow:0 0 0 1.5px var(--ink);}
+  .tip-card b{font-weight:800;}
+  .tip-card .tip-shot{margin-top:12px;}
+  .tip-card .tip-shot img{
+    display:block;width:100%;height:auto;border-radius:6px;
+    border:2.5px solid var(--ink);background:#fff;
+  }
+
+  /* ───────── FOOTER ───────── */
+  .finish{text-align:center;padding-top:4px;}
+  .finish-note{color:var(--muted);font-size:14px;margin-top:22px;line-height:1.7;font-weight:600;}
+  .finish .deadline{
+    display:table;margin:14px auto 0;color:#fff;font-size:13px;font-weight:800;
+    border:2.5px solid var(--ink);border-radius:999px;padding:6px 18px;
+    background:var(--ink);box-shadow:3px 3px 0 rgba(11,13,23,.35);
+  }
+
+  .brand-footer{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:26px 20px 46px;flex-wrap:wrap;
+  }
+  .brand-footer img{height:26px;width:auto;display:block;}
+  .brand-plate{
+    background:var(--card);border:3px solid var(--ink);border-radius:3px;
+    padding:14px 26px;box-shadow:5px 5px 0 rgba(11,13,23,.88);
+  }
+</style>
+</head>
+<body>
+
+<!-- ▼▼▼ 게시판에 붙여넣을 때는 body 내부 전체를 복사하세요 ▼▼▼ -->
+
+<!-- 거미줄 도형 정의 (화면에 보이지 않음) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="web-corner" viewBox="0 0 220 220">
+    <g fill="none" stroke="#0B0D17" stroke-width="2.6" stroke-linecap="round">
+      <path d="M0 0 L220 0 M0 0 L0 220 M0 0 L214 44 M0 0 L44 214 M0 0 L200 96 M0 0 L96 200 M0 0 L158 158" />
+      <path d="M48 0 Q42 42 0 48" />
+      <path d="M98 0 Q86 86 0 98" />
+      <path d="M152 0 Q132 132 0 152" />
+      <path d="M212 0 Q182 182 0 212" />
+    </g>
+  </symbol>
+</svg>
+
+<!-- 페이지 전체 배경으로 재생되는 영상 -->
+<div class="bg-video" aria-hidden="true">
+  <iframe id="bg-yt"
+    src="https://www.youtube-nocookie.com/embed/W7edvITC9g4?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=W7edvITC9g4&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;iv_load_policy=3&amp;disablekb=1&amp;fs=0&amp;enablejsapi=1"
+    title="배경 영상"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div class="bg-veil"></div>
+</div>
+<button type="button" class="bg-sound" id="bg-sound" aria-label="배경 영상 소리 켜기">🔇</button>
+
+<!-- 상단 썸네일 이미지 -->
+<div class="hero-img">
+  <img src="image/PD06.png" alt="PLAYDAY 06 현대극장 — 이번 추석, 뭐 볼까? 연휴에 볼 OTT 한 편을 AI 추천 카드로. 이웃집 큐레이터가 되는 4단계" />
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="flow">
+
+      <div class="step-block compact">
+        <span class="step-num">1</span>
+        <span class="fx yellow">THWIP!</span>
+        <div class="step-head red">
+          <strong>🕸️ 작품 선정</strong>
+          <p>긴 추석 연휴, 동료들을 소파에 붙잡아 둘 그 작품. 꼭 추천하고 싶은 OTT 한 편을 골라주세요.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <span class="step-num">2</span>
+        <div class="step-head">
+          <strong>🎟️ 추천 티켓 작성</strong>
+          <p>그 작품을 보며 느낀 점이나 동료들에게 권하고 싶은 이유를 짧고 진정성 있게 적어주세요. 결말과 반전은 비밀로 남겨두고요.</p>
+        </div>
+        <div class="cur-card">
+          <svg class="card-web l" aria-hidden="true"><use href="#web-corner" /></svg>
+          <svg class="card-web r" aria-hidden="true"><use href="#web-corner" /></svg>
+          <div class="cur-head">
+            <div class="small">HYUNDAI THEATER · CHUSEOK PICK</div>
+            <h3>현대극장 추천 티켓</h3>
+          </div>
+
+          <div class="field">
+            <label>작품 제목 <em>*</em></label>
+            <input id="f-title" type="text" placeholder="예) 스파이더맨: 어크로스 더 유니버스" />
+          </div>
+
+          <div class="field">
+            <label>어디서 볼 수 있나요 <em>*</em></label>
+            <div class="pills compact" id="ott-pills">
+              <button type="button" class="pill selected" data-val="넷플릭스">넷플릭스</button>
+              <button type="button" class="pill" data-val="티빙">티빙</button>
+              <button type="button" class="pill" data-val="쿠팡플레이">쿠팡플레이</button>
+              <button type="button" class="pill" data-val="웨이브">웨이브</button>
+              <button type="button" class="pill" data-val="디즈니+">디즈니+</button>
+              <button type="button" class="pill" data-val="왓챠">왓챠</button>
+              <button type="button" class="pill" data-val="Apple TV+">Apple TV+</button>
+              <button type="button" class="pill" data-val="유튜브">유튜브</button>
+              <button type="button" class="pill" data-val="__custom__">✏️ 직접 입력</button>
+            </div>
+            <input id="f-ott-custom" type="text" placeholder="플랫폼 이름을 적어주세요" style="display:none;margin-top:12px;" />
+            <input id="f-ott" type="hidden" value="넷플릭스" />
+          </div>
+
+          <div class="field hl">
+            <label><span class="mark">큐레이터 한 줄 추천사</span> <em>*</em> — 왜 권하고 싶은지, 어떤 순간이 마음에 남았는지 짧게 적어주세요.</label>
+            <textarea id="f-oneline" class="ruled" rows="2" maxlength="100" placeholder="예) 내가 특별할 필요는 없다고 말해주는 이야기"></textarea>
+            <div class="count"><span id="oneline-count">0</span> / 100자</div>
+          </div>
+
+          <div class="field">
+            <label>이런 분께 권해요 <em>*</em></label>
+            <input id="f-target" type="text" placeholder="예) 연휴에 혼자 조용히 마음을 채우고 싶은 사람" />
+          </div>
+
+          <div class="field">
+            <label>이렇게 보세요 — 시청 상황</label>
+            <div class="pills compact" id="mood-pills">
+              <button type="button" class="pill selected" data-val="">✨ AI 추천</button>
+              <button type="button" class="pill" data-val="온 가족이 거실에 모여 함께 보기 좋은 작품">👨‍👩‍👧 온 가족 거실 관람</button>
+              <button type="button" class="pill" data-val="연휴에 혼자 조용히 몰입해서 보기 좋은 작품">🛋️ 혼자 몰입 관람</button>
+              <button type="button" class="pill" data-val="연휴 내내 한 번에 몰아볼 수 있는 시리즈">📺 연휴 정주행</button>
+              <button type="button" class="pill" data-val="이동 시간이나 자투리 시간에 가볍게 보기 좋은 작품">🚗 귀성길 가볍게</button>
+              <button type="button" class="pill" data-val="새벽에 혼자 불 끄고 보기 좋은 작품">🌙 새벽 감성 관람</button>
+            </div>
+            <input id="f-mood" type="hidden" value="" />
+          </div>
+
+          <div class="field">
+            <label>디자인 스타일</label>
+            <div class="pills" id="style-pills">
+              <button type="button" class="pill selected" data-val="">✨ AI 추천</button>
+              <button type="button" class="pill" data-val="아메리칸 코믹북 스타일, 하프톤 점 질감과 굵은 검정 외곽선, 말풍선과 효과음 글자가 살아있는 디자인">💥 코믹북</button>
+              <button type="button" class="pill" data-val="그래픽 노벨 표지 같은 디자인, 색수차 효과와 강렬한 원색, 과감한 컷 분할 레이아웃">🕸️ 그래픽 노벨</button>
+              <button type="button" class="pill" data-val="클래식한 영화 포스터 스타일, 절제된 타이포그래피와 인상적인 키 비주얼">🎬 시네마 포스터</button>
+              <button type="button" class="pill" data-val="여백을 살린 미니멀한 에디토리얼 매거진 레이아웃, 세련되고 절제된 타이포그래피">📖 미니멀 매거진</button>
+              <button type="button" class="pill" data-val="어두운 배경에 골드 포인트를 준 무드있고 고급스러운 다크 럭셔리 디자인">🌙 다크 무드</button>
+              <button type="button" class="pill" data-val="90년대 브라운관 TV 감성의 노이즈와 스캔라인 질감이 살아있는 레트로 아날로그 스타일">📺 레트로 TV</button>
+              <button type="button" class="pill" data-val="선명한 원색과 과장된 그래픽, 통통 튀는 리듬의 키치 팝 스타일">🌈 키치 팝</button>
+              <button type="button" class="pill" data-val="거친 필름 그레인 질감에 부드러운 블러를 더한 몽환적이고 감성적인 디자인">🎞️ 필름 그레인</button>
+              <button type="button" class="pill" data-val="찢어 붙인 종이와 손글씨, 스티커가 어우러진 콜라주 스타일, 아날로그 핸드메이드 무드">✂️ 콜라주</button>
+              <button type="button" class="pill" data-val="손으로 그린 듯한 따뜻한 일러스트와 부드러운 색감의 아기자기한 디자인">🖍️ 일러스트</button>
+              <button type="button" class="pill" data-val="Y2K 감성의 사이버 팝 스타일, 선명한 네온 컬러와 메탈릭한 질감">🛸 Y2K 사이버</button>
+              <button type="button" class="pill" data-val="__custom__">✏️ 직접 입력</button>
+            </div>
+            <input id="f-style-custom" type="text" placeholder="원하는 스타일을 자유롭게 적어주세요" style="display:none;margin-top:12px;" />
+            <input id="f-style" type="hidden" value="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <span class="step-num">3</span>
+        <span class="fx blue">ZAP!</span>
+        <div class="step-head red">
+          <strong>🤖 Copilot 협업</strong>
+          <p>아래에 준비된 프롬프트를 복사해 Copilot에 그대로 쏘아 보내세요. 여러분의 한 줄 추천사가 멋진 추천 카드로 재탄생합니다.</p>
+        </div>
+        <div class="result" id="result">
+          <div class="result-head">
+            <h4>📋 완성 프롬프트 — 전체 복사해서 Copilot에서 사용하세요</h4>
+            <button class="copy-btn" id="btn-copy">전체 복사</button>
+          </div>
+          <textarea id="result-text" readonly></textarea>
+        </div>
+        <div class="copilot-row" style="margin-top:20px;">
+          <a class="copilot-btn" href="https://m365.cloud.microsoft/chat/" target="_blank" rel="noopener">🤖 Copilot 접속하기 →</a>
+        </div>
+        <div class="cop-guide" style="margin-top:34px;position:relative;">
+          <h4 style="font-size:15px;margin-bottom:10px;font-weight:800;">💡 Copilot 이미지 기능 이해하기</h4>
+          <img src="image/Copilot_Tip.png" alt="Copilot 이미지 기능 이해하기" style="width:100%;height:auto;display:block;border:3px solid var(--ink);border-radius:6px;" />
+          <div class="tip-float">
+            <div class="tip-card">
+              <div class="tip-title">💡 모델설정 TIP</div>
+              기본 설정된 '자동' 모드 대신 <b><span class="hl">GPT 5.6 깊이 생각하기로 변경</span></b>해 보세요! 훨씬 더 똑똑하고 디테일한 결과가 나옵니다.
+              <div class="tip-shot">
+                <img src="image/MODEL.png" alt="Copilot 모델 선택에서 GPT 5.6 깊이 생각하기 선택" />
+              </div>
+            </div>
+            <div class="tip-card">
+              <div class="tip-title">🎯 한 번에 안 나올 때</div>
+              카드가 마음에 안 들면 처음부터 다시 쓰지 마세요.<br />
+              <b><span class="hl">"추천사를 더 크게"</span></b>, <b><span class="hl">"색을 더 어둡게"</span></b>처럼 <b>고칠 부분만 이어서 말하면</b> 그 부분만 수정해 줍니다.<br />
+              한글이 깨져 나오면 <b>"카드 안의 한글을 정확하게 다시 써 줘"</b>라고 요청하세요.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <span class="step-num">4</span>
+        <span class="fx">BOOM!</span>
+        <div class="step-head">
+          <strong>🎞️ 추천 작품 소개</strong>
+          <p>완성된 카드를 PlayGallery에 올려 동료들에게 소개해주세요.</p>
+        </div>
+        <div class="finish">
+          <div class="copilot-row">
+            <a class="gallery-btn" href="https://hmap.hdec.co.kr/HMAP/Authentication/HMAPAccess.aspx?popupUrl=PLAYGALLERY" target="_blank" rel="noopener">🎞️ Play Gallery 이동 →</a>
+          </div>
+          <p class="finish-note">동료들에게 '좋아요 수'를 가장 많이 받은 우수작을 선정하여 커피 쿠폰을 보내 드립니다.</p>
+          <div class="deadline">제출기한 : '26년 10월 9일</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="brand-footer">
+    <span class="brand-plate">
+      <img src="data:image/png;base64,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" alt="워크이노베이션센터 · AI디자인랩" />
+    </span>
+  </div>
+</div>
+
+<!-- ▲▲▲ 여기까지 ▲▲▲ -->
+<script>
+(function(){
+  var TEMPLATE = `당신은 '현대극장(現代劇場)'이라는 OTT 큐레이션 채널의 큐레이터입니다. 작품을 정확하게 조사해 핵심을 요약하고, 동료에게 건네는 추천 카드를 한 장짜리 큐레이션 인포그래픽으로 만드는 일을 합니다.
+
+이 카드에서 가장 중요한 것은 화려한 디자인도, 줄거리 요약도 아닌 '큐레이터의 한 줄 추천사'입니다.
+추천사가 가장 먼저 눈에 들어오고, 나머지 모든 요소는 그 추천사를 뒷받침하도록 만드세요.
+그리고 예쁘게 만드는 것보다 작품의 실제 내용을 정확하게 전달하는 것이 더 중요합니다.
+
+━━━━━━━━━━━━━━━━━━
+[큐레이터 입력 내용]
+━━━━━━━━━━━━━━━━━━
+■ 작품 제목: {TITLE}
+■ 볼 수 있는 곳: {OTT}
+■ 큐레이터의 한 줄 추천사(가장 중요): {ONELINE}
+■ 이런 분께 권해요: {TARGET}
+■ 시청 상황: {MOOD}
+■ 디자인 스타일: {STYLE}
+
+━━━━━━━━━━━━━━━━━━
+[작업 순서]
+━━━━━━━━━━━━━━━━━━
+1. 작품의 정확한 제목, 공개 연도, 제작 국가, 장르, 분량(러닝타임 또는 회차)을 확인하세요. 제목이 비슷한 다른 작품이나 같은 시리즈의 다른 편과 혼동하지 마세요.
+2. 공식 소개, 공개된 시놉시스, 신뢰할 수 있는 정보를 바탕으로 작품의 핵심을 조사하세요.
+3. 확인된 내용만으로 카드에 들어갈 원고를 먼저 확정한 뒤, 그 원고 그대로 이미지를 만드세요.
+4. 생성 후 추천사와 작품명·플랫폼명의 오탈자, 한글 깨짐을 검수하고 문제가 있으면 수정해서 완성하세요.
+
+━━━━━━━━━━━━━━━━━━
+[내용 원칙]
+━━━━━━━━━━━━━━━━━━
+- 확인된 사실만 사용하세요. 없는 인물, 없는 대사, 출처 없는 평점이나 순위를 만들지 마세요.
+- 결말, 반전, 핵심 사건은 절대 노출하지 마세요. 스포일러 없이 궁금하게만 만드세요.
+- 추천사는 한 글자도 의미를 바꾸지 말고 그대로 사용하세요.
+- 실제 배우의 얼굴, 작품의 스틸컷, 공식 포스터를 그대로 복제하지 말고, 작품의 분위기를 상징하는 독창적인 비주얼로 표현하세요.
+- 실존 인물의 얼굴은 생성하지 마세요.
+
+━━━━━━━━━━━━━━━━━━
+[카드 구성 — 추천사가 가장 중요합니다]
+━━━━━━━━━━━━━━━━━━
+레이아웃의 중심은 추천사입니다.
+- 추천사는 카드 상단이나 정중앙, 시선이 가장 먼저 닿는 자리에 카드에서 가장 큰 글자로 배치하세요.
+- 추천사만 손으로 쓴 메모처럼 다정한 손글씨 느낌으로 표현하세요. 티켓이나 메모지 위에 쓰인 듯한 연출도 좋습니다.
+- 손글씨 연출은 추천사에만 한정하세요. 나머지 모든 텍스트는 선택한 디자인 스타일에 어울리는 서체로 자유롭게 구성하세요.
+- 작품 제목보다 추천사가 먼저 읽혀도 괜찮습니다. 그게 이 카드의 의도입니다.
+
+포함할 요소:
+- 작품 제목, 볼 수 있는 곳(OTT 플랫폼), 장르와 분량
+- 작품의 핵심을 담은 부제 한 문장
+- "이런 분께 권해요" — 위에 적힌 문구 그대로
+- 시청 포인트 3~4가지 — 추천사에 고개가 끄덕여지도록, 그 근거가 되는 내용 위주로 (스포일러 금지)
+- 이 작품이 연휴의 시간을 어떻게 채워줄지 한두 가지
+- 마무리 메시지 한 문장 (작품의 실제 핵심에서 도출하되, 등장인물의 대사처럼 따옴표를 쓰지 마세요)
+- '현대극장 現代劇場' — 작은 극장 로고나 티켓 도장처럼 카드 한쪽 구석에
+
+━━━━━━━━━━━━━━━━━━
+[디자인]
+━━━━━━━━━━━━━━━━━━
+- 세로형 A4 비율, 극장 로비에 걸린 추천 포스터 같은 완성도 높은 디자인
+- 위에 적은 디자인 스타일을 충실히 반영하고, 그에 어울리는 색감을 직접 제안해서 적용하세요.
+- 시청 상황에 맞는 온도로 연출하세요. 가족과 함께라면 밝고 따뜻하게, 혼자 보는 밤이라면 차분하고 깊게.
+- 번호 카드를 일렬로 나열하는 획일적인 레이아웃 대신, 추천사를 중심에 둔 채 작품의 분위기에 맞는 레이아웃을 선택하세요.
+- 정보 위계를 분명하게 — 추천사 > 작품 제목 > 본문 순서로 크기를 구분하세요.
+- 한글은 또렷하게, 너무 작은 글자는 금지합니다.
+- 작품 내용과 관계없는 인물이나 사물은 넣지 마세요.`;
+
+  function $(id){return document.getElementById(id);}
+
+  function buildPrompt(){
+    var title = $('f-title').value.trim();
+    var oneline = $('f-oneline').value.trim();
+    var target = $('f-target').value.trim();
+
+    var ottVal = $('f-ott').value;
+    var ott = ottVal === '__custom__' ? $('f-ott-custom').value.trim() : ottVal;
+
+    var mood = $('f-mood').value;
+
+    var styleVal = $('f-style').value;
+    var style = styleVal === '__custom__' ? $('f-style-custom').value.trim() : styleVal;
+
+    var p = TEMPLATE
+      .split('{TITLE}').join(title || '(작품 제목을 입력하세요)')
+      .split('{OTT}').join(ott || '(볼 수 있는 곳을 선택하세요)')
+      .split('{ONELINE}').join(oneline || '(추천사를 입력하세요)')
+      .split('{TARGET}').join(target || '(추천 대상을 입력하세요)')
+      .split('{MOOD}').join(mood || '작품의 분위기에 가장 어울리는 시청 상황을 직접 제안해서 적용')
+      .split('{STYLE}').join(style || '작품의 장르와 분위기에 가장 어울리는 스타일을 직접 제안해서 적용');
+    $('result-text').value = p;
+  }
+
+  ['f-title','f-oneline','f-target','f-ott-custom','f-style-custom'].forEach(function(id){
+    $(id).addEventListener('input', buildPrompt);
+  });
+
+  $('f-oneline').addEventListener('input', function(){
+    $('oneline-count').textContent = this.value.length;
+  });
+
+  // 알약 버튼 선택 — 그룹별 공통 처리
+  function bindPills(groupId, hiddenId, customId){
+    var pills = document.querySelectorAll('#' + groupId + ' .pill');
+    pills.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        pills.forEach(function(b){ b.classList.remove('selected'); });
+        this.classList.add('selected');
+        var val = this.getAttribute('data-val');
+        $(hiddenId).value = val;
+        if(customId){
+          $(customId).style.display = (val === '__custom__') ? 'block' : 'none';
+          if(val === '__custom__'){ $(customId).focus(); }
+        }
+        buildPrompt();
+      });
+    });
+  }
+
+  bindPills('ott-pills', 'f-ott', 'f-ott-custom');
+  bindPills('mood-pills', 'f-mood', null);
+  bindPills('style-pills', 'f-style', 'f-style-custom');
+
+  // ───── 배경 영상 (YouTube IFrame Player API) ─────
+  // 자동재생은 브라우저 정책상 '음소거 상태'에서만 허용됩니다.
+  var ytPlayer = null, sndOn = false;
+  var sndBtn = $('bg-sound');
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('bg-yt', {
+      events: {
+        onReady: function(e){
+          e.target.mute();
+          e.target.playVideo();
+        },
+        onStateChange: function(e){
+          // 끝나면 처음으로 되감아 무한 반복
+          if(e.data === YT.PlayerState.ENDED){
+            e.target.seekTo(0);
+            e.target.playVideo();
+          }
+        }
+      }
+    });
+  };
+
+  (function loadYouTubeAPI(){
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+
+  // 자동재생이 막힌 환경에서는 첫 클릭에 재생
+  document.addEventListener('click', function once(){
+    if(ytPlayer && ytPlayer.playVideo){ ytPlayer.playVideo(); }
+    document.removeEventListener('click', once);
+  });
+
+  if(sndBtn){
+    sndBtn.addEventListener('click', function(){
+      if(!ytPlayer || !ytPlayer.unMute) return;
+      sndOn = !sndOn;
+      if(sndOn){ ytPlayer.unMute(); ytPlayer.setVolume(25); }
+      else { ytPlayer.mute(); }
+      sndBtn.textContent = sndOn ? '🔊' : '🔇';
+      sndBtn.setAttribute('aria-label', sndOn ? '배경 영상 소리 끄기' : '배경 영상 소리 켜기');
+    });
+  }
+
+  $('btn-copy').addEventListener('click', function(){
+    var ta = $('result-text');
+    var btn = this;
+    function done(){
+      btn.textContent = '복사 완료!';
+      btn.classList.add('done');
+      setTimeout(function(){btn.textContent='전체 복사';btn.classList.remove('done');},1800);
+    }
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    function fallbackCopy(){
+      try{ if(document.execCommand('copy')){ done(); } }catch(e){}
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(done).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  });
+
+  buildPrompt();
+})();
+</script>
+</body>
+</html>
