@@ -73,7 +73,10 @@
   .topic h3{margin:18px 0 6px;font-size:23px;font-weight:800;letter-spacing:-.04em}
   .topic p{margin:0;font-size:16px;color:var(--sub);font-weight:500}
   .topic .ex{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:15px;color:var(--ink);font-weight:600}
-  .topic .ex span{display:inline-block;font-size:12.5px;font-weight:800;color:var(--blue);background:var(--tint);padding:2px 8px;border-radius:6px;margin-right:6px}
+  .topic .ex span{display:inline-block;font-size:12.5px;font-weight:800;color:var(--blue);background:var(--tint);padding:2px 8px;border-radius:6px}
+  .topic .ex ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+  .topic .ex li{position:relative;padding-left:14px;line-height:1.45}
+  .topic .ex li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--blue)}
   .notice{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
   .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--tint);color:#0e2f86;font-size:15.5px;font-weight:700}
 
@@ -191,25 +194,25 @@
   <!-- 01 공모 주제 -->
   <section id="topic">
     <div class="sec-h"><span class="no">01</span><h2>공모 주제</h2></div>
-    <p class="lead"><b>AI를 활용해 실제로 업무를 바꾼 사례</b>를 찾습니다. 아이디어 제안이 아니라, 지금 업무에서 <b>직접 작동하는 결과물</b>이면 됩니다.</p>
+    <p class="lead"><b>AI를 활용해 실제로 업무를 바꾼 사례</b>를 찾습니다. 아이디어 제안이 아니라, <b>직접 시연할 수 있는 결과물</b>이어야 합니다. 아래 분야와 예시를 참고해 주세요.</p>
     <div class="topics">
       <div class="card topic">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.6V16h6v-.1c0-.6.3-1.2.8-1.6A6.5 6.5 0 0 0 12 2.5z"/></svg></div>
-        <h3>업무 혁신 아이디어</h3>
-        <p>AI로 일하는 방식 자체를 새롭게 바꾼 사례</p>
-        <div class="ex"><span>예시</span>보고서·기안 초안 작성, 회의록 요약과 공유</div>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+        <h3>업무 자동화</h3>
+        <p>반복되는 작성·취합·검토를 AI가 대신 처리</p>
+        <div class="ex"><span>시연 예시</span><ul><li>작업일보·주간보고 자동 취합과 보고서 작성</li><li>회의록 요약 후 담당자별 할 일 자동 정리</li><li>엑셀 내역서 자동 검토와 오류 표시</li></ul></div>
       </div>
       <div class="card topic">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        <h3>프로세스 개선</h3>
-        <p>반복 업무의 시간과 오류를 줄인 사례</p>
-        <div class="ex"><span>예시</span>자료 취합·검토 자동화, 문서 점검 체크리스트</div>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="m13.3 16.3 1.9 1.9"/></svg></div>
+        <h3>문서·데이터 AI</h3>
+        <p>문서와 데이터를 AI로 찾고 비교·분석</p>
+        <div class="ex"><span>시연 예시</span><ul><li>시방서·계약서 조항을 찾아 주는 사내 챗봇</li><li>설계 변경 전후 도서 자동 비교</li><li>공정·원가 데이터 분석과 이상 징후 알림</li></ul></div>
       </div>
       <div class="card topic">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3>현장 적용 사례</h3>
-        <p>현장 업무에 AI를 적용해 실질적인 변화를 만든 사례</p>
-        <div class="ex"><span>예시</span>현장 사진·도면 분석, 공정·안전 점검 지원</div>
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+        <h3>현장 AI</h3>
+        <p>사진·도면 같은 현장 데이터에 AI를 적용</p>
+        <div class="ex"><span>시연 예시</span><ul><li>현장 사진으로 안전장비 착용 자동 점검</li><li>균열·하자 사진 자동 판독과 분류</li><li>도면에서 물량 자동 산출</li></ul></div>
       </div>
     </div>
     <div class="notice">
@@ -281,18 +284,18 @@
         <div>
           <h3>사업본부 · AI디자인랩 · IT 공동 평가 <span class="out">6건 수상</span></h3>
           <p>세 조직이 각자의 관점에서 과제를 평가합니다. 상위 3건은 3차 최종 평가에 진출하고, 4~6위는 장려상을 받습니다.</p>
-          <div class="who"><span class="chip">사업본부 · 현업 효과</span><span class="chip">AI디자인랩 · AI 활용과 확산성</span><span class="chip">IT · 안정성과 운영</span></div>
+          <div class="who"><span class="chip">사업본부 · 문제 정의 · 업무 적용성 · 개선 효과</span><span class="chip">AI디자인랩 · AI 활용 · 확산성</span><span class="chip">IT · 운영 안정성</span></div>
         </div>
       </div>
       <div class="card step final">
         <div class="tag"><span class="n">STEP 3</span><span class="t">3차 최종</span><span class="when">12월</span></div>
         <div>
-          <h3>경영층 차담회 <span class="out">최우수 1 · 우수 2</span></h3>
-          <p>2차 평가 상위 3건이 본부장급 경영층이 참석하는 차담회에서 직접 발표합니다.</p>
-          <div class="flow3"><span>과제 발표</span><i>→</i><span>결과물 시연</span><i>→</i><span>질의응답</span><i>→</i><span>현장 평가</span></div>
+          <h3>경영층 평가 <span class="out">최우수 1 · 우수 2</span></h3>
+          <p>2차 평가 상위 3건을 경영층이 직접 평가합니다.</p>
+          <div class="flow3"><span>과제 발표</span><i>→</i><span>결과물 시연</span><i>→</i><span>질의응답</span><i>→</i><span>경영층 평가</span></div>
           <ul class="checks">
-            <li>경영층이 현장에서 바로 평가합니다</li>
             <li>2차 평가 결과와 합산해 최종 순위를 정합니다</li>
+            <li>세부 진행 방식과 일정은 별도로 안내합니다</li>
           </ul>
         </div>
       </div>
