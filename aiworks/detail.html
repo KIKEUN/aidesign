@@ -109,6 +109,10 @@
   .pnote{margin-top:14px;font-size:15px;color:var(--mute);font-weight:600}
 
   /* 심사 절차 */
+  .sec-note{display:flex;gap:14px;align-items:flex-start;margin:-6px 0 22px;padding:18px 22px;border-radius:16px;background:#fff8e8;box-shadow:inset 0 0 0 1.5px #f3d58f}
+  .sec-note svg{width:26px;height:26px;flex:none;margin-top:1px;stroke:#b7791f;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .sec-note p{margin:0;font-size:16.5px;font-weight:500;color:#5a4410;line-height:1.6}
+  .sec-note b{font-weight:800;color:#3d2e06}
   .steps{position:relative;display:grid;gap:18px}
   .step{display:grid;grid-template-columns:120px 1fr;gap:26px;padding:28px 30px}
   .step .tag{display:flex;flex-direction:column;align-items:flex-start}
@@ -264,6 +268,7 @@
   <section id="process">
     <div class="sec-h"><span class="no">04</span><h2>심사 절차</h2></div>
     <p class="lead">제출된 과제는 <b>세 단계</b>에 걸쳐 심사합니다.</p>
+    <div class="sec-note"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><p><b>AI 도구는 자유롭게 활용할 수 있습니다.</b> 다만 사내 정보는 <b>Copilot</b>에서만 다루고, 그 밖의 외부 AI에는 올리지 않아야 합니다. 심사 과정에서 보안 기준을 지켰는지도 함께 확인합니다.</p></div>
     <div class="steps">
       <div class="card step">
         <div class="tag"><span class="n">STEP 1</span><span class="t">1차 선별</span><span class="when">11월</span></div>
@@ -276,6 +281,7 @@
             <li>AI가 핵심 처리 과정에 실제로 쓰였는가</li>
             <li>현업에 적용 중이거나 바로 적용할 수 있는가</li>
             <li>필수 제출자료를 빠짐없이 갖췄는가</li>
+            <li>Copilot 외 외부 AI에 사내 정보를 올리지 않았는가</li>
           </ul>
         </div>
       </div>
