@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI WORKS 모션포스터</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b1d4d; --ink:#16264f; --sub:#33415f; --blue1:#2f7bff; --blue2:#0a3fd6; --line:rgba(11,29,77,.14);
+    --FF:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  }
+  html,body{margin:0;height:100%;background:#cfe3fb;overflow:hidden}
+  /* 포스터 = 영상 프레임(1080×1916) 그대로. 화면 높이에 맞춰 축소 */
+  #stage{position:absolute;left:50%;top:50%;width:1080px;height:1916px;overflow:hidden;
+    font-family:var(--FF);color:var(--navy);letter-spacing:-.035em;word-break:keep-all;background:#8cc2f5}
+  #bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:78% 45%}
+  .abs{position:absolute}
+
+  /* 왼쪽 밝은 하늘 헤이즈 — 네이비 글씨 가독성 */
+  #haze{left:0;top:0;width:1080px;height:1916px;
+    background:
+      radial-gradient(70% 46% at 8% 24%, rgba(255,255,255,.86) 0%, rgba(255,255,255,.62) 45%, rgba(255,255,255,0) 100%),
+      radial-gradient(60% 30% at 4% 56%, rgba(255,255,255,.7) 0%, rgba(255,255,255,.35) 55%, rgba(255,255,255,0) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 72%, rgba(235,244,255,.55) 84%, rgba(240,247,255,.85) 100%)}
+
+
+  .in{display:block;will-change:transform,filter,opacity}
+  #t0{left:64px;top:132px;font-size:120px;font-weight:900;line-height:1;letter-spacing:-.045em;color:var(--navy)}
+  #t1{left:62px;top:254px;font-size:120px;font-weight:900;line-height:1;letter-spacing:-.05em;color:var(--navy);white-space:nowrap}
+  .ai{background:linear-gradient(180deg,#3d8bff 0%,var(--blue2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.04em}
+  #t2{left:66px;top:392px;font-size:51px;font-weight:800;line-height:1.1;letter-spacing:-.03em;color:var(--navy);white-space:nowrap}
+  #rule{left:70px;top:486px;width:56px;height:4px;background:var(--navy);transform-origin:left}
+  #sub{left:60px;top:516px;font-family:"Nanum Brush Script",cursive;font-size:76px;line-height:1.0;letter-spacing:-.01em;
+    color:#0e3aa8;transform-origin:left center}
+  #sub .ln{display:block;width:max-content;padding:0 30px 6px 4px}
+  #sub .ln:nth-child(2){margin-left:46px}
+  #sub .ln:nth-child(3){margin-left:110px}
+  #sub .ln b{font-weight:400;color:#2f7bff}
+
+  /* 공모분야 3줄 */
+  .feat{left:68px;display:flex;align-items:center;gap:28px}
+  #f1{top:812px} #f2{top:958px} #f3{top:1104px}
+  .feat .ic{width:112px;height:112px;border-radius:50%;flex:none;display:grid;place-items:center;
+    background:radial-gradient(circle at 35% 30%,#2f63d8 0%,#0e2f86 70%,#0a2366 100%);box-shadow:0 10px 24px rgba(10,35,102,.28)}
+  .feat .ic svg{width:54px;height:54px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .feat b{display:block;font-size:43px;font-weight:800;letter-spacing:-.03em;color:var(--navy)}
+  .feat span{display:block;font-size:31px;font-weight:500;color:var(--ink);margin-top:6px;letter-spacing:-.02em}
+  .feat span, .feat b{text-shadow:0 0 18px rgba(255,255,255,.9),0 0 6px rgba(255,255,255,.8)}
+
+  /* 하단 카드 */
+  #card{left:44px;top:1566px;width:992px;box-sizing:border-box;padding:26px 28px 26px 34px;align-items:center;border-radius:26px;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,.95);
+    box-shadow:0 18px 50px rgba(20,60,140,.22);display:grid;grid-template-columns:1fr 170px;gap:0 28px}
+  #cols{display:flex;justify-content:space-between}
+  .col{padding:4px 0 4px 20px;border-left:1.5px solid var(--line)}
+  .col:first-child{border-left:0;padding-left:0}
+  .k{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:23px;font-weight:700;color:var(--sub)}
+  .k svg{width:30px;height:30px;stroke:#0e2f86;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .v{white-space:nowrap;margin-top:10px;font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.03em}
+  .v em{font-style:normal;background:linear-gradient(180deg,#3d8bff,var(--blue2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #prz .row{display:flex;align-items:baseline;gap:18px;margin-top:8px}
+  #prz .big{font-size:52px;font-weight:900;color:var(--navy);letter-spacing:-.03em}
+  #prz .big em{font-style:normal;background:linear-gradient(180deg,#3d8bff,var(--blue2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #prz .det{font-size:25px;font-weight:600;color:var(--sub)}
+  #prz .flow{margin-top:14px;display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;color:var(--sub)}
+  #prz .flow i{font-style:normal;padding:5px 12px;border-radius:8px;background:#eaf1ff;color:#0e2f86}
+  #prz .flow s{text-decoration:none;color:#8a97b5}
+
+  a.lnk{display:block;text-decoration:none;color:#0a3fd6}
+  #more{display:flex;align-items:center;justify-content:center;gap:12px;height:132px;border-radius:20px;text-decoration:none;
+    background:linear-gradient(160deg,#1f4fc8 0%,var(--navy) 100%);color:#fff;font-size:27px;font-weight:800;line-height:1.25;letter-spacing:-.03em;
+    box-shadow:0 10px 24px rgba(11,29,77,.28)}
+  #more i{font-style:normal;font-size:44px;font-weight:400;line-height:1;margin-top:-4px}
+  #foot{left:0;width:1080px;top:1858px;text-align:center;font-size:25px;font-weight:700;color:var(--ink);letter-spacing:-.03em}
+  #foot i{display:inline-block;width:1.5px;height:20px;background:rgba(11,29,77,.35);margin:0 18px;vertical-align:-2px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- 배경: 등장(6.25초)+루프(4.04초)를 한 파일로 구운 영상. 확대 효과도 영상에 포함. 끝나면 루프 시작(10.29초)으로 되돌아감 -->
+  <video id="bg" src="bg_full.mp4" muted playsinline preload="auto"></video>
+  <div id="haze" class="abs"></div>
+
+
+  <div id="t0" class="abs"><span class="in">2026</span></div>
+  <div id="t1" class="abs"><span class="in"><span class="ai">AI</span> WORKS</span></div>
+  <div id="t2" class="abs"><span class="in">전사 AI 우수사례 Awards</span></div>
+  <div id="rule" class="abs"></div>
+  <div id="sub" class="abs"><span class="ln"><b>AI</b>로 바뀐 업무의</span><span class="ln">실제 사례를</span><span class="ln">공유해 주세요</span></div>
+
+  <div id="f1" class="abs feat">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.6V16h6v-.1c0-.6.3-1.2.8-1.6A6.5 6.5 0 0 0 12 2.5z"/></svg></div>
+    <div><b>업무 혁신 아이디어</b><span>일하는 방식을 새롭게</span></div>
+  </div>
+  <div id="f2" class="abs feat">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <div><b>프로세스 개선</b><span>반복 업무는 더 효율적으로</span></div>
+  </div>
+  <div id="f3" class="abs feat">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div><b>현장 적용 사례</b><span>현장에서 만든 실질적인 변화</span></div>
+  </div>
+
+  <div id="card" class="abs">
+    <div>
+      <div id="cols">
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="v">11월 13일까지</div></div>
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="v">전 직원</div></div>
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><a class="v lnk" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms</a></div>
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="v">총 <em>500만원</em></div></div>
+      </div>
+    </div>
+    <a id="more" href="detail.html"><span>자세하게<br>보기</span><i>›</i></a>
+  </div>
+
+  <div id="foot" class="abs">워크이노베이션센터<i></i>AI디자인랩</div>
+</div>
+
+<script>
+/* ===== 타이밍 (초) — 배경 한 파일: 0~10.29초 등장(+확대), 10.29~14.33초 루프 구간 무한 반복 ===== */
+const VID = 6.25, DUR = 10, LOOP_A = 247 / 24, LOOP_B = 344 / 24;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - x, 3);
+
+const stage = $('stage'), bg = $('bg');
+const CAP = new URLSearchParams(location.search).has('cap');
+function fit() { const s = Math.min(innerWidth / 1080, innerHeight / 1916); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+
+function fadeUp(el, k, dy = 40) { el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * dy}px)`; }
+const eQuint = x => 1 - Math.pow(1 - x, 5);
+// 제목: 흐림→선명 + 부드럽게 떠오름 + 자간이 살짝 모이며 자리잡음
+function reveal(id, t, a, d = 1.3) {
+  const k = seg(t, a, a + d), e = eQuint(k), el = $(id).querySelector('.in');
+  el.style.opacity = eOut(seg(t, a, a + d * 0.6));
+  el.style.filter = `blur(${(1 - eOut(k)) * 14}px)`;
+  el.style.transform = `translateY(${(1 - e) * 46}px) scale(${1.04 - 0.04 * e})`;
+  el.style.transformOrigin = 'left center';
+  el.style.letterSpacing = `${(1 - e) * 0.06}em`;
+}
+// 손글씨: 왼쪽부터 써 내려가듯 드러남
+function write(el, t, a, d) {
+  const k = seg(t, a, a + d), e = 1 - Math.pow(1 - k, 2);
+  el.style.clipPath = `inset(-20px ${(1 - e) * 100}% -20px -10px)`;
+  el.style.opacity = k > 0 ? 1 : 0;
+}
+
+function render(t) {
+  if (CAP) bg.style.transform = `scale(${1 + 0.05 * eOut(seg(t, 0, DUR))})`;   // 라이브 재생은 확대가 영상에 포함됨
+  $('haze').style.opacity = eOut(seg(t, 0, 1.2));
+
+  reveal('t0', t, 0.3); reveal('t1', t, 0.5); reveal('t2', t, 0.75);
+  $('rule').style.transform = `scaleX(${eOut(seg(t, 1.4, 1.9))})`;
+  const sl = document.querySelectorAll('#sub .ln');
+  write(sl[0], t, 1.55, 0.6); write(sl[1], t, 2.05, 0.45); write(sl[2], t, 2.4, 0.55);
+  $('sub').style.transform = `rotate(-3deg) translateY(${(1 - eOut(seg(t, 1.6, 2.6))) * 10}px)`;
+
+  ['f1', 'f2', 'f3'].forEach((id, i) => {
+    const k = eOut(seg(t, 2.8 + i * 0.22, 3.4 + i * 0.22)), el = $(id);
+    el.style.opacity = k; el.style.transform = `translateX(${(1 - k) * -50}px)`;
+    el.querySelector('.ic').style.transform = `scale(${0.6 + 0.4 * eOut(seg(t, 2.8 + i * 0.22, 3.5 + i * 0.22))})`;
+  });
+
+  fadeUp($('card'), eOut(seg(t, 3.9, 4.6)), 60);
+  fadeUp($('foot'), eOut(seg(t, 4.5, 5.1)), 12);
+}
+
+/* ===== 캡처 모드 (?cap) — 외부에서 window.seek(t) 호출 ===== */
+if (CAP) {
+  stage.style.cssText += ';left:0;top:0;transform:none';
+  // ?fr=<폴더URL> : 배경을 미리 뽑은 프레임 이미지로 그림 (영상 seek 오차 없이 정확한 렌더링용)
+  const FR = new URLSearchParams(location.search).get('fr');
+  if (FR) {
+    const im = document.createElement('img'); im.id = 'bgimg';
+    im.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:78% 45%';
+    bg.after(im); bg.style.display = 'none';
+    const NA = 150, NL = 97;
+    window.seek = t => new Promise(res => {
+      render(t);
+      im.style.transform = bg.style.transform;
+      const k = Math.floor(t * 24 + 1e-6);
+      const src = k < NA ? `${FR}/a_${String(k + 1).padStart(4, '0')}.jpg` : `${FR}/l_${String((k - NA) % NL + 1).padStart(4, '0')}.jpg`;
+      im.onload = () => im.decode().then(() => requestAnimationFrame(() => requestAnimationFrame(() => res())));
+      im.src = src;
+    });
+  }
+} else {
+  addEventListener('resize', fit); fit();
+  // 시계: 영상이 실제로 그린 프레임 시각(requestVideoFrameCallback)에 맞춰 문구를 움직임
+  let aMedia = 0, aWall = null, looped = false, paused = false;
+  const onFrame = (now, m) => {
+    aMedia = m.mediaTime; aWall = performance.now();
+    if (m.mediaTime >= LOOP_B - 1.5 / 24) { bg.currentTime = LOOP_A + 0.001; looped = true; }   // 끝 → 루프 시작 (같은 장면으로 이어짐)
+    bg.requestVideoFrameCallback(onFrame);
+  };
+  if (bg.requestVideoFrameCallback) bg.requestVideoFrameCallback(onFrame);
+  else bg.addEventListener('timeupdate', () => { if (bg.currentTime >= LOOP_B - 0.08) { bg.currentTime = LOOP_A + 0.001; looped = true; } aMedia = bg.currentTime; aWall = performance.now(); });
+  const start = () => { looped = false; aWall = null; bg.currentTime = 0; bg.play().catch(() => {}); };
+  bg.addEventListener('canplaythrough', start, { once: true });
+  setTimeout(() => { if (bg.paused && !paused) start(); }, 2500);
+  const now = () => looped ? DUR + 1 : aWall === null ? 0 : Math.min(aMedia + (paused ? 0 : (performance.now() - aWall) / 1000), LOOP_B);
+  (function loop() { render(now()); requestAnimationFrame(loop); })();
+  // Space 일시정지 · R 처음부터
+  addEventListener('keydown', e => {
+    if (e.code === 'Space') { paused = !paused; if (paused) bg.pause(); else bg.play(); }
+    if (e.key === 'r' || e.key === 'R') { paused = false; start(); }
+  });
+  render(0);
+}
+</script>
+</body>
+</html>
