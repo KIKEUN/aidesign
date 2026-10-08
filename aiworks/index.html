@@ -14,6 +14,7 @@
   }
   html,body{margin:0;height:100%;background:#cfe3fb;overflow:hidden}
   /* 포스터 = 영상 프레임(1080×1916) 그대로. 화면 높이에 맞춰 축소 */
+  #vp{position:fixed;inset:0;overflow:hidden}
   #stage{position:absolute;left:50%;top:50%;width:1080px;height:1916px;overflow:hidden;
     font-family:var(--FF);color:var(--navy);letter-spacing:-.035em;word-break:keep-all;background:#8cc2f5}
   #bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:78% 45%}
@@ -76,12 +77,189 @@
   #more i{font-style:normal;font-size:44px;font-weight:400;line-height:1;margin-top:-4px}
   #foot{left:0;width:1080px;top:1858px;text-align:center;font-size:25px;font-weight:700;color:var(--ink);letter-spacing:-.03em}
   #foot i{display:inline-block;width:1.5px;height:20px;background:rgba(11,29,77,.35);margin:0 18px;vertical-align:-2px}
+  #more{cursor:pointer}
+
+  /* ===== v3: "자세하게 보기" → 패널 진입 영상(직접 제작) 재생 → 패널 안 상세 화면 ===== */
+  #zin,#zout{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none}
+  #stage{transition:filter .6s ease}
+  #stage.blur{filter:blur(18px)}   /* 영상이 끝나면 배경을 흐리며 상세 화면이 올라옴 */
+
+  /* ----- 상세 안내 (패널 안 화면) ----- */
+  #detail{position:fixed;inset:0;z-index:50;overflow:auto;display:none;opacity:0;transition:opacity .6s ease;background:#cfe3fb;
+    --ink:#16264f;--sub:#4a5878;--mute:#7c88a3;--blue:#1a56e8;--card:rgba(255,255,255,.9);--line:#dfe7f5;--tint:#eaf1ff;--bg:#f3f7fe;
+    --gold:#d79a17;--silver:#7d8aa5;--bronze:#b56a3c;
+    font-family:var(--FF);color:var(--navy);letter-spacing:-.02em;word-break:keep-all;line-height:1.55;-webkit-overflow-scrolling:touch}
+  #detail{scrollbar-width:none}   /* 스크롤바를 숨겨 내용 기둥과 배경 기둥이 정확히 겹치게 */
+  #detail::-webkit-scrollbar{display:none}
+  #detail.on{display:block}
+  #detail.show{opacity:1}
+  #detail *{box-sizing:border-box}
+  #detail a{color:inherit}
+  /* 패널 안 배경 = 진입 영상의 마지막 프레임. 무대(1080×1916)와 같은 틀을 화면 전체로 덮어 영상 끝 장면과 정확히 이어짐 */
+  /* 배경 기둥: 포스터 무대와 같은 폭(--col)으로 화면 가운데 고정. 내용은 그 위에서 스크롤 */
+  #dbg{position:fixed;top:0;bottom:0;left:50%;width:var(--col,1080px);transform:translateX(-50%);z-index:0;overflow:hidden;background:#dbe9fb}
+  #dbg img{position:absolute;left:-6%;top:-6%;width:112%;height:112%;object-fit:cover;filter:blur(16px);animation:drift 26s ease-in-out infinite alternate}
+  @keyframes drift{from{transform:scale(1)}to{transform:scale(1.06)}}
+  #dbg .veil{position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.26) 32%,rgba(243,247,254,.62) 60%,rgba(243,247,254,.9) 100%)}
+  #dwrap{position:relative;z-index:1;width:var(--w,864px);zoom:var(--z,1);margin:0 auto;padding:22px 22px 48px}
+
+  /* 등장 모션 */
+  #detail .rise{opacity:0;transform:translateY(28px)}
+  #detail.show .rise{animation:dRise .8s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0s)}
+  @keyframes dRise{to{opacity:1;transform:none}}
+
+  /* 히어로 = 패널 프레임(영상 속 패널의 유리 테두리 느낌) */
+  #detail .hero{position:relative;padding:32px 36px 34px;border-radius:26px;overflow:hidden;
+    background:linear-gradient(160deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.5) 100%);
+    border:2px solid rgba(255,255,255,.95);box-shadow:0 0 0 6px rgba(160,205,255,.28),0 0 60px rgba(120,180,255,.55),0 24px 60px rgba(20,60,140,.14);
+    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+  #detail .hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 70% at 92% 10%,rgba(47,123,255,.16),transparent 60%)}
+  #detail .hero>*{position:relative;z-index:1}
+  #detail .back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--sub);text-decoration:none;margin-bottom:16px;cursor:pointer}
+  #detail .back:hover{color:var(--blue)}
+  #detail .eyebrow{font-size:17px;font-weight:800;letter-spacing:.02em;color:var(--blue)}
+  #detail h1{margin:4px 0 0;font-size:58px;line-height:1.04;font-weight:900;letter-spacing:-.045em}
+  #detail h1 .ai{padding-right:.04em}
+  #detail h1 small{display:block;margin-top:10px;font-size:.5em;font-weight:800;letter-spacing:-.03em}
+  #detail .brush{margin-top:16px;font-family:"Nanum Brush Script",cursive;font-size:36px;line-height:1.1;color:#0e3aa8;transform:rotate(-2deg);transform-origin:left;letter-spacing:0}
+  #detail .brush b{font-weight:400;color:#2f7bff}
+  #detail .mbr{display:none}
+  #detail .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  #detail .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-size:15.5px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  #detail .btn:hover{transform:translateY(-2px)}
+  #detail .btn.pri{background:linear-gradient(160deg,#1f4fc8,var(--navy));color:#fff;box-shadow:0 10px 24px rgba(11,29,77,.25)}
+  #detail .btn.sec{background:rgba(255,255,255,.9);color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--line)}
+  #detail .btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+  /* 핵심 정보 */
+  #detail .facts{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-radius:22px;
+    box-shadow:0 16px 40px rgba(20,60,140,.12);overflow:hidden;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  #detail .fact{padding:18px 20px 16px;border-left:1px solid var(--line)}
+  #detail .fact:first-child{border-left:0}
+  #detail .fk{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--sub)}
+  #detail .fk svg,#detail .ico{width:20px;height:20px;stroke:var(--blue2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  #detail .fv{margin-top:6px;font-size:21px;font-weight:800;letter-spacing:-.03em}
+  #detail .fv a{color:var(--blue);text-decoration:none}
+  #detail .fv a:hover{text-decoration:underline}
+  #detail .fs{margin-top:2px;font-size:14px;font-weight:600;color:var(--mute)}
+
+  /* 섹션 공통 */
+  #detail section{padding:46px 0 0}
+  #detail .sec-h{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+  #detail .sec-h .no{font-size:15px;font-weight:800;color:var(--blue);letter-spacing:.06em}
+  #detail .sec-h h2{margin:0;font-size:28px;font-weight:900;letter-spacing:-.04em}
+  #detail .lead{margin:0 0 20px;font-size:17px;font-weight:500;color:var(--ink);max-width:760px}
+  #detail .lead b{font-weight:800;color:var(--navy)}
+  #detail .card{background:var(--card);border-radius:20px;box-shadow:0 6px 22px rgba(20,60,140,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+
+  /* 공모 주제 */
+  #detail .topics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  #detail .topic{padding:22px 20px}
+  #detail .topic .ic{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
+    background:radial-gradient(circle at 35% 30%,#2f63d8 0%,#0e2f86 70%,#0a2366 100%);box-shadow:0 8px 18px rgba(10,35,102,.22)}
+  #detail .topic .ic svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  #detail .topic h3{margin:14px 0 4px;font-size:20px;font-weight:800;letter-spacing:-.04em}
+  #detail .topic p{margin:0;font-size:15.5px;color:var(--sub);font-weight:500}
+  #detail .topic .ex{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:14.5px;color:var(--ink);font-weight:600}
+  #detail .topic .ex span{display:inline-block;font-size:12.5px;font-weight:800;color:var(--blue);background:var(--tint);padding:2px 8px;border-radius:6px}
+  #detail .topic .ex ul{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+  #detail .topic .ex li{position:relative;padding-left:14px;line-height:1.45}
+  #detail .topic .ex li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--blue)}
+  #detail .notice{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+  #detail .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(234,241,255,.95);color:#0e2f86;font-size:15px;font-weight:700}
+
+  /* 접수 안내 */
+  #detail .rows{padding:6px 28px}
+  #detail .rrow{display:grid;grid-template-columns:140px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--line);align-items:center}
+  #detail .rrow:last-child{border-bottom:0}
+  #detail .rk{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;color:var(--sub)}
+  #detail .rv{font-size:18px;font-weight:600;color:var(--ink)}
+  #detail .rv b{font-weight:800;color:var(--navy)}
+  #detail .chips{display:flex;flex-wrap:wrap;gap:8px}
+  #detail .chip{padding:7px 14px;border-radius:10px;background:#f3f7fe;box-shadow:inset 0 0 0 1px var(--line);font-size:15px;font-weight:700;color:var(--navy)}
+  #detail .formbtn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;background:var(--tint);color:var(--blue2);font-weight:800;text-decoration:none;font-size:17px}
+  #detail .formbtn:hover{background:#dce8ff}
+
+  /* 시상 */
+  #detail .prizes{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px}
+  #detail .prize{position:relative;padding:28px 26px 26px;overflow:hidden}
+  #detail .prize::before{content:"";position:absolute;left:0;top:0;right:0;height:6px;background:var(--c)}
+  #detail .prize .medal{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--c);box-shadow:0 6px 14px rgba(0,0,0,.12)}
+  #detail .prize .medal svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  #detail .prize .tier{margin-top:16px;font-size:22px;font-weight:900;letter-spacing:-.03em}
+  #detail .prize .cnt{font-size:15px;font-weight:700;color:var(--mute);margin-left:6px}
+  #detail .prize .amt{margin-top:6px;font-size:40px;font-weight:900;letter-spacing:-.04em;color:var(--navy)}
+  #detail .prize .amt small{font-size:18px;font-weight:700;color:var(--sub);margin-left:4px}
+  #detail .prize .d{margin-top:6px;font-size:15px;font-weight:600;color:var(--sub)}
+  #detail .p1{--c:linear-gradient(135deg,#f7cf5c,var(--gold))} #detail .p2{--c:linear-gradient(135deg,#b9c3d6,var(--silver))} #detail .p3{--c:linear-gradient(135deg,#e2a77d,var(--bronze))}
+  #detail .p1 .amt{font-size:48px}
+  #detail .pnote{margin-top:14px;font-size:15px;color:var(--sub);font-weight:600}
+
+  /* 심사 절차 */
+  #detail .sec-note{display:flex;gap:14px;align-items:flex-start;margin:-4px 0 22px;padding:18px 22px;border-radius:16px;background:rgba(255,248,232,.95);box-shadow:inset 0 0 0 1.5px #f3d58f}
+  #detail .sec-note svg{width:26px;height:26px;flex:none;margin-top:1px;stroke:#b7791f;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  #detail .sec-note p{margin:0;font-size:16px;font-weight:500;color:#5a4410;line-height:1.6}
+  #detail .sec-note b{font-weight:800;color:#3d2e06}
+  #detail .steps{display:grid;gap:18px}
+  #detail .step{display:grid;grid-template-columns:112px 1fr;gap:22px;padding:24px 26px}
+  #detail .step .tag{display:flex;flex-direction:column;align-items:flex-start}
+  #detail .step .n{font-size:15px;font-weight:800;color:var(--blue);letter-spacing:.04em}
+  #detail .step .t{font-size:27px;font-weight:900;letter-spacing:-.04em;line-height:1.15}
+  #detail .step .when{margin-top:8px;font-size:14px;font-weight:800;color:#0e2f86;background:var(--tint);padding:4px 10px;border-radius:8px}
+  #detail .step h3{margin:0;font-size:21px;font-weight:800;letter-spacing:-.03em;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  #detail .step h3 .out{font-size:14.5px;font-weight:800;color:#fff;background:var(--navy);padding:4px 11px;border-radius:999px}
+  #detail .step p{margin:8px 0 0;font-size:16.5px;font-weight:500;color:var(--ink)}
+  #detail .checks{margin:12px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}
+  #detail .checks li{position:relative;padding-left:26px;font-size:15.5px;font-weight:600;color:var(--ink)}
+  #detail .checks li::before{content:"";position:absolute;left:0;top:4px;width:16px;height:16px;border-radius:50%;background:var(--tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a3fd6' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/11px no-repeat}
+  #detail .who{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  #detail .step.final{background:linear-gradient(135deg,#0e2f86 0%,var(--navy) 100%);color:#fff}
+  #detail .step.final .n{color:#8fc0ff} #detail .step.final .when{background:rgba(255,255,255,.14);color:#fff}
+  #detail .step.final p,#detail .step.final .checks li{color:rgba(232,240,255,.9)}
+  #detail .step.final h3 .out{background:#fff;color:var(--navy)}
+  #detail .step.final .checks li::before{background-color:rgba(255,255,255,.16);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E")}
+  #detail .flow3{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+  #detail .flow3 span{padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.12);font-size:15px;font-weight:700}
+  #detail .flow3 i{font-style:normal;color:#8fc0ff;font-weight:800}
+
+  /* 하단 */
+  #detail .end{margin:52px 0 0;padding:32px 24px 4px;text-align:center}
+  #detail .end .brush{transform:none;display:inline-block}
+  #detail .end .cta{justify-content:center}
+  #detail .dfoot{margin-top:28px;font-size:15px;font-weight:700;color:var(--sub)}
+  #detail .dfoot i{display:inline-block;width:1px;height:13px;background:#9aa6c0;margin:0 12px;vertical-align:-1px}
+
+  #detail.phone #dwrap{padding:14px 14px 48px}
+  #detail.phone .facts{grid-template-columns:1fr 1fr}
+  #detail.phone .fact:nth-child(3){border-left:0}
+  #detail.phone .fact:nth-child(n+3){border-top:1px solid var(--line)}
+  #detail.phone .topics,#detail.phone .prizes{grid-template-columns:1fr}
+  #detail.phone .step{grid-template-columns:1fr;gap:14px}
+  #detail.phone .step .tag{flex-direction:row;align-items:center;gap:12px}
+  #detail.phone .step .when{margin-top:0}
+  #detail.phone .checks{grid-template-columns:1fr}
+  #detail.phone .hero{padding:26px 22px 30px;border-radius:24px}
+  #detail.phone .mbr{display:inline}
+  #detail.phone h1{font-size:50px}
+  #detail.phone .brush{font-size:34px}
+  #detail.phone .fact{padding:18px 16px}
+  #detail.phone .fv{font-size:20px}
+  #detail.phone .sec-h h2{font-size:27px}
+  #detail.phone .rows{padding-left:20px;padding-right:20px}
+  #detail.phone .rrow{grid-template-columns:1fr;gap:6px}
+  #detail.phone .step{padding:24px 22px}
 </style>
 </head>
 <body>
+<div id="vp">
 <div id="stage">
   <!-- 배경: 등장(6.25초)+루프(4.04초)를 한 파일로 구운 영상. 확대 효과도 영상에 포함. 끝나면 루프 시작(10.29초)으로 되돌아감 -->
   <video id="bg" src="bg_full.mp4" muted playsinline preload="auto"></video>
+  <!-- 패널 진입 영상(직접 제작, 5초)과 복귀용 역재생 클립. 첫 프레임이 포스터 장면, 끝 프레임이 패널 안 세계 -->
+  <video id="zin" src="panel_in.mp4" muted playsinline preload="auto"></video>
+  <video id="zout" src="panel_out.mp4" muted playsinline preload="auto"></video>
   <div id="haze" class="abs"></div>
 
 
@@ -113,10 +291,162 @@
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="v">총 <em>330만원</em></div></div>
       </div>
     </div>
-    <a id="more" href="detail.html"><span>자세하게<br>보기</span><i>›</i></a>
+    <a id="more" href="#detail"><span>자세하게<br>보기</span><i>›</i></a>
   </div>
 
   <div id="foot" class="abs">워크이노베이션센터<i></i>AI디자인랩</div>
+</div>
+</div>
+
+
+<!-- ===== 상세 안내: 문서·데이터 AI 패널 안으로 들어간 화면 ===== -->
+<div id="detail">
+  <div id="dbg">
+    <img src="panel_bg.jpg" alt="">
+    <div class="veil"></div>
+  </div>
+  <div id="dwrap">
+    <header class="hero rise">
+      <a class="back" id="back1">‹ 포스터로 돌아가기</a>
+      <div class="eyebrow">2026 AI WORKS</div>
+      <h1><span class="ai">AI</span> WORKS<small>전사 AI 우수사례 Awards</small></h1>
+      <div class="brush"><b>AI</b>로 바뀐 업무의 <br class="mbr">실제 사례를 공유해 주세요</div>
+      <div class="cta">
+        <a class="btn pri" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>MS Forms로 제출하기</a>
+        <a class="btn sec" data-go="process">심사 절차 보기</a>
+      </div>
+    </header>
+
+    <div class="facts rise" style="--d:.12s">
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="fv">11월 13일까지</div><div class="fs">기한 내 MS Forms 제출</div></div>
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="fv">전 직원</div><div class="fs">개인 · 팀 모두 가능</div></div>
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><div class="fv"><a href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms ›</a></div><div class="fs">온라인 양식 제출</div></div>
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="fv">총 330만원</div><div class="fs">최우수 · 우수 · 장려 6건</div></div>
+    </div>
+
+    <!-- 01 공모 주제 -->
+    <section id="topic" class="rise" style="--d:.24s">
+      <div class="sec-h"><span class="no">01</span><h2>공모 주제</h2></div>
+      <p class="lead"><b>AI를 활용해 실제로 업무를 바꾼 사례</b>를 찾습니다. 아이디어 제안이 아니라, <b>직접 시연할 수 있는 결과물</b>이어야 합니다. 아래 분야와 활용 방식을 참고해 주세요.</p>
+      <div class="sec-note"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><p><b>AI 도구는 자유롭게 활용할 수 있습니다.</b> 다만 사내 정보는 <b>Copilot</b>에서만 다루고, 그 밖의 외부 AI에는 올리지 마세요. 당사 보안 규정사항을 준수해주세요.</p></div>
+      <div class="topics">
+        <div class="card topic">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+          <h3>업무 자동화</h3>
+          <p>반복 업무를 AI·자동화 도구로 처리</p>
+          <div class="ex"><span>활용 방식</span><ul><li>Python·스크립트를 활용한 반복 업무 자동화</li><li>Power Automate·RPA로 만든 업무 흐름 자동화</li><li>Copilot 등 생성형 AI를 연계한 업무 자동화</li></ul></div>
+        </div>
+        <div class="card topic">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="m13.3 16.3 1.9 1.9"/></svg></div>
+          <h3>문서·데이터 AI</h3>
+          <p>문서와 데이터를 AI로 찾고 비교·분석</p>
+          <div class="ex"><span>활용 방식</span><ul><li>AI 에이전트 개발</li><li>사내 문서 기반 RAG 검색·챗봇 서비스</li><li>Python·대시보드를 활용한 데이터 분석·시각화</li></ul></div>
+        </div>
+        <div class="card topic">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+          <h3>현장 AI</h3>
+          <p>현장 업무 전반에 AI를 적용해 만든 변화</p>
+          <div class="ex"><span>활용 방식</span><ul><li>현장용 모바일 AI 앱·웹 서비스 개발</li><li>현장 특화 AI 에이전트 개발</li></ul></div>
+        </div>
+      </div>
+      <div class="notice">
+        <span class="pill">개인 또는 팀 단위 참여</span>
+        <span class="pill">실제 시연 가능한 결과물 기준</span>
+      </div>
+    </section>
+
+    <!-- 02 접수 안내 -->
+    <section id="apply" class="rise" style="--d:.34s">
+      <div class="sec-h"><span class="no">02</span><h2>접수 안내</h2></div>
+      <div class="card rows">
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="rv"><b>11월 13일까지</b> 제출</div></div>
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="rv"><b>전 직원</b> (개인 · 팀)</div></div>
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div>
+          <div class="rv"><a class="formbtn" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms 양식 열기 ›</a></div></div>
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>제출자료</div>
+          <div class="rv"><div class="chips"><span class="chip">시연 가능한 결과물</span><span class="chip">과제 요약서</span><span class="chip">정량효과 입력표</span></div></div></div>
+      </div>
+    </section>
+
+    <!-- 03 시상 -->
+    <section id="prize" class="rise" style="--d:.42s">
+      <div class="sec-h"><span class="no">03</span><h2>시상</h2></div>
+      <div class="prizes">
+        <div class="card prize p1">
+          <div class="medal"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+          <div class="tier">최우수<span class="cnt">1건</span></div>
+          <div class="amt">200<small>만원</small></div>
+          <div class="d">3차 최종 평가 1위</div>
+        </div>
+        <div class="card prize p2">
+          <div class="medal"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></svg></div>
+          <div class="tier">우수<span class="cnt">2건</span></div>
+          <div class="amt">50<small>만원 (각)</small></div>
+          <div class="d">3차 최종 평가 2~3위</div>
+        </div>
+        <div class="card prize p3">
+          <div class="medal"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></svg></div>
+          <div class="tier">장려<span class="cnt">3건</span></div>
+          <div class="amt">10<small>만원 (각)</small></div>
+          <div class="d">2차 평가 4~6위</div>
+        </div>
+      </div>
+      <p class="pnote">12월 시상 후 수상 결과를 전사에 게시합니다.</p>
+    </section>
+
+    <!-- 04 심사 절차 -->
+    <section id="process" class="rise" style="--d:.5s">
+      <div class="sec-h"><span class="no">04</span><h2>심사 절차</h2></div>
+      <p class="lead">제출된 과제는 <b>세 단계</b>에 걸쳐 심사합니다.</p>
+      <div class="steps">
+        <div class="card step">
+          <div class="tag"><span class="n">STEP 1</span><span class="t">1차 선별</span><span class="when">11월</span></div>
+          <div>
+            <h3>AI디자인랩 검토 <span class="out">16건 선발</span></h3>
+            <p>제출된 과제가 아래 기준을 모두 갖췄는지 확인해 2차 평가 대상을 고릅니다.</p>
+            <ul class="checks">
+              <li>실제로 작동하는 결과물로 시연할 수 있는가</li>
+              <li>대상 업무와 기존 문제, 개선 내용이 분명한가</li>
+              <li>AI가 핵심 처리 과정에 실제로 쓰였는가</li>
+              <li>현업에 적용 중이거나 바로 적용할 수 있는가</li>
+              <li>필수 제출자료를 빠짐없이 갖췄는가</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card step">
+          <div class="tag"><span class="n">STEP 2</span><span class="t">2차 평가</span><span class="when">11월</span></div>
+          <div>
+            <h3>사업본부 · AI디자인랩 · IT 공동 평가 <span class="out">6건 수상</span></h3>
+            <p>세 조직이 각자의 관점에서 과제를 평가합니다. 상위 3건은 3차 최종 평가에 진출하고, 4~6위는 장려상을 받습니다.</p>
+            <div class="who"><span class="chip">사업본부 · 문제 정의 · 업무 적용성 · 개선 효과</span><span class="chip">AI디자인랩 · AI 활용 · 확산성</span><span class="chip">IT · 운영 안정성</span></div>
+          </div>
+        </div>
+        <div class="card step final">
+          <div class="tag"><span class="n">STEP 3</span><span class="t">3차 최종</span><span class="when">12월</span></div>
+          <div>
+            <h3>경영층 평가 <span class="out">최우수 1 · 우수 2</span></h3>
+            <p>2차 평가 상위 3건을 경영층이 직접 평가합니다.</p>
+            <div class="flow3"><span>과제 발표</span><i>→</i><span>결과물 시연</span><i>→</i><span>질의응답</span><i>→</i><span>경영층 평가</span></div>
+            <ul class="checks">
+              <li>2차 평가 결과와 합산해 최종 순위를 정합니다</li>
+              <li>세부 진행 방식과 일정은 별도로 안내합니다</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="end rise" style="--d:.58s">
+      <div class="brush">당신의 AI 사례가 회사를 바꿉니다</div>
+      <div class="cta">
+        <a class="btn pri" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>MS Forms로 제출하기</a>
+        <a class="btn sec" id="back2">포스터로 돌아가기</a>
+      </div>
+      <div class="dfoot">워크이노베이션센터<i></i>AI디자인랩</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -129,7 +459,8 @@ const eOut = x => 1 - Math.pow(1 - x, 3);
 
 const stage = $('stage'), bg = $('bg');
 const CAP = new URLSearchParams(location.search).has('cap');
-function fit() { const s = Math.min(innerWidth / 1080, innerHeight / 1916); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+let fitS = 1, inDetail = false, busy = false;   // v3: 전환 상태
+function fit() { fitS = Math.min(innerWidth / 1080, innerHeight / 1916); stage.style.transform = `translate(-50%,-50%) scale(${fitS})`; }
 
 function fadeUp(el, k, dy = 40) { el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * dy}px)`; }
 const eQuint = x => 1 - Math.pow(1 - x, 5);
@@ -201,15 +532,102 @@ if (CAP) {
   else bg.addEventListener('timeupdate', () => { if (bg.currentTime >= LOOP_B - 0.08) { bg.currentTime = LOOP_A + 0.001; looped = true; } aMedia = bg.currentTime; aWall = performance.now(); });
   const start = () => { looped = false; aWall = null; bg.currentTime = 0; bg.play().catch(() => {}); };
   bg.addEventListener('canplaythrough', start, { once: true });
+  bg.addEventListener('ended', () => { bg.currentTime = LOOP_A + 0.001; looped = true; if (!paused) bg.play().catch(() => {}); });   // 상세 화면에서 돌아올 때 루프 끝에 걸려 멈추는 것 방지
   setTimeout(() => { if (bg.paused && !paused) start(); }, 2500);
   const now = () => looped ? DUR + 1 : aWall === null ? 0 : Math.min(aMedia + (paused ? 0 : (performance.now() - aWall) / 1000), LOOP_B);
-  (function loop() { render(now()); requestAnimationFrame(loop); })();
+  (function loop() { if (!busy && !inDetail) render(now()); requestAnimationFrame(loop); })();
   // Space 일시정지 · R 처음부터
   addEventListener('keydown', e => {
+    if (inDetail || busy) return;
     if (e.code === 'Space') { paused = !paused; if (paused) bg.pause(); else bg.play(); }
     if (e.key === 'r' || e.key === 'R') { paused = false; start(); }
   });
   render(0);
+
+  /* ===== v3: "자세하게 보기" → 패널 진입 영상 재생 → 배경 흐려지며 상세 화면 =====
+     진입: 포스터 글자 사라짐 + 루프 배경→진입 영상 크로스페이드 → 영상 끝에서 배경이 흐려지며 상세 화면 등장
+     복귀: 상세 화면 사라지며 배경 선명해짐 → 역재생 클립 → 루프 배경으로 크로스페이드 */
+  const detail = $('detail'), zin = $('zin'), zout = $('zout');
+  const uiEls = ['haze', 't0', 't1', 't2', 'rule', 'sub', 'f1', 'f2', 'f3', 'card', 'foot'].map($);
+  const uiAlpha = a => uiEls.forEach(el => el.style.opacity = a);
+  const SLOW = +(new URLSearchParams(location.search).get('slow') || 1);   // ?slow=3 : 전환을 느리게 (확인용)
+  const OUT_RATE = 1.8;  // 복귀 클립 재생 속도
+  const OUT_WAIT = 0.6;  // 복귀: 상세 화면이 걷히고 배경이 선명해지는 동안 기다리는 시간(초)
+
+  // 상세 내용은 포스터 틀(1080×fitS) 안에 들어감. 레이아웃 폭 1080/B 를 fitS×B 로 축소 → 틀 폭과 일치
+  function fitDbg() {
+    const B = innerWidth < 600 ? 2.6 : 1.25;         // 데스크톱: 864px 레이아웃을 틀에 맞춰 축소(포스터 글자 밀도) · 폰: 좁은 레이아웃
+    detail.style.setProperty('--col', 1080 * fitS + 'px');
+    detail.style.setProperty('--w', 1080 / B + 'px');
+    detail.style.setProperty('--z', fitS * B);
+    detail.classList.toggle('phone', B > 2);
+  }
+  addEventListener('resize', fitDbg);
+
+  function showDetail(instant) {
+    inDetail = true; busy = false;
+    detail.classList.add('on'); detail.scrollTop = 0; fitDbg();
+    requestAnimationFrame(() => requestAnimationFrame(() => { detail.classList.add('show'); stage.classList.add('blur'); }));
+    setTimeout(() => { stage.style.visibility = 'hidden'; bg.pause(); }, instant ? 0 : 750);   // 상세가 다 나타난 뒤 무대 숨김
+  }
+
+  function enter() {
+    if (busy || inDetail) return; busy = true;
+    const t0 = performance.now();
+    let done = false;
+    const finish = () => { if (done) return; done = true; zin.pause(); zin.style.opacity = 1; uiAlpha(0); zout.currentTime = 0; showDetail(false); };
+    zin.currentTime = 0; zin.playbackRate = 1 / SLOW; zin.style.opacity = 0;
+    zin.play().catch(() => {});
+    zin.addEventListener('ended', finish, { once: true });
+    (function step() {
+      if (done) return;
+      const t = (performance.now() - t0) / 1000 / SLOW;
+      uiAlpha(1 - seg(t, 0, 0.35));
+      zin.style.opacity = seg(t, 0.05, 0.4);                 // 루프 배경 → 진입 영상 (첫 장면이 같아 자연스럽게 이어짐)
+      const D = zin.duration || 5.04, v = zin.currentTime;
+      if (v >= D - 0.03) finish(); else requestAnimationFrame(step);
+    })();
+  }
+
+  function leave() {
+    if (busy || !inDetail) return; busy = true;
+    let done = false;
+    const finish = () => {
+      if (done) return; done = true;
+      zout.pause(); zout.style.opacity = 0; zin.style.opacity = 0; zin.currentTime = 0;
+      uiAlpha(1); inDetail = false; busy = false;
+      if (location.hash === '#detail') history.replaceState(null, '', location.pathname + location.search);
+    };
+    // 무대(흐린 상태)를 상세 배경과 같은 장면(복귀 클립 첫 프레임)으로 맞춰 두고, 상세 화면을 걷으며 배경을 선명하게
+    stage.style.visibility = ''; uiAlpha(0);
+    zout.playbackRate = OUT_RATE / SLOW; zout.style.opacity = 1;
+    if (zout.currentTime > 0.01) zout.currentTime = 0;
+    zout.addEventListener('ended', finish, { once: true });
+    zin.style.opacity = 0;   // 복귀 클립 첫 프레임 = 진입 클립 끝 프레임이므로 겹칠 필요 없음
+    detail.classList.remove('show'); stage.classList.remove('blur');
+    setTimeout(() => { detail.classList.remove('on'); zout.play().catch(() => {}); }, OUT_WAIT * 1000 * SLOW);   // 그 다음 복귀 클립 재생
+    if (bg.ended || bg.currentTime >= LOOP_B - 0.1) { bg.currentTime = LOOP_A + 0.001; looped = true; }
+    if (!paused) bg.play().catch(() => {});
+    (function step() {
+      if (done) return;
+      const D = zout.duration || 5.04, v = zout.currentTime;
+      zout.style.opacity = 1 - seg(v, D - 0.5, D - 0.08);                       // 복귀 클립 → 루프 배경
+      uiAlpha(seg(v, D - 0.55, D - 0.1));
+      if (v >= D - 0.03) finish(); else requestAnimationFrame(step);
+    })();
+  }
+
+  // 버튼·뒤로가기 연결
+  $('more').addEventListener('click', e => { e.preventDefault(); if (!busy && !inDetail) { history.pushState({ d: 1 }, '', '#detail'); enter(); } });
+  const goBack = () => { if (history.state && history.state.d) history.back(); else leave(); };
+  $('back1').addEventListener('click', goBack);
+  $('back2').addEventListener('click', goBack);
+  addEventListener('popstate', () => { if (inDetail) leave(); });
+  document.querySelectorAll('#detail [data-go]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); $(a.dataset.go).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+  // #detail 로 바로 열면 전환 없이 상세 화면부터
+  if (location.hash === '#detail') { history.replaceState({ d: 0 }, '', '#detail'); uiAlpha(0); showDetail(true); }
 }
 </script>
 </body>
