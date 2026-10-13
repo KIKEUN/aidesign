@@ -182,6 +182,11 @@
   #detail .chip{padding:7px 14px;border-radius:10px;background:#f3f7fe;box-shadow:inset 0 0 0 1px var(--line);font-size:15px;font-weight:700;color:var(--navy)}
   #detail .formbtn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;background:var(--tint);color:var(--blue2);font-weight:800;text-decoration:none;font-size:17px}
   #detail .formbtn:hover{background:#dce8ff}
+  #detail .dls{display:flex;flex-wrap:wrap;gap:10px}
+  #detail .dlbtn{display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--navy);font-weight:800;text-decoration:none;font-size:16px}
+  #detail .dlbtn svg{width:19px;height:19px;stroke:var(--blue2);fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+  #detail .dlbtn:hover{background:var(--tint);box-shadow:inset 0 0 0 1.5px #bcd0f7}
+  #detail .dlnote{margin-top:8px;font-size:14px;font-weight:600;color:var(--mute)}
 
   /* 시상 */
   #detail .prizes{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px}
@@ -299,7 +304,7 @@
       <div id="cols">
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="v">11월 13일까지</div></div>
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="v">전 직원</div></div>
-        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><a class="v lnk" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms</a></div>
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><a class="v lnk" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms</a></div>
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="v">총 <em>530만원</em></div></div>
       </div>
     </div>
@@ -324,7 +329,7 @@
       <h1><span class="ai">AI</span> WORKS<small>전사 AI 우수사례 Awards</small></h1>
       <div class="brush"><b>AI</b>를 활용한 <br class="mbr">업무 혁신 사례를 공유해 주세요</div>
       <div class="cta">
-        <a class="btn pri" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">
+        <a class="btn pri" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>MS Forms로 제출하기</a>
         <a class="btn sec" data-go="process">심사 절차 보기</a>
       </div>
@@ -333,7 +338,7 @@
     <div class="facts rise" style="--d:.12s">
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="fv">11월 13일까지</div><div class="fs">기한 내 MS Forms 제출</div></div>
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="fv">전 직원</div><div class="fs">개인 · 팀 모두 가능</div></div>
-      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><div class="fv"><a href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms ›</a></div><div class="fs">온라인 양식 제출</div></div>
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><div class="fv"><a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms ›</a></div><div class="fs">온라인 양식 제출</div></div>
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="fv">총 530만원</div><div class="fs">최우수 · 우수 · 장려 6건</div></div>
     </div>
 
@@ -375,9 +380,14 @@
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>접수기간</div><div class="rv"><b>11월 13일까지</b> 제출</div></div>
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>접수대상</div><div class="rv"><b>전 직원</b> (개인 · 팀)</div></div>
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div>
-          <div class="rv"><a class="formbtn" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">MS Forms 양식 열기 ›</a></div></div>
+          <div class="rv"><a class="formbtn" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms 양식 열기 ›</a></div></div>
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>제출자료</div>
           <div class="rv"><div class="chips"><span class="chip">시연 가능한 결과물</span><span class="chip">과제 요약서</span><span class="chip">정량효과 입력표</span></div></div></div>
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>양식 다운로드</div>
+          <div class="rv"><div class="dls">
+            <a class="dlbtn" href="261013_AI_WORKS_과제요약서.html" download="AI_WORKS_과제요약서.html"><svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>과제 요약서</a>
+            <a class="dlbtn" href="261013_AI_WORKS_정량효과입력표.html" download="AI_WORKS_정량효과입력표.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>정량효과 입력표</a>
+          </div><div class="dlnote">HTML 파일을 내려받아 브라우저에서 작성한 뒤 각각 PDF로 저장해 MS Forms에 첨부</div></div></div>
       </div>
     </section>
 
@@ -452,7 +462,7 @@
     <div class="end rise" style="--d:.58s">
       <div class="brush">당신의 AI 사례가 회사를 바꿉니다</div>
       <div class="cta">
-        <a class="btn pri" href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=7w3LX5imzkCnOuphEwwTxrwPVgY5oXpMvc_j0K_9FbxUQjJET1BDVVJLQkxHR1IwNkNVVzZMSk5TUC4u&amp;route=shorturl" target="_blank" rel="noopener">
+        <a class="btn pri" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>MS Forms로 제출하기</a>
         <a class="btn sec" id="back2">포스터로 돌아가기</a>
       </div>
