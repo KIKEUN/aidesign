@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI WORKS 정량효과 입력표</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --FF:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --navy:#0b1d4d; --ink:#16264f; --sub:#4a5878; --mute:#7c88a3; --blue:#1a56e8;
+  --line:#dfe7f5; --tint:#eaf1ff; --bg:#f3f7fe; --paper:#fff; --warn:#c8333a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{font-family:var(--FF);color:var(--ink);font-size:14px;line-height:1.55;letter-spacing:-.02em;word-break:keep-all}
+
+#tools{position:sticky;top:0;z-index:10;background:rgba(243,247,254,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#tools .in{max-width:820px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#tools .t{font-weight:800;color:var(--navy);margin-right:auto;font-size:18px}
+#tools .t small{display:block;font-weight:700;color:var(--warn);font-size:14px;margin-top:2px}
+.btn{border:0;border-radius:10px;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer;background:#fff;color:var(--navy);box-shadow:inset 0 0 0 1px var(--line)}
+.btn.primary{background:var(--blue);color:#fff;box-shadow:none}
+.btn:active{transform:translateY(1px)}
+#saved{font-size:12px;color:var(--mute)}
+
+.page{max-width:820px;margin:18px auto;background:var(--paper);border-radius:14px;box-shadow:0 8px 28px rgba(20,60,140,.08);padding:34px 38px 38px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:16px}
+.head .eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--blue)}
+.head h1{margin:4px 0 0;font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--navy)}
+.head h1 small{display:block;font-size:13px;font-weight:600;color:var(--sub);margin-top:4px;letter-spacing:-.01em}
+.head .no{text-align:right;font-size:12px;color:var(--mute);line-height:1.6}
+.head .no b{display:block;color:var(--ink);font-size:13px}
+.head .no input.tin{width:260px;height:32px;padding:4px 8px;border:0;border-bottom:1.5px solid #c9d6ee;background:transparent;font:inherit;font-size:13px;font-weight:700;color:var(--navy);text-align:right;outline:none}
+.head .no input.tin:focus{background:#fffdf2}
+
+.guide{font-size:12.5px;color:var(--sub);margin-bottom:6px}
+.guide b{color:var(--navy)}
+
+section{margin-top:20px}
+.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.sh .n{font-size:13px;font-weight:900;color:var(--blue);letter-spacing:.04em}
+.sh h2{margin:0;font-size:17px;font-weight:900;letter-spacing:-.02em;color:var(--navy)}
+.sh .crit{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--mute);background:var(--bg);padding:2px 9px;border-radius:999px}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{border:1px solid var(--line);padding:0;vertical-align:top;font-size:13px}
+th{background:var(--bg);color:var(--sub);font-weight:700;text-align:left;padding:8px 10px;font-size:12.5px}
+td.k{background:var(--bg);color:var(--sub);font-weight:700;padding:9px 10px;width:118px;font-size:12.5px}
+.req::after{content:" *";color:var(--warn)}
+td.v{padding:0}
+input[type=text],input[type=number],select,textarea{
+  width:100%;border:0;background:transparent;font:inherit;color:var(--ink);padding:9px 10px;outline:none;resize:vertical;letter-spacing:-.01em}
+input[type=text],input[type=number],select{height:38px}
+select{appearance:auto;cursor:pointer;padding-right:6px}
+select option[value=""]{color:#b3bccf}
+textarea{min-height:72px;display:block;line-height:1.5}
+textarea.tall{min-height:100px}
+input:focus,select:focus,textarea:focus{background:#fffdf2;box-shadow:inset 0 0 0 2px #ffd966}
+input::placeholder,textarea::placeholder{color:#b3bccf;font-weight:400}
+input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+.inline{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 10px}
+.inline label{display:inline-flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;white-space:nowrap}
+.inline.nowrap{flex-wrap:nowrap}
+.inline input[type=checkbox],.inline input[type=radio]{width:16px;height:16px;accent-color:var(--blue);margin:0}
+.inline input.etc{width:220px;height:28px;padding:2px 6px;border-bottom:1px solid #c9d6ee;border-radius:0;font-size:13px}
+.calc{background:#f7faff;color:var(--blue);font-weight:800;text-align:right;padding:9px 10px;font-variant-numeric:tabular-nums}
+.sum td{background:var(--tint);font-weight:800;color:var(--navy)}
+.sum td.calc{background:#dfe9ff}
+.unit{font-size:11px;color:var(--mute);font-weight:500}
+.addrow{margin-top:6px;border:1px dashed #c9d6ee;background:#fff;color:var(--blue);border-radius:8px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.addrow:hover{background:var(--tint)}
+td.v.first{position:relative}
+.rm{position:absolute;left:-26px;top:50%;transform:translateY(-50%);width:20px;height:20px;border:0;border-radius:50%;background:#eef2fa;color:var(--mute);font:inherit;font-size:14px;line-height:1;cursor:pointer}
+.rm:hover{background:#fde3e3;color:var(--warn)}
+
+.foot{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute)}
+
+@page{size:A4;margin:11mm 11mm 13mm}
+@media print{
+  html,body{background:#fff}
+  #tools{display:none}
+  .page{max-width:none;margin:0;box-shadow:none;border-radius:0;padding:0;break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  input,select,textarea{background:transparent!important;box-shadow:none!important}
+  select{appearance:none;-webkit-appearance:none}
+  input::placeholder,textarea::placeholder{color:transparent}
+  textarea{resize:none;overflow:hidden}
+  section,table{break-inside:avoid;page-break-inside:avoid}
+  .addrow,.rm{display:none!important}
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+@media (max-width:640px){
+  .page{padding:22px 16px;margin:12px;border-radius:12px}
+  td.k{width:92px}
+  .head{flex-direction:column;align-items:flex-start}
+  .head .no{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<div id="tools"><div class="in">
+  <div class="t">AI WORKS 정량효과 입력표<small>입력 내용은 이 브라우저에 자동 저장됩니다. 완성 후 PDF로 저장해 MS Forms에 첨부하세요.</small></div>
+  <span id="saved"></span>
+  <button class="btn" id="btnClear" type="button">초기화</button>
+  <button class="btn primary" id="btnPrint" type="button">인쇄 · PDF 저장</button>
+</div></div>
+
+<form id="f" autocomplete="off"><!-- ───────── 2쪽 · 정량효과 입력표 ───────── -->
+<div class="page">
+  <div class="head">
+    <div>
+      <div class="eyebrow">2026 AI WORKS · 전사 AI 우수사례 Awards</div>
+      <h1>정량효과 입력표<small>개선 효과의 근거 자료</small></h1>
+    </div>
+    <div class="no"><b>과제명</b><input type="text" name="title" class="tin" placeholder="과제 요약서와 동일하게 기재"></div>
+  </div>
+  <p class="guide">측정하거나 추정한 값만 적으세요. 절감시간과 개선율은 자동 계산됩니다. <b>수치로 산출하기 어려운 항목은 빈칸으로 두어도 됩니다.</b> 그 경우 <b>산정 근거</b>에 이유와 눈에 보이는 효과를 적어 주세요.</p>
+
+  <section>
+    <div class="sh"><span class="n">A</span><h2>시간 절감</h2><span class="crit">월 절감 = (전 − 후) × 월 건수 ÷ 60</span></div>
+    <table id="tTime">
+      <colgroup><col><col style="width:92px"><col style="width:92px"><col style="width:84px"><col style="width:96px"><col style="width:96px"></colgroup>
+      <thead><tr>
+        <th>업무 항목</th><th>적용 전<br><span class="unit">건당 · 분</span></th><th>적용 후<br><span class="unit">건당 · 분</span></th><th>월 건수<br><span class="unit">건</span></th><th>월 절감<br><span class="unit">시간 · 자동</span></th><th>연 절감<br><span class="unit">시간 · 자동</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="v first"><input type="text" name="t1n" placeholder="예) 점검 보고서 작성"></td><td class="v"><input type="number" name="t1a" min="0" step="any"></td><td class="v"><input type="number" name="t1b" min="0" step="any"></td><td class="v"><input type="number" name="t1c" min="0" step="any"></td><td class="calc" data-m>—</td><td class="calc" data-y>—</td></tr>
+        <tr><td class="v first"><input type="text" name="t2n"><button type="button" class="rm" title="이 행 삭제">×</button></td><td class="v"><input type="number" name="t2a" min="0" step="any"></td><td class="v"><input type="number" name="t2b" min="0" step="any"></td><td class="v"><input type="number" name="t2c" min="0" step="any"></td><td class="calc" data-m>—</td><td class="calc" data-y>—</td></tr>
+      </tbody>
+      <tfoot><tr class="sum"><td colspan="4" style="padding:9px 10px">합계</td><td class="calc" id="tmSum">—</td><td class="calc" id="tySum">—</td></tr></tfoot>
+    </table>
+    <button type="button" class="addrow" data-table="tTime">+ 행 추가</button>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">B</span><h2>비용 절감</h2><span class="crit">연 절감 = 월 절감 × 12</span></div>
+    <table id="tCost">
+      <colgroup><col><col style="width:110px"><col style="width:110px"><col style="width:110px"><col style="width:110px"></colgroup>
+      <thead><tr><th>비용 항목</th><th>적용 전<br><span class="unit">월 · 만원</span></th><th>적용 후<br><span class="unit">월 · 만원</span></th><th>월 절감<br><span class="unit">만원 · 자동</span></th><th>연 절감<br><span class="unit">만원 · 자동</span></th></tr></thead>
+      <tbody>
+        <tr><td class="v first"><input type="text" name="c1n" placeholder="예) 외주 · 라이선스 · 출력"></td><td class="v"><input type="number" name="c1a" min="0" step="any"></td><td class="v"><input type="number" name="c1b" min="0" step="any"></td><td class="calc" data-m>—</td><td class="calc" data-y>—</td></tr>
+      </tbody>
+      <tfoot><tr class="sum"><td colspan="3" style="padding:9px 10px">합계</td><td class="calc" id="cmSum">—</td><td class="calc" id="cySum">—</td></tr></tfoot>
+    </table>
+    <button type="button" class="addrow" data-table="tCost">+ 행 추가</button>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">C</span><h2>오류 · 품질 개선</h2><span class="crit">개선율 = (전 − 후) ÷ 전</span></div>
+    <table id="tErr">
+      <colgroup><col><col style="width:84px"><col style="width:110px"><col style="width:110px"><col style="width:100px"></colgroup>
+      <thead><tr><th>지표</th><th>단위</th><th>적용 전<br><span class="unit">월 기준</span></th><th>적용 후<br><span class="unit">월 기준</span></th><th>개선율<br><span class="unit">% · 자동</span></th></tr></thead>
+      <tbody>
+        <tr><td class="v first"><input type="text" name="e1n" placeholder="예) 재작업 건수 · 누락 건수 · 반려율"></td><td class="v"><input type="text" name="e1u" placeholder="건 · %"></td><td class="v"><input type="number" name="e1a" min="0" step="any"></td><td class="v"><input type="number" name="e1b" min="0" step="any"></td><td class="calc" data-r>—</td></tr>
+      </tbody>
+    </table>
+    <button type="button" class="addrow" data-table="tErr">+ 행 추가</button>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">D</span><h2>산정 근거</h2><span class="crit">필수</span></div>
+    <table>
+      <colgroup><col style="width:118px"><col></colgroup>
+      <tr><td class="k req">측정 방법 · 출처</td><td class="v"><textarea name="method" placeholder="어떻게 쟀는가. 예) 9월 2주간 실제 처리 10건의 소요시간 기록 · 적용 전은 담당자 3명 평균 · 출처는 업무일지"></textarea></td></tr>
+      <tr><td class="k">그 밖의 효과</td><td class="v"><input type="text" name="qual" placeholder="표에 담기지 않는 효과 (예) 보고 리드타임 3일 → 당일"></td></tr>
+    </table>
+  </section>
+
+  <div class="foot"><span>2026 AI WORKS · 정량효과 입력표</span><span>1 / 1</span></div>
+</div>
+</form>
+
+<script>
+(function(){
+  const f = document.getElementById('f');
+  const KEY = 'aiworks-quant-v1';
+  const num = v => { const n = parseFloat(v); return isFinite(n) ? n : null; };
+  const fmt = (n, d=1) => n === null ? '—' : n.toLocaleString('ko-KR', {maximumFractionDigits:d});
+
+  function calc(){
+    let tm = 0, ty = 0, any = false;
+    document.querySelectorAll('#tTime tbody tr').forEach(tr => {
+      const [a,b,c] = [...tr.querySelectorAll('input[type=number]')].map(i => num(i.value));
+      let m = null;
+      if (a !== null && b !== null && c !== null) { m = Math.max(0, a - b) * c / 60; tm += m; ty += m*12; any = true; }
+      tr.querySelector('[data-m]').textContent = fmt(m);
+      tr.querySelector('[data-y]').textContent = m === null ? '—' : fmt(m*12, 0);
+    });
+    document.getElementById('tmSum').textContent = any ? fmt(tm) : '—';
+    document.getElementById('tySum').textContent = any ? fmt(ty, 0) : '—';
+
+    let cm = 0, cy = 0; any = false;
+    document.querySelectorAll('#tCost tbody tr').forEach(tr => {
+      const [a,b] = [...tr.querySelectorAll('input[type=number]')].map(i => num(i.value));
+      let m = null;
+      if (a !== null && b !== null) { m = a - b; cm += m; cy += m*12; any = true; }
+      tr.querySelector('[data-m]').textContent = fmt(m);
+      tr.querySelector('[data-y]').textContent = m === null ? '—' : fmt(m*12, 0);
+    });
+    document.getElementById('cmSum').textContent = any ? fmt(cm) : '—';
+    document.getElementById('cySum').textContent = any ? fmt(cy, 0) : '—';
+
+    document.querySelectorAll('#tErr tbody tr').forEach(tr => {
+      const [a,b] = [...tr.querySelectorAll('input[type=number]')].map(i => num(i.value));
+      let r = null;
+      if (a !== null && b !== null && a > 0) r = (a - b) / a * 100;
+      tr.querySelector('[data-r]').textContent = r === null ? '—' : fmt(r, 1) + '%';
+    });
+  }
+
+  const PREFIX = {tTime:'t', tCost:'c', tErr:'e'};
+  function addRow(tableId, silent){
+    const tb = document.querySelector('#' + tableId + ' tbody');
+    const rows = tb.querySelectorAll('tr');
+    const src = rows[rows.length - 1];
+    const tr = src.cloneNode(true);
+    const idx = rows.length + 1, pre = PREFIX[tableId];
+    tr.querySelectorAll('input').forEach(i => { i.value = ''; i.placeholder = ''; i.name = i.name.replace(/^[tce]\d+/, pre + idx); });
+    tr.querySelectorAll('.calc').forEach(c => c.textContent = '—');
+    let rm = tr.querySelector('.rm');
+    if (!rm) { rm = document.createElement('button'); rm.type = 'button'; rm.className = 'rm'; rm.textContent = '×'; rm.title = '이 행 삭제'; tr.querySelector('td.first').appendChild(rm); }
+    tb.appendChild(tr);
+    if (!silent) { tr.querySelector('input').focus(); calc(); save(); }
+    return tr;
+  }
+  function renumber(tableId){
+    const pre = PREFIX[tableId];
+    document.querySelectorAll('#' + tableId + ' tbody tr').forEach((tr, i) => {
+      tr.querySelectorAll('input').forEach(inp => { inp.name = inp.name.replace(/^[tce]\d+/, pre + (i + 1)); });
+    });
+  }
+  document.querySelectorAll('.addrow').forEach(b => b.addEventListener('click', () => addRow(b.dataset.table)));
+  f.addEventListener('click', e => {
+    const rm = e.target.closest('.rm'); if (!rm) return;
+    const tr = rm.closest('tr'), tb = tr.parentElement, tableId = tb.closest('table').id;
+    if (tb.querySelectorAll('tr').length <= 1) return;
+    tr.remove(); renumber(tableId); calc(); save();
+  });
+
+  function serialize(){
+    const o = {};
+    o.__rows = {}; Object.keys(PREFIX).forEach(id => { o.__rows[id] = document.querySelectorAll('#' + id + ' tbody tr').length; });
+    [...f.elements].forEach(el => {
+      if (!el.name) return;
+      if (el.type === 'checkbox') { (o[el.name] = o[el.name] || []); if (el.checked) o[el.name].push(el.value); }
+      else if (el.type === 'radio') { if (el.checked) o[el.name] = el.value; }
+      else o[el.name] = el.value;
+    });
+    return o;
+  }
+  function restore(o){
+    if (o.__rows) Object.keys(PREFIX).forEach(id => {
+      const have = document.querySelectorAll('#' + id + ' tbody tr').length;
+      for (let i = have; i < (o.__rows[id] || 0); i++) addRow(id, true);
+    });
+    [...f.elements].forEach(el => {
+      if (!el.name || !(el.name in o)) return;
+      if (el.type === 'checkbox') el.checked = (o[el.name] || []).includes(el.value);
+      else if (el.type === 'radio') el.checked = o[el.name] === el.value;
+      else el.value = o[el.name];
+    });
+  }
+  let timer;
+  function save(){
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      try { localStorage.setItem(KEY, JSON.stringify(serialize()));
+        const d = new Date(); document.getElementById('saved').textContent = '자동 저장 ' + d.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+      } catch (e) {}
+    }, 400);
+  }
+  try { const raw = localStorage.getItem(KEY); if (raw) restore(JSON.parse(raw)); } catch (e) {}
+  calc();
+  f.addEventListener('input', () => { calc(); save(); });
+  f.addEventListener('change', () => { calc(); save(); });
+  f.addEventListener('submit', e => e.preventDefault());
+
+  document.getElementById('btnPrint').addEventListener('click', () => window.print());
+  document.getElementById('btnClear').addEventListener('click', () => {
+    if (!confirm('입력한 내용을 모두 지울까요?')) return;
+    f.reset(); try { localStorage.removeItem(KEY); } catch (e) {}
+    Object.keys(PREFIX).forEach(id => { const rows = document.querySelectorAll('#' + id + ' tbody tr'); rows.forEach((tr, i) => { if (i >= (id === 'tTime' ? 2 : 1)) tr.remove(); }); });
+    calc(); document.getElementById('saved').textContent = '';
+  });
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('textarea').forEach(t => { t.style.height = 'auto'; t.style.height = Math.max(t.scrollHeight, 56) + 'px'; });
+  });
+})();
+</script>
+</body>
+</html>
