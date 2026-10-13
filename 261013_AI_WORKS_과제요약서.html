@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI WORKS 과제 요약서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --FF:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --navy:#0b1d4d; --ink:#16264f; --sub:#4a5878; --mute:#7c88a3; --blue:#1a56e8;
+  --line:#dfe7f5; --tint:#eaf1ff; --bg:#f3f7fe; --paper:#fff; --warn:#c8333a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{font-family:var(--FF);color:var(--ink);font-size:14px;line-height:1.55;letter-spacing:-.02em;word-break:keep-all}
+
+#tools{position:sticky;top:0;z-index:10;background:rgba(243,247,254,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#tools .in{max-width:820px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#tools .t{font-weight:800;color:var(--navy);margin-right:auto;font-size:18px}
+#tools .t small{display:block;font-weight:700;color:var(--warn);font-size:14px;margin-top:2px}
+.btn{border:0;border-radius:10px;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer;background:#fff;color:var(--navy);box-shadow:inset 0 0 0 1px var(--line)}
+.btn.primary{background:var(--blue);color:#fff;box-shadow:none}
+.btn:active{transform:translateY(1px)}
+#saved{font-size:12px;color:var(--mute)}
+
+.page{max-width:820px;margin:18px auto;background:var(--paper);border-radius:14px;box-shadow:0 8px 28px rgba(20,60,140,.08);padding:34px 38px 38px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:16px}
+.head .eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--blue)}
+.head h1{margin:4px 0 0;font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--navy)}
+.head h1 small{display:block;font-size:13px;font-weight:600;color:var(--sub);margin-top:4px;letter-spacing:-.01em}
+.head .no{text-align:right;font-size:12px;color:var(--mute);line-height:1.6}
+.head .no b{display:block;color:var(--ink);font-size:13px}
+
+.guide{font-size:12.5px;color:var(--sub);margin-bottom:6px}
+.guide b{color:var(--navy)}
+
+section{margin-top:20px}
+.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.sh .n{font-size:13px;font-weight:900;color:var(--blue);letter-spacing:.04em}
+.sh h2{margin:0;font-size:17px;font-weight:900;letter-spacing:-.02em;color:var(--navy)}
+.sh .crit{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--mute);background:var(--bg);padding:2px 9px;border-radius:999px}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{border:1px solid var(--line);padding:0;vertical-align:top;font-size:13px}
+th{background:var(--bg);color:var(--sub);font-weight:700;text-align:left;padding:8px 10px;font-size:12.5px}
+td.k{background:var(--bg);color:var(--sub);font-weight:700;padding:9px 10px;width:118px;font-size:12.5px}
+.req::after{content:" *";color:var(--warn)}
+td.v{padding:0}
+input[type=text],input[type=number],select,textarea{
+  width:100%;border:0;background:transparent;font:inherit;color:var(--ink);padding:9px 10px;outline:none;resize:vertical;letter-spacing:-.01em}
+input[type=text],input[type=number],select{height:38px}
+select{appearance:auto;cursor:pointer;padding-right:6px}
+select option[value=""]{color:#b3bccf}
+textarea{min-height:72px;display:block;line-height:1.5}
+textarea.tall{min-height:100px}
+input:focus,select:focus,textarea:focus{background:#fffdf2;box-shadow:inset 0 0 0 2px #ffd966}
+input::placeholder,textarea::placeholder{color:#b3bccf;font-weight:400}
+input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+.inline{display:flex;flex-wrap:wrap;gap:6px 14px;padding:8px 10px}
+.inline label{display:inline-flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;white-space:nowrap}
+.inline.nowrap{flex-wrap:nowrap}
+.inline input[type=checkbox],.inline input[type=radio]{width:16px;height:16px;accent-color:var(--blue);margin:0}
+.inline input.etc{width:220px;height:28px;padding:2px 6px;border-bottom:1px solid #c9d6ee;border-radius:0;font-size:13px}
+.calc{background:#f7faff;color:var(--blue);font-weight:800;text-align:right;padding:9px 10px;font-variant-numeric:tabular-nums}
+.sum td{background:var(--tint);font-weight:800;color:var(--navy)}
+.sum td.calc{background:#dfe9ff}
+.unit{font-size:11px;color:var(--mute);font-weight:500}
+.addrow{margin-top:6px;border:1px dashed #c9d6ee;background:#fff;color:var(--blue);border-radius:8px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.addrow:hover{background:var(--tint)}
+td.v.first{position:relative}
+.rm{position:absolute;left:-26px;top:50%;transform:translateY(-50%);width:20px;height:20px;border:0;border-radius:50%;background:#eef2fa;color:var(--mute);font:inherit;font-size:14px;line-height:1;cursor:pointer}
+.rm:hover{background:#fde3e3;color:var(--warn)}
+
+.foot{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute)}
+
+@page{size:A4;margin:11mm 11mm 13mm}
+@media print{
+  html,body{background:#fff}
+  #tools{display:none}
+  .page{max-width:none;margin:0;box-shadow:none;border-radius:0;padding:0;break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  input,select,textarea{background:transparent!important;box-shadow:none!important}
+  select{appearance:none;-webkit-appearance:none}
+  input::placeholder,textarea::placeholder{color:transparent}
+  textarea{resize:none;overflow:hidden}
+  section,table{break-inside:avoid;page-break-inside:avoid}
+  .addrow,.rm{display:none!important}
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+@media (max-width:640px){
+  .page{padding:22px 16px;margin:12px;border-radius:12px}
+  td.k{width:92px}
+  .head{flex-direction:column;align-items:flex-start}
+  .head .no{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<div id="tools"><div class="in">
+  <div class="t">AI WORKS 과제 요약서<small>입력 내용은 이 브라우저에 자동 저장됩니다. 완성 후 PDF로 저장해 MS Forms에 첨부하세요.</small></div>
+  <span id="saved"></span>
+  <button class="btn" id="btnClear" type="button">초기화</button>
+  <button class="btn primary" id="btnPrint" type="button">인쇄 · PDF 저장</button>
+</div></div>
+
+<form id="f" autocomplete="off">
+
+<!-- ───────── 1쪽 · 과제 요약서 ───────── -->
+<div class="page">
+  <div class="head">
+    <div>
+      <div class="eyebrow">2026 AI WORKS · 전사 AI 우수사례 Awards</div>
+      <h1>과제 요약서<small>AI를 활용한 업무 혁신 과제</small></h1>
+    </div>
+    <div class="no">접수 마감 2026. 11. 13.(금)</div>
+  </div>
+
+  <section>
+    <div class="sh"><span class="n">01</span><h2>기본 정보</h2></div>
+    <table>
+      <colgroup><col style="width:118px"><col><col style="width:118px"><col></colgroup>
+      <tr><td class="k req">과제명</td><td class="v" colspan="3"><input type="text" name="title" placeholder="예) 현장 안전점검 보고서 AI 자동 작성"></td></tr>
+      <tr><td class="k req">분야</td><td class="v" colspan="3"><div class="inline nowrap">
+        <label><input type="radio" name="field" value="auto">업무 자동화</label>
+        <label><input type="radio" name="field" value="doc">문서·데이터 AI</label>
+        <label><input type="radio" name="field" value="site">현장 AI</label></div></td></tr>
+      <tr><td class="k req">과제 유형</td><td class="v" colspan="3"><div class="inline nowrap">
+        <label><input type="radio" name="ptype" value="ace">ACE 중점과제</label>
+        <label><input type="radio" name="ptype" value="free">자율과제</label></div></td></tr>
+      <tr><td class="k req">사업본부</td><td class="v"><select name="division"><option value="">선택</option><option>토목사업본부</option><option>건축주택사업본부</option><option>플랜트사업본부</option><option>NewEnergy사업부</option><option>안전품질본부</option><option>개발사업부</option><option>글로벌사업부</option><option>HMG건설기술연구원</option><option>PI본부</option><option>재경본부</option><option>경영지원본부</option><option>전략기획사업부</option><option>감사실</option><option>GBC개발사업단</option></select></td>
+        <td class="k req">단위조직</td><td class="v"><input type="text" name="unit" placeholder="현장명 또는 본사 팀명 (예) ○○현장 / 안전품질팀"></td></tr>
+      <tr><td class="k req">이름</td><td class="v"><input type="text" name="owner" placeholder="홍길동"></td>
+        <td class="k req">사번</td><td class="v"><input type="text" name="empno" placeholder="2618134" inputmode="numeric"></td></tr>
+      <tr><td class="k">팀원</td><td class="v" colspan="3"><input type="text" name="members" placeholder="팀 참여 시 · 이름 / 사번 / 단위조직(현장명 또는 팀명) (예) 홍길동 / 2618134 / ○○현장, 김현대 / 2201234 / 토목설계팀"></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">02</span><h2>문제 정의</h2></div>
+    <table>
+      <colgroup><col style="width:118px"><col></colgroup>
+      <tr><td class="k req">대상 업무</td><td class="v"><input type="text" name="work" placeholder="어떤 업무인가 · 얼마나 자주 하는가"></td></tr>
+      <tr><td class="k req">기존 방식과 문제점</td><td class="v"><textarea name="asis" placeholder="지금은 어떻게 처리하고, 무엇이 문제인가 (반복 · 지연 · 오류 · 누락)"></textarea></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">03</span><h2>개선 내용과 AI 활용</h2></div>
+    <p class="guide"><b>핵심 활용 방식과 개선점</b>을 중심으로 작성해 주세요. 상세 과정은 MS 폼즈에 첨부파일로 제출할 수 있습니다.</p>
+    <table>
+      <colgroup><col style="width:118px"><col></colgroup>
+      <tr><td class="k req">개선 후 방식</td><td class="v"><textarea name="tobe" class="tall" placeholder="입력 → AI 처리 → 결과 활용 순서로. AI가 어느 단계를 맡는지 드러나게"></textarea></td></tr>
+      <tr><td class="k req">사용 AI 도구</td><td class="v"><div class="inline">
+        <label><input type="checkbox" name="tool" value="copilot">Copilot</label>
+        <label><input type="checkbox" name="tool" value="agent">Copilot Agent</label>
+        <label><input type="checkbox" name="tool" value="chatgpt">ChatGPT</label>
+        <label><input type="checkbox" name="tool" value="gemini">Gemini</label>
+        <label><input type="checkbox" name="tool" value="claude">Claude</label>
+        <label><input type="checkbox" name="tool" value="pa">Power Automate · RPA</label>
+        <label><input type="checkbox" name="tool" value="py">Python · 스크립트</label>
+        <label><input type="checkbox" name="tool" value="rag">RAG · 챗봇</label>
+        <label><input type="checkbox" name="tool" value="etc">기타</label><input type="text" name="toolEtc" class="etc" placeholder="기타 도구 · 모델명"></div></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sh"><span class="n">04</span><h2>적용 현황</h2></div>
+    <table>
+      <colgroup><col style="width:118px"><col></colgroup>
+      <tr><td class="k req">적용 상태</td><td class="v"><div class="inline nowrap">
+        <label><input type="radio" name="status" value="live">현업 적용 (유관부서 포함)</label>
+        <label><input type="radio" name="status" value="pilot">시범 적용 (소속 조직 내)</label>
+        <label><input type="radio" name="status" value="demo">적용 전</label></div></td></tr>
+      <tr><td class="k req">적용 범위 · 사용 인원</td><td class="v"><input type="text" name="apply" placeholder="적용 대상 유관부서·협력사 범위와 사용 인원. 예) 안전품질팀 외 현장 8개소 · 협력사 12개사 · 담당자 14명 / 적용 전이면 적용 예정 조직"></td></tr>
+    </table>
+  </section>
+
+  <div class="foot"><span>2026 AI WORKS · 과제 요약서</span><span>1 / 1</span></div>
+</div>
+
+</form>
+
+<script>
+(function(){
+  const f = document.getElementById('f');
+  const KEY = 'aiworks-summary-v2';
+  function calc(){}
+
+  function serialize(){
+    const o = {};
+    [...f.elements].forEach(el => {
+      if (!el.name) return;
+      if (el.type === 'checkbox') { (o[el.name] = o[el.name] || []); if (el.checked) o[el.name].push(el.value); }
+      else if (el.type === 'radio') { if (el.checked) o[el.name] = el.value; }
+      else o[el.name] = el.value;
+    });
+    return o;
+  }
+  function restore(o){
+    [...f.elements].forEach(el => {
+      if (!el.name || !(el.name in o)) return;
+      if (el.type === 'checkbox') el.checked = (o[el.name] || []).includes(el.value);
+      else if (el.type === 'radio') el.checked = o[el.name] === el.value;
+      else el.value = o[el.name];
+    });
+  }
+  let timer;
+  function save(){
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      try { localStorage.setItem(KEY, JSON.stringify(serialize()));
+        const d = new Date(); document.getElementById('saved').textContent = '자동 저장 ' + d.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+      } catch (e) {}
+    }, 400);
+  }
+  try { const raw = localStorage.getItem(KEY); if (raw) restore(JSON.parse(raw)); } catch (e) {}
+  calc();
+  f.addEventListener('input', () => { calc(); save(); });
+  f.addEventListener('change', () => { calc(); save(); });
+  f.addEventListener('submit', e => e.preventDefault());
+
+  document.getElementById('btnPrint').addEventListener('click', () => window.print());
+  document.getElementById('btnClear').addEventListener('click', () => {
+    if (!confirm('입력한 내용을 모두 지울까요?')) return;
+    f.reset(); try { localStorage.removeItem(KEY); } catch (e) {}
+    calc(); document.getElementById('saved').textContent = '';
+  });
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('textarea').forEach(t => { t.style.height = 'auto'; t.style.height = Math.max(t.scrollHeight, 56) + 'px'; });
+  });
+})();
+</script>
+</body>
+</html>
