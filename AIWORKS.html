@@ -70,6 +70,17 @@
   #prz .flow i{font-style:normal;padding:5px 12px;border-radius:8px;background:#eaf1ff;color:#0e2f86}
   #prz .flow s{text-decoration:none;color:#8a97b5}
 
+  /* v4: 제출기한 연장 안내 띠 */
+  #ext{left:44px;top:1418px;width:992px;box-sizing:border-box;padding:22px 32px 22px;border-radius:26px;color:#fff;
+    background:linear-gradient(160deg,#1f4fc8 0%,var(--navy) 100%);border:1.5px solid rgba(255,255,255,.35);
+    box-shadow:0 18px 50px rgba(11,29,77,.32)}
+  #ext .top{display:flex;align-items:center;gap:18px;white-space:nowrap}
+  #ext .tag{flex:none;padding:7px 16px;border-radius:999px;background:#ffd24a;color:var(--navy);font-size:24px;font-weight:900;letter-spacing:-.02em}
+  #ext .big{font-size:40px;font-weight:900;letter-spacing:-.035em;line-height:1.1}
+  #ext .big em{font-style:normal;color:#ffd24a}
+  #ext .why{margin-top:10px;font-size:24px;font-weight:500;letter-spacing:-.03em;color:rgba(232,240,255,.92);white-space:nowrap}
+  .k .ext{font-style:normal;margin-left:2px;padding:2px 9px;border-radius:999px;background:#ffd24a;color:var(--navy);font-size:17px;font-weight:900}
+
   a.lnk{display:block;text-decoration:none;color:#0a3fd6}
   #more{display:flex;align-items:center;justify-content:center;gap:12px;height:132px;border-radius:20px;text-decoration:none;
     background:linear-gradient(160deg,#1f4fc8 0%,var(--navy) 100%);color:#fff;font-size:27px;font-weight:800;line-height:1.25;letter-spacing:-.03em;
@@ -145,6 +156,17 @@
   #detail .fv a{color:var(--blue);text-decoration:none}
   #detail .fv a:hover{text-decoration:underline}
   #detail .fs{margin-top:2px;font-size:14px;font-weight:600;color:var(--mute)}
+
+  /* v4: 제출기한 연장 안내 */
+  #detail .extnote{margin-top:16px;display:flex;align-items:center;gap:18px;padding:20px 24px;border-radius:20px;color:#fff;
+    background:linear-gradient(160deg,#1f4fc8 0%,var(--navy) 100%);box-shadow:0 16px 40px rgba(11,29,77,.22)}
+  #detail .extnote .tag{flex:none;padding:6px 14px;border-radius:999px;background:#ffd24a;color:var(--navy);font-size:15px;font-weight:900}
+  #detail .extnote .big{font-size:22px;font-weight:900;letter-spacing:-.03em;line-height:1.3}
+  #detail .extnote .big em{font-style:normal;color:#ffd24a}
+  #detail .extnote .why{margin-top:4px;font-size:15px;font-weight:500;color:rgba(232,240,255,.92)}
+  #detail .fs.ext{color:var(--blue);font-weight:800}
+  #detail .rv .extchip{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:999px;background:#ffd24a;color:var(--navy);font-size:13.5px;font-weight:900;vertical-align:2px}
+  #detail.phone .extnote{flex-direction:column;align-items:flex-start;gap:10px;padding:18px 20px}
 
   /* 섹션 공통 */
   #detail section{padding:46px 0 0}
@@ -300,10 +322,15 @@
     <div><b>현장 AI</b><span>현장 업무에 AI를 적용</span></div>
   </div>
 
+  <div id="ext" class="abs">
+    <div class="top"><span class="tag">제출기한 연장</span><span class="big"><em>11월 23일(월)</em>까지 응모하실 수 있습니다</span></div>
+    <div class="why">제출 과제의 완성도 제고를 위한 기한 연장 문의가 많아, 제출기한을 연장합니다.</div>
+  </div>
+
   <div id="card" class="abs">
     <div>
       <div id="cols">
-        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간</div><div class="v">11월 20일까지</div></div>
+        <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간<i class="ext">연장</i></div><div class="v">11월 23일까지</div></div>
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>응모대상</div><div class="v">전 직원</div></div>
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><a class="v lnk" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms</a></div>
         <div class="col"><div class="k"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="v">총 <em>530만원</em></div></div>
@@ -337,10 +364,15 @@
     </header>
 
     <div class="facts rise" style="--d:.12s">
-      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간</div><div class="fv">11월 20일까지</div><div class="fs">기한 내 MS Forms 제출</div></div>
+      <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간</div><div class="fv">11월 23일까지</div><div class="fs ext">제출기한 연장</div></div>
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>응모대상</div><div class="fv">전 직원</div><div class="fs">개인 · 팀 모두 가능</div></div>
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div><div class="fv"><a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms ›</a></div><div class="fs">온라인 양식 제출</div></div>
       <div class="fact"><div class="fk"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>시상규모</div><div class="fv">총 530만원</div><div class="fs">최우수 · 우수 · 장려 6건</div></div>
+    </div>
+
+    <div class="extnote rise" style="--d:.18s">
+      <span class="tag">제출기한 연장</span>
+      <div><div class="big">응모 기한을 <em>11월 23일(월)</em>까지 연장합니다</div><div class="why">제출 과제의 완성도 제고를 위한 기한 연장 문의가 많아, 제출기한을 연장합니다.</div></div>
     </div>
 
     <!-- 01 공모 주제 -->
@@ -378,7 +410,7 @@
     <section id="apply" class="rise" style="--d:.34s">
       <div class="sec-h"><span class="no">02</span><h2>응모 안내</h2></div>
       <div class="card rows">
-        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간</div><div class="rv"><b>11월 20일까지</b> 제출</div></div>
+        <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>응모기간</div><div class="rv"><b>11월 23일(월)까지</b> 제출<span class="extchip">기한 연장</span></div></div>
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>응모대상</div><div class="rv"><b>전 직원</b> (개인 · 팀)</div></div>
         <div class="rrow"><div class="rk"><svg class="ico" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>제출방법</div>
           <div class="rv"><a class="formbtn" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=7w3LX5imzkCnOuphEwwTxrf_9R3rMipKszol0wkdVcFUNDFMTTU5N1lSRDlHSjRGUUlEMEVQOENZTS4u" target="_blank" rel="noopener">MS Forms 양식 열기 ›</a></div></div>
@@ -520,6 +552,7 @@ function render(t) {
     el.querySelector('.ic').style.transform = `scale(${0.6 + 0.4 * eOut(seg(t, 2.8 + i * 0.22, 3.5 + i * 0.22))})`;
   });
 
+  fadeUp($('ext'), eOut(seg(t, 3.7, 4.4)), 60);
   fadeUp($('card'), eOut(seg(t, 3.9, 4.6)), 60);
   fadeUp($('foot'), eOut(seg(t, 4.5, 5.1)), 12);
 }
@@ -572,7 +605,7 @@ if (CAP) {
      진입: 포스터 글자 사라짐 + 루프 배경→진입 영상 크로스페이드 → 영상 끝에서 배경이 흐려지며 상세 화면 등장
      복귀: 상세 화면 사라지며 배경 선명해짐 → 역재생 클립 → 루프 배경으로 크로스페이드 */
   const detail = $('detail'), zin = $('zin'), zout = $('zout');
-  const uiEls = ['haze', 't0', 't1', 't2', 'rule', 'sub', 'f1', 'f2', 'f3', 'card', 'foot'].map($);
+  const uiEls = ['haze', 't0', 't1', 't2', 'rule', 'sub', 'f1', 'f2', 'f3', 'ext', 'card', 'foot'].map($);
   const uiAlpha = a => uiEls.forEach(el => el.style.opacity = a);
   const SLOW = +(new URLSearchParams(location.search).get('slow') || 1);   // ?slow=3 : 전환을 느리게 (확인용)
   const OUT_RATE = 1.8;  // 복귀 클립 재생 속도
